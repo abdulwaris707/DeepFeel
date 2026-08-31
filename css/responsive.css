@@ -126,7 +126,12 @@
   }
 
   .pdp-main-image-box {
-    height: 460px;
+    height: 480px;
+  }
+
+  .pdp-reviews-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
   }
 
   /* Cart & Checkout */
@@ -146,6 +151,7 @@
     gap: var(--space-xl);
   }
 }
+
 
 
 /* --------------------------------------------------------------------------
@@ -242,6 +248,65 @@
     height: 36px;
   }
 
+  /* PDP Details & Gallery on Mobile */
+  .pdp-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .pdp-main-image-box {
+    height: 400px;
+  }
+
+  .pdp-cta-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .pdp-cta-row .btn {
+    width: 100%;
+    flex: none !important;
+  }
+
+  .size-btn-group {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+
+  .size-btn {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.72rem;
+    min-height: 44px;
+  }
+
+  .scent-spec-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+  }
+
+  .fragrance-pyramid-container {
+    padding: 1.25rem;
+    margin: 2rem 0;
+  }
+
+  /* Reviews on Mobile */
+  .pdp-reviews-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+  }
+
+  .pdp-reviews-grid {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .pdp-review-form-card {
+    padding: 1.5rem 1.2rem;
+  }
+
   .collection-tiles-grid {
     grid-template-columns: 1fr;
     gap: var(--space-md);
@@ -255,6 +320,7 @@
   .cart-drawer {
     max-width: 100%;
   }
+
 
   /* Mobile Search Overlay */
   .search-overlay {

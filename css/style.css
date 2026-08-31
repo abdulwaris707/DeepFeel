@@ -1063,6 +1063,93 @@ ul, ol {
 }
 
 /* ==========================================================================
+   Product Detail Page (PDP) & Reviews Styles
+   ========================================================================== */
+
+.pdp-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2rem, 4vw, 4.5rem);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.pdp-main-image-box {
+  position: relative;
+  width: 100%;
+  height: 580px;
+  max-height: 70vh;
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-xs);
+}
+
+.pdp-thumbs-wrap {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pdp-thumb-btn {
+  width: 64px;
+  height: 80px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.pdp-thumb-btn.active {
+  border-color: var(--text-primary);
+  opacity: 1 !important;
+}
+
+.pdp-cta-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: stretch;
+}
+
+.pdp-reviews-section {
+  margin-top: var(--space-3xl);
+  border-top: 1px solid var(--border-light);
+  padding-top: var(--space-2xl);
+  width: 100%;
+}
+
+.pdp-reviews-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: clamp(2rem, 3.5vw, 4rem);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.pdp-review-item {
+  border-bottom: 1px solid var(--border-light);
+  padding: 1.4rem 0;
+}
+
+.pdp-review-item:last-child {
+  border-bottom: none;
+}
+
+.pdp-review-form-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xs);
+  padding: clamp(1.5rem, 3vw, 2.2rem);
+  width: 100%;
+}
+
+
+/* ==========================================================================
    Slide-Over Cart Drawer
    ========================================================================== */
 

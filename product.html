@@ -79,11 +79,11 @@
     <div class="container">
       
       <!-- Primary 2-Column Split -->
-      <div class="pdp-grid" style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 4.5rem; align-items: flex-start;">
+      <div class="pdp-grid">
         
         <!-- Left: Image Gallery & Zoom -->
         <div>
-          <div class="pdp-main-image-box" id="pdp-zoom-container" style="position: relative; width: 100%; height: 580px; overflow: hidden; background: var(--bg-secondary); border-radius: var(--radius-xs);">
+          <div class="pdp-main-image-box" id="pdp-zoom-container">
             <img 
               id="pdp-main-image" 
               src="" 
@@ -91,7 +91,7 @@
               style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.15s ease-out;" 
             />
           </div>
-          <div id="pdp-thumbs-container" style="display: flex; gap: 0.8rem; margin-top: 1rem;">
+          <div id="pdp-thumbs-container" class="pdp-thumbs-wrap">
             <!-- Thumbnails inserted by app.js -->
           </div>
         </div>
@@ -109,8 +109,8 @@
             <span id="pdp-product-family" style="font-size: 0.88rem; font-style: italic; color: var(--text-secondary);">Woody Amber</span>
           </div>
 
-          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
-            <span id="pdp-product-price" style="font-size: 2.2rem; font-weight: 600; color: var(--text-primary);">$89</span>
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+            <span id="pdp-product-price" style="font-size: clamp(1.8rem, 3vw, 2.2rem); font-weight: 600; color: var(--text-primary);">$89</span>
             <div id="pdp-rating-stars"></div>
             <span id="pdp-review-count" class="text-muted" style="font-size: 0.85rem;"></span>
           </div>
@@ -131,14 +131,14 @@
           </div>
 
           <!-- CTAs -->
-          <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+          <div class="pdp-cta-row">
             <button type="button" class="btn btn-primary btn-lg" id="pdp-add-to-bag-btn" style="flex: 1.4;">
               ADD TO BAG &rarr;
             </button>
             <button type="button" class="btn btn-outline btn-lg" id="pdp-buy-now-btn" style="flex: 1;">
               BUY NOW
             </button>
-            <button type="button" class="btn btn-outline" id="pdp-wishlist-toggle" style="padding: 0 1.2rem;" title="Save to Scent Vault">
+            <button type="button" class="btn btn-outline" id="pdp-wishlist-toggle" style="padding: 0 1.2rem; min-height: 48px;" title="Save to Scent Vault">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
@@ -156,7 +156,7 @@
       </div>
 
       <!-- FRAGRANCE PROFILE SPECS -->
-      <div id="pdp-scent-specs-wrap" style="margin-top: 5rem;">
+      <div id="pdp-scent-specs-wrap" style="margin-top: 4rem;">
         <!-- Inserted by app.js -->
       </div>
 
@@ -171,8 +171,8 @@
       </div>
 
       <!-- PATRON REVIEWS -->
-      <div style="margin-top: 5rem; border-top: 1px solid var(--border-light); padding-top: 3.5rem;">
-        <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 4rem;">
+      <div class="pdp-reviews-section">
+        <div class="pdp-reviews-grid">
           
           <div>
             <span class="editorial-tagline">CLIENT IMPRESSIONS</span>
@@ -182,7 +182,7 @@
             </div>
           </div>
 
-          <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-xs); padding: 2.2rem;">
+          <div class="pdp-review-form-card">
             <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.4rem;">Share Your Impression</h3>
             <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem;">How does this extrait evolve throughout the day on your skin?</p>
 
@@ -209,6 +209,7 @@
 
         </div>
       </div>
+
 
       <!-- YOU MAY ALSO LIKE -->
       <div style="margin-top: 6rem; border-top: 1px solid var(--border-light); padding-top: 3.5rem;">
