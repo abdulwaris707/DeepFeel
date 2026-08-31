@@ -386,24 +386,15 @@ ul, ol {
    ========================================================================== */
 
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  position: relative;
+  z-index: 100;
   height: var(--header-height);
-  background-color: rgba(250, 248, 245, 0.96);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background-color: var(--bg-primary);
   border-bottom: 1px solid var(--border-light);
   display: flex;
   align-items: center;
-  transition: all var(--transition-smooth);
 }
 
-.site-header.scrolled {
-  background-color: rgba(250, 248, 245, 0.98);
-  box-shadow: var(--shadow-sm);
-  height: 70px;
-}
 
 .header-container {
   width: min(100% - 2 * var(--container-gutter), var(--header-container-max));

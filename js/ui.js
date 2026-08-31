@@ -731,19 +731,8 @@ const UI = {
         }
       }
     });
-
-    // Header scroll background transition
-    window.addEventListener("scroll", () => {
-      const header = document.querySelector(".site-header");
-      if (header) {
-        if (window.scrollY > 40) {
-          header.classList.add("scrolled");
-        } else {
-          header.classList.remove("scrolled");
-        }
-      }
-    });
   },
+
 
   init() {
     this.initCartDrawer();
