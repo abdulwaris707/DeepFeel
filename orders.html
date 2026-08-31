@@ -150,16 +150,17 @@
               ${(ord.items || []).map(i => `
                 <div style="display:flex; justify-content:space-between; font-size:0.92rem;">
                   <span>${i.name} (${i.size || '50ml'}) × ${i.quantity}</span>
-                  <strong>$${(i.price * i.quantity).toFixed(2)}</strong>
+                  <strong>${Store.formatCurrency(i.price * i.quantity)}</strong>
                 </div>
               `).join("")}
             </div>
             <div style="border-top:1px solid var(--border-light); margin-top:1rem; padding-top:1rem; display:flex; justify-content:space-between; align-items:baseline;">
               <span style="font-weight:600;">Total</span>
-              <strong style="font-size:1.2rem;">$${(ord.total || 0).toFixed(2)}</strong>
+              <strong style="font-size:1.2rem; color:var(--text-primary);">${Store.formatCurrency(ord.total || 0)}</strong>
             </div>
           </div>
         `).join("");
+
       }
     }
   </script>

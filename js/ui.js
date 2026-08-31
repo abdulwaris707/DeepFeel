@@ -125,11 +125,12 @@ const UI = {
           </h3>
           <span class="product-card-family">${product.fragranceFamily || 'Extrait de Parfum'}</span>
           <div class="product-card-price-row">
-            <span>$${displayPrice.toFixed(0)}</span>
+            <span>${Store.formatCurrency(displayPrice)}</span>
             ${this.renderStars(product.rating || 5)}
           </div>
         </div>
       </article>
+
     `;
   },
 
@@ -219,7 +220,7 @@ const UI = {
           </div>
 
           <div class="cart-drawer-shipping">
-            <div id="drawer-shipping-text">Add $100 for complimentary priority delivery</div>
+            <div id="drawer-shipping-text">Complimentary delivery across Pakistan on orders over Rs. 5,000</div>
             <div class="cart-shipping-bar">
               <div class="cart-shipping-fill" id="drawer-shipping-fill"></div>
             </div>
@@ -232,7 +233,7 @@ const UI = {
           <div class="cart-drawer-footer">
             <div class="cart-drawer-subtotal">
               <span>Subtotal</span>
-              <strong id="drawer-subtotal">$0.00</strong>
+              <strong id="drawer-subtotal">Rs. 0</strong>
             </div>
             <a href="checkout.html" class="btn btn-primary btn-full btn-lg" style="margin-bottom:0.75rem;">
               Proceed to Checkout &rarr;
@@ -297,17 +298,17 @@ const UI = {
     const totals = Cart.getTotals();
 
     if (countSpan) countSpan.textContent = Cart.getItemCount();
-    if (subtotalEl) subtotalEl.textContent = `$${totals.subtotal.toFixed(2)}`;
+    if (subtotalEl) subtotalEl.textContent = Store.formatCurrency(totals.subtotal);
 
     // Free shipping tracker
     if (shippingText && shippingFill) {
       if (totals.remainingForFreeShipping > 0) {
         const pct = Math.min(100, Math.round((totals.subtotal / totals.freeShippingThreshold) * 100));
         shippingFill.style.width = `${pct}%`;
-        shippingText.textContent = `You are $${totals.remainingForFreeShipping.toFixed(2)} away from complimentary shipping.`;
+        shippingText.textContent = `Add ${Store.formatCurrency(totals.remainingForFreeShipping)} more for complimentary delivery across Pakistan.`;
       } else {
         shippingFill.style.width = "100%";
-        shippingText.textContent = `🎉 You have unlocked complimentary priority courier shipping!`;
+        shippingText.textContent = `🎉 You have unlocked complimentary express delivery across Pakistan!`;
       }
     }
 
@@ -327,7 +328,7 @@ const UI = {
         <img src="${item.image}" alt="${item.name}" class="cart-drawer-thumb" />
         <div class="cart-drawer-item-info">
           <h4>${item.name}</h4>
-          <span class="cart-drawer-item-size">${item.size || '50ml'} • $${item.price.toFixed(0)}</span>
+          <span class="cart-drawer-item-size">${item.size || '50ml'} • ${Store.formatCurrency(item.price)}</span>
           <div class="cart-drawer-qty-wrap">
             <button type="button" class="cart-drawer-qty-btn drawer-minus" data-id="${item.productId}" data-vkey="${item.variantKey}">-</button>
             <span class="cart-drawer-qty-val">${item.quantity}</span>
@@ -338,10 +339,11 @@ const UI = {
           </div>
         </div>
         <div>
-          <strong>$${(item.price * item.quantity).toFixed(2)}</strong>
+          <strong>${Store.formatCurrency(item.price * item.quantity)}</strong>
         </div>
       </div>
     `).join("");
+
 
     // Bind drawer buttons
     body.querySelectorAll(".drawer-minus").forEach(btn => {
@@ -462,8 +464,8 @@ const UI = {
         </div>
 
         <div class="mobile-nav-footer">
-          <span style="color:var(--text-light-muted); font-size:0.78rem;">Maison DeepFeel &bull; Pure Extraits</span>
-          <span style="color:var(--accent-gold); font-size:0.78rem; font-weight:600;">Complimentary Delivery $100+</span>
+          <span style="color:var(--text-light-muted); font-size:0.78rem;">Maison DeepFeel &bull; Pure Extraits Pakistan</span>
+          <span style="color:var(--accent-gold); font-size:0.78rem; font-weight:600;">Complimentary Delivery ${Store.formatCurrency(5000)}+</span>
         </div>
       `;
       document.body.appendChild(overlay);
@@ -628,7 +630,7 @@ const UI = {
             <div>
               <div style="font-size:0.7rem; font-weight:600; text-transform:uppercase; color:var(--text-muted);">${prod.category}</div>
               <h4 style="font-family:var(--font-display); font-size:1.1rem; color:var(--text-primary);">${prod.name}</h4>
-              <span style="font-size:0.85rem; font-weight:600;">$${prod.price.toFixed(0)}</span>
+              <span style="font-size:0.85rem; font-weight:600;">${Store.formatCurrency(prod.price)}</span>
             </div>
           </a>
         `).join("")}
@@ -636,7 +638,6 @@ const UI = {
     `;
   },
 
-  // ----------------------------------------------------
   // ----------------------------------------------------
   // MOBILE FILTER DRAWER (SHOP CATALOG)
   // ----------------------------------------------------

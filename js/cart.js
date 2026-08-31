@@ -125,20 +125,20 @@ const Cart = {
     const settings = Store.getSettings();
     
     // Free shipping threshold check
-    const freeShippingThreshold = settings.freeShippingThreshold || 100;
+    const freeShippingThreshold = settings.freeShippingThreshold || 5000;
     const remainingForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
     
     let shipping = 0;
     if (subtotal > 0) {
       if (shippingMethod === "express") {
-        shipping = settings.expressShippingRate || 25;
+        shipping = settings.expressShippingRate || 450;
       } else {
-        shipping = subtotal >= freeShippingThreshold ? 0 : (settings.flatShippingRate || 12);
+        shipping = subtotal >= freeShippingThreshold ? 0 : (settings.flatShippingRate || 250);
       }
     }
 
     // Gift packaging fee
-    const giftFee = (giftPackaging && subtotal > 0) ? (settings.giftPackagingFee || 8.00) : 0;
+    const giftFee = (giftPackaging && subtotal > 0) ? (settings.giftPackagingFee || 350.00) : 0;
 
     // Coupon discount calculation
     let discount = 0;
@@ -157,24 +157,25 @@ const Cart = {
     }
 
     const discountedSubtotal = Math.max(0, subtotal - discount);
-    const taxRate = (settings.taxRate || 8.0) / 100;
-    const tax = Math.round(discountedSubtotal * taxRate * 100) / 100;
-    const total = subtotal > 0 ? Math.round((discountedSubtotal + shipping + giftFee + tax) * 100) / 100 : 0;
+    const taxRate = (settings.taxRate || 0.0) / 100;
+    const tax = Math.round(discountedSubtotal * taxRate);
+    const total = subtotal > 0 ? Math.round(discountedSubtotal + shipping + giftFee + tax) : 0;
 
     return {
-      subtotal: Math.round(subtotal * 100) / 100,
-      discount: Math.round(discount * 100) / 100,
-      discountedSubtotal: Math.round(discountedSubtotal * 100) / 100,
-      shipping: Math.round(shipping * 100) / 100,
-      giftFee: Math.round(giftFee * 100) / 100,
-      tax: Math.round(tax * 100) / 100,
+      subtotal: Math.round(subtotal),
+      discount: Math.round(discount),
+      discountedSubtotal: Math.round(discountedSubtotal),
+      shipping: Math.round(shipping),
+      giftFee: Math.round(giftFee),
+      tax: Math.round(tax),
       total: total,
       appliedCoupon,
       couponMessage,
       freeShippingThreshold,
-      remainingForFreeShipping: Math.round(remainingForFreeShipping * 100) / 100,
+      remainingForFreeShipping: Math.round(remainingForFreeShipping),
       isFreeShipping: shipping === 0 && subtotal > 0 && shippingMethod !== "express"
     };
+
   },
 
   updateBadges() {

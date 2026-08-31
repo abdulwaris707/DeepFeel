@@ -328,7 +328,7 @@ const App = {
     let activePrice = (product.sizePricing && product.sizePricing[selectedSize]) ? product.sizePricing[selectedSize] : product.price;
 
     const updatePriceDisplay = () => {
-      if (priceEl) priceEl.textContent = `$${activePrice.toFixed(0)}`;
+      if (priceEl) priceEl.textContent = Store.formatCurrency(activePrice);
     };
     updatePriceDisplay();
 
@@ -343,10 +343,11 @@ const App = {
             data-size="${s}"
             data-price="${pVal}"
           >
-            ${s} — $${pVal.toFixed(0)}
+            ${s} — ${Store.formatCurrency(pVal)}
           </button>
         `;
       }).join("");
+
 
       const sizeBtns = sizeContainer.querySelectorAll(".size-btn");
       sizeBtns.forEach(btn => {
@@ -539,7 +540,7 @@ const App = {
               <span style="font-size:0.78rem; color:var(--text-muted); text-transform:uppercase;">${item.size || '50ml'} • ${item.concentration || 'Extrait'}</span>
             </div>
           </td>
-          <td>$${item.price.toFixed(2)}</td>
+          <td>${Store.formatCurrency(item.price)}</td>
           <td>
             <div style="display:inline-flex; border:1px solid var(--border-medium); border-radius:var(--radius-xs);">
               <button type="button" class="cart-minus" data-id="${item.productId}" data-vkey="${item.variantKey}" style="padding:4px 10px;">-</button>
@@ -547,7 +548,7 @@ const App = {
               <button type="button" class="cart-plus" data-id="${item.productId}" data-vkey="${item.variantKey}" style="padding:4px 10px;">+</button>
             </div>
           </td>
-          <td><strong>$${(item.price * item.quantity).toFixed(2)}</strong></td>
+          <td><strong>${Store.formatCurrency(item.price * item.quantity)}</strong></td>
           <td>
             <button type="button" class="cart-remove-btn" data-id="${item.productId}" data-vkey="${item.variantKey}" style="font-size:1.2rem; color:var(--text-muted);">&times;</button>
           </td>
@@ -564,19 +565,19 @@ const App = {
       const giftEl = document.getElementById("cart-gift-fee");
       const totalEl = document.getElementById("cart-total");
 
-      if (subtotalEl) subtotalEl.textContent = `$${totals.subtotal.toFixed(2)}`;
-      if (shippingEl) shippingEl.textContent = totals.isFreeShipping ? "FREE" : `$${totals.shipping.toFixed(2)}`;
-      if (totalEl) totalEl.textContent = `$${totals.total.toFixed(2)}`;
+      if (subtotalEl) subtotalEl.textContent = Store.formatCurrency(totals.subtotal);
+      if (shippingEl) shippingEl.textContent = totals.isFreeShipping ? "FREE" : Store.formatCurrency(totals.shipping);
+      if (totalEl) totalEl.textContent = Store.formatCurrency(totals.total);
 
       if (giftRow && giftEl) {
         giftRow.style.display = includeGiftPackaging ? "flex" : "none";
-        giftEl.textContent = `$${totals.giftFee.toFixed(2)}`;
+        giftEl.textContent = Store.formatCurrency(totals.giftFee);
       }
 
       if (discountRow && discountEl) {
         if (totals.discount > 0) {
           discountRow.style.display = "flex";
-          discountEl.textContent = `-$${totals.discount.toFixed(2)}`;
+          discountEl.textContent = `-${Store.formatCurrency(totals.discount)}`;
         } else {
           discountRow.style.display = "none";
         }
@@ -612,7 +613,7 @@ const App = {
   },
 
   // ----------------------------------------------------
-  // 6. CHECKOUT PAGE
+  // 6. CHECKOUT PAGE (PAKISTANI METHODS: COD, EASYPAISA, JAZZCASH, CARDS)
   // ----------------------------------------------------
   initCheckoutPage() {
     const cart = Cart.getCart();
@@ -626,18 +627,64 @@ const App = {
     let appliedCoupon = localStorage.getItem("deepfeel_active_coupon") || "";
     let selectedShipping = "standard";
 
+    // Toggle Pakistani payment method instruction fields
+    const paymentRadios = document.querySelectorAll("input[name='payment-method']");
+    const epFields = document.getElementById("easypaisa-fields");
+    const jcFields = document.getElementById("jazzcash-fields");
+    const cardFields = document.getElementById("card-fields");
+    const bankFields = document.getElementById("bank-fields");
+
+    const updatePaymentFields = () => {
+      const selected = document.querySelector("input[name='payment-method']:checked")?.value;
+      if (epFields) epFields.style.display = selected === "Easypaisa Mobile Account" ? "block" : "none";
+      if (jcFields) jcFields.style.display = selected === "JazzCash Mobile Account" ? "block" : "none";
+      if (cardFields) cardFields.style.display = selected === "Credit / Debit Card" ? "block" : "none";
+      if (bankFields) bankFields.style.display = selected === "Direct Bank Transfer (IBFT / Raast)" ? "block" : "none";
+    };
+
+    paymentRadios.forEach(radio => {
+      radio.addEventListener("change", updatePaymentFields);
+    });
+    updatePaymentFields();
+
+    // Promo Code Application Handler
+    const applyCouponBtn = document.getElementById("chk-apply-coupon");
+    const couponInput = document.getElementById("checkout-coupon");
+    const couponMsg = document.getElementById("chk-coupon-msg");
+
+    if (applyCouponBtn && couponInput) {
+      applyCouponBtn.addEventListener("click", () => {
+        const code = couponInput.value.trim().toUpperCase();
+        if (!code) return;
+        const subtotal = Cart.getSubtotal();
+        const validation = Store.validateCoupon(code, subtotal);
+        if (validation.valid) {
+          appliedCoupon = code;
+          localStorage.setItem("deepfeel_active_coupon", code);
+          if (couponMsg) {
+            couponMsg.innerHTML = `<span style="color:#166534; font-weight:600;">✓ ${validation.message}</span>`;
+          }
+          renderSummary();
+        } else {
+          if (couponMsg) {
+            couponMsg.innerHTML = `<span style="color:#DC2626; font-weight:600;">✕ ${validation.message}</span>`;
+          }
+        }
+      });
+    }
+
     const renderSummary = () => {
       if (itemsSummary) {
         itemsSummary.innerHTML = cart.map(item => `
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.9rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.9rem; border-bottom:1px solid var(--border-light); padding-bottom:0.75rem;">
             <div style="display:flex; align-items:center; gap:0.8rem;">
               <img src="${item.image}" alt="${item.name}" style="width:48px; height:60px; object-fit:cover; border-radius:var(--radius-xs);" />
               <div>
-                <strong style="font-family:var(--font-display); font-size:1.05rem;">${item.name}</strong>
+                <strong style="font-family:var(--font-display); font-size:1rem; display:block;">${item.name}</strong>
                 <span style="font-size:0.75rem; color:var(--text-muted); display:block;">${item.size || '50ml'} • Qty: ${item.quantity}</span>
               </div>
             </div>
-            <strong>$${(item.price * item.quantity).toFixed(2)}</strong>
+            <strong>${Store.formatCurrency(item.price * item.quantity)}</strong>
           </div>
         `).join("");
       }
@@ -645,12 +692,23 @@ const App = {
       const totals = Cart.getTotals(appliedCoupon, selectedShipping);
       
       const subtotalEl = document.getElementById("chk-subtotal");
+      const discountRow = document.getElementById("chk-discount-row");
+      const discountEl = document.getElementById("chk-discount");
       const shipEl = document.getElementById("chk-shipping");
       const totalEl = document.getElementById("chk-total");
 
-      if (subtotalEl) subtotalEl.textContent = `$${totals.subtotal.toFixed(2)}`;
-      if (shipEl) shipEl.textContent = totals.isFreeShipping ? "FREE" : `$${totals.shipping.toFixed(2)}`;
-      if (totalEl) totalEl.textContent = `$${totals.total.toFixed(2)}`;
+      if (subtotalEl) subtotalEl.textContent = Store.formatCurrency(totals.subtotal);
+      if (shipEl) shipEl.textContent = totals.isFreeShipping ? "FREE" : Store.formatCurrency(totals.shipping);
+      if (totalEl) totalEl.textContent = Store.formatCurrency(totals.total);
+
+      if (discountRow && discountEl) {
+        if (totals.discount > 0) {
+          discountRow.style.display = "flex";
+          discountEl.textContent = `-${Store.formatCurrency(totals.discount)}`;
+        } else {
+          discountRow.style.display = "none";
+        }
+      }
     };
 
     renderSummary();
@@ -661,13 +719,27 @@ const App = {
         const firstName = document.getElementById("first-name")?.value.trim();
         const lastName = document.getElementById("last-name")?.value.trim();
         const email = document.getElementById("email")?.value.trim();
-        const address = document.getElementById("address")?.value.trim();
+        const phone = document.getElementById("phone")?.value.trim();
         const city = document.getElementById("city")?.value.trim();
-        const zip = document.getElementById("zip")?.value.trim();
+        const address = document.getElementById("address")?.value.trim();
+        const landmark = document.getElementById("landmark")?.value.trim();
+        const paymentMethodVal = document.querySelector("input[name='payment-method']:checked")?.value || "Cash on Delivery (COD)";
 
-        if (!firstName || !email || !address || !city || !zip) {
-          UI.showToast("Please complete all required delivery fields", "error");
+        if (!firstName || !email || !phone || !city || !address) {
+          UI.showToast("Please complete all required delivery details (Name, Email, WhatsApp & Address)", "error");
           return;
+        }
+
+        // Build specific payment detail string
+        let fullPaymentMethod = paymentMethodVal;
+        if (paymentMethodVal === "Easypaisa Mobile Account") {
+          const epSender = document.getElementById("ep-sender")?.value.trim();
+          const epTid = document.getElementById("ep-tid")?.value.trim();
+          fullPaymentMethod = `Easypaisa (Sender: ${epSender || phone}${epTid ? ', TID: ' + epTid : ''})`;
+        } else if (paymentMethodVal === "JazzCash Mobile Account") {
+          const jcSender = document.getElementById("jc-sender")?.value.trim();
+          const jcTid = document.getElementById("jc-tid")?.value.trim();
+          fullPaymentMethod = `JazzCash (Sender: ${jcSender || phone}${jcTid ? ', TID: ' + jcTid : ''})`;
         }
 
         const totals = Cart.getTotals(appliedCoupon, selectedShipping);
@@ -685,24 +757,33 @@ const App = {
           customer: {
             name: `${firstName} ${lastName}`,
             email,
-            address: `${address}, ${city}, ${zip}, United States`
+            phone,
+            city,
+            address: `${address}${landmark ? ' (Landmark: ' + landmark + ')' : ''}`,
+            country: "Pakistan"
           },
+          paymentMethod: fullPaymentMethod,
           items: orderItems,
           subtotal: totals.subtotal,
           discount: totals.discount,
+          couponCode: appliedCoupon,
           shipping: totals.shipping,
           tax: totals.tax,
           total: totals.total
         });
 
+        localStorage.removeItem("deepfeel_active_coupon");
         Cart.clearCart();
-        window.location.href = `order-confirmation.html?id=${newOrder.id}`;
+        UI.showToast("Acquisition confirmed! Official invoice dispatched to your email.", "success");
+        setTimeout(() => {
+          window.location.href = `order-confirmation.html?id=${newOrder.id}`;
+        }, 300);
       });
     }
   },
 
   // ----------------------------------------------------
-  // 7. ORDER CONFIRMATION
+  // 7. ORDER CONFIRMATION & TAX INVOICE
   // ----------------------------------------------------
   initOrderConfirmationPage() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -715,28 +796,75 @@ const App = {
     }
 
     const refEl = document.getElementById("confirm-order-ref");
+    const idBadge = document.getElementById("confirm-order-id-badge");
+    const dateEl = document.getElementById("confirm-order-date");
+    const emailNotice = document.getElementById("confirm-customer-email-notice");
+    const custName = document.getElementById("confirm-customer-name");
+    const custPhone = document.getElementById("confirm-customer-phone");
+    const custEmail = document.getElementById("confirm-customer-email");
+    const custAddr = document.getElementById("confirm-shipping-address");
+    const payMethod = document.getElementById("confirm-payment-method");
+    const payStatus = document.getElementById("confirm-payment-status");
+
+    const subtotalEl = document.getElementById("confirm-subtotal");
+    const discountRow = document.getElementById("confirm-discount-row");
+    const discountEl = document.getElementById("confirm-discount");
+    const shippingEl = document.getElementById("confirm-shipping");
     const totalEl = document.getElementById("confirm-order-total");
     const itemsTable = document.getElementById("confirm-items-table");
 
     if (refEl) refEl.textContent = order.id;
-    if (totalEl) totalEl.textContent = `$${order.total.toFixed(2)}`;
+    if (idBadge) idBadge.textContent = `#${order.id}`;
+    if (dateEl) dateEl.textContent = `Date: ${new Date(order.createdAt).toLocaleDateString("en-PK", { dateStyle: "long", timeStyle: "short" })}`;
+    if (emailNotice && order.customer) emailNotice.textContent = order.customer.email;
+
+    if (custName && order.customer) custName.textContent = order.customer.name;
+    if (custPhone && order.customer) custPhone.textContent = order.customer.phone || "+92 300 1234567";
+    if (custEmail && order.customer) custEmail.textContent = order.customer.email;
+    if (custAddr && order.customer) custAddr.textContent = `${order.customer.address}${order.customer.city ? ', ' + order.customer.city : ''}, Pakistan`;
+
+    if (payMethod) payMethod.textContent = order.paymentMethod || "Cash on Delivery (COD)";
+    if (payStatus) {
+      const isPaid = order.paymentStatus === "Paid" || (order.paymentStatus && order.paymentStatus.includes("Paid"));
+      payStatus.innerHTML = `
+        <span style="font-size:0.75rem; font-weight:700; color:${isPaid ? '#166534' : '#854D0E'}; background:${isPaid ? '#DCFCE7' : '#FEF9C3'}; padding:0.18rem 0.6rem; border-radius:3px;">
+          ${order.paymentStatus || 'Pending Collection on Delivery'}
+        </span>
+      `;
+    }
+
+    if (subtotalEl) subtotalEl.textContent = Store.formatCurrency(order.subtotal);
+    if (shippingEl) shippingEl.textContent = order.shipping === 0 ? "FREE" : Store.formatCurrency(order.shipping);
+    if (totalEl) totalEl.textContent = Store.formatCurrency(order.total);
+
+    if (discountRow && discountEl) {
+      if (order.discount && order.discount > 0) {
+        discountRow.style.display = "flex";
+        discountEl.textContent = `-${Store.formatCurrency(order.discount)}`;
+      } else {
+        discountRow.style.display = "none";
+      }
+    }
 
     if (itemsTable && order.items) {
       itemsTable.innerHTML = order.items.map(item => `
-        <tr>
-          <td style="display:flex; align-items:center; gap:0.8rem; padding:0.8rem 0;">
-            <img src="${item.image}" alt="${item.name}" style="width:44px; height:56px; object-fit:cover; border-radius:var(--radius-xs);" />
+        <tr style="border-bottom: 1px solid var(--border-light);">
+          <td style="display:flex; align-items:center; gap:0.8rem; padding:0.8rem 0.5rem 0.8rem 0;">
+            <img src="${item.image}" alt="${item.name}" style="width:48px; height:60px; object-fit:cover; border-radius:var(--radius-xs);" />
             <div>
-              <strong>${item.name}</strong>
-              <span style="font-size:0.78rem; color:var(--text-muted); display:block;">${item.size || '50ml'} • Qty: ${item.quantity}</span>
+              <strong style="font-family:var(--font-display); font-size:1.05rem; display:block;">${item.name}</strong>
+              <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Extrait de Parfum</span>
             </div>
           </td>
-          <td>$${item.price.toFixed(2)}</td>
-          <td>$${(item.price * item.quantity).toFixed(2)}</td>
+          <td style="text-align:center; padding:0.8rem 0.5rem; font-size:0.88rem;">${item.size || '50ml'}</td>
+          <td style="text-align:center; padding:0.8rem 0.5rem; font-weight:600;">${item.quantity}</td>
+          <td style="text-align:right; padding:0.8rem 0.5rem; font-size:0.92rem;">${Store.formatCurrency(item.price)}</td>
+          <td style="text-align:right; padding:0.8rem 0 0.8rem 0.5rem; font-weight:700; font-size:0.95rem;">${Store.formatCurrency(item.price * item.quantity)}</td>
         </tr>
       `).join("");
     }
   },
+
 
   // ----------------------------------------------------
   // 8. WISHLIST & CATEGORIES & STATIC PAGES

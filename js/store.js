@@ -4,7 +4,7 @@
  */
 
 const STORAGE_KEYS = {
-  VERSION: "deepfeel_fragrance_v2",
+  VERSION: "deepfeel_pakistan_v4",
   PRODUCTS: "deepfeel_products",
   CATEGORIES: "deepfeel_categories",
   COUPONS: "deepfeel_coupons",
@@ -15,20 +15,21 @@ const STORAGE_KEYS = {
   CART: "deepfeel_cart",
   WISHLIST: "deepfeel_wishlist",
   CURRENT_USER: "deepfeel_current_user",
-  RECENTLY_VIEWED: "deepfeel_recently_viewed"
+  RECENTLY_VIEWED: "deepfeel_recently_viewed",
+  EMAIL_DISPATCHES: "deepfeel_email_dispatches"
 };
 
 const Store = {
-  // Initialize storage if missing or if upgrading from previous version
+  // Initialize storage if missing or if upgrading to Pakistan edition
   init() {
-    const isPerfumeVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
-    if (!isPerfumeVersion || !localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
+    const currentVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
+    if (!currentVersion || currentVersion !== "4.0_pakistan" || !localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
       this.resetDemoData();
-      localStorage.setItem(STORAGE_KEYS.VERSION, "2.0_perfume");
+      localStorage.setItem(STORAGE_KEYS.VERSION, "4.0_pakistan");
     }
   },
 
-  // Reset to original luxury perfume dataset
+  // Reset to original Pakistani luxury perfume dataset
   resetDemoData() {
     localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(SEED_PRODUCTS));
     localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(SEED_CATEGORIES));
@@ -37,13 +38,21 @@ const Store = {
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(SEED_USERS));
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(SEED_SETTINGS));
     localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(SEED_REVIEWS));
-    localStorage.setItem(STORAGE_KEYS.VERSION, "2.0_perfume");
+    localStorage.setItem(STORAGE_KEYS.EMAIL_DISPATCHES, JSON.stringify([]));
+    localStorage.setItem(STORAGE_KEYS.VERSION, "4.0_pakistan");
     
-    // Set default demo customer as logged in if no user
+    // Set default demo Pakistani customer as logged in if no user
     if (!localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) {
-      localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(SEED_USERS[1])); // Elena Vance
+      localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(SEED_USERS[1])); // Farhan Tariq
     }
   },
+
+  // Format amount in Pakistani Rupees
+  formatCurrency(amount) {
+    const num = Math.round(Number(amount) || 0);
+    return `Rs. ${num.toLocaleString("en-PK")}`;
+  },
+
 
   // ----------------------------------------------------
   // PRODUCTS & FRAGRANCE CRUD
@@ -380,16 +389,23 @@ const Store = {
 
   createOrder(orderData) {
     const orders = this.getOrders();
-    const newId = "DF-" + Math.floor(10000 + Math.random() * 90000);
+    const newId = "DF-PK-" + Math.floor(10000 + Math.random() * 90000);
+    
+    // Determine payment status
+    let defaultPayStatus = "Verified & Paid";
+    if (orderData.paymentMethod && orderData.paymentMethod.toLowerCase().includes("cash on delivery")) {
+      defaultPayStatus = "Pending COD Collection";
+    }
+
     const newOrder = {
       id: newId,
       createdAt: new Date().toISOString(),
       status: "Pending",
-      paymentStatus: "Paid",
+      paymentStatus: defaultPayStatus,
       timeline: [
         { status: "Order Received & Perfume Maceration Verified", date: new Date().toLocaleString(), completed: true },
         { status: "Hand-wrapped in Silk Paper & Wax Seal", date: "Pending", completed: false },
-        { status: "Dispatched via Priority Courier", date: "Pending", completed: false },
+        { status: "Dispatched via Express Courier (TCS / Leopard)", date: "Pending", completed: false },
         { status: "Delivered to Doorstep", date: "Pending", completed: false }
       ],
       ...orderData
@@ -403,7 +419,38 @@ const Store = {
       this.deductStockForOrder(newOrder.items);
     }
 
+    // Automatically record simulated email dispatch
+    if (newOrder.customer && newOrder.customer.email) {
+      this.recordEmailDispatch({
+        orderId: newOrder.id,
+        toEmail: newOrder.customer.email,
+        toName: newOrder.customer.name,
+        subject: `Order Confirmation #${newOrder.id} — Maison DeepFeel Pakistan`,
+        orderDetails: newOrder,
+        sentAt: new Date().toISOString()
+      });
+    }
+
     return newOrder;
+  },
+
+  recordEmailDispatch(dispatch) {
+    let list = JSON.parse(localStorage.getItem(STORAGE_KEYS.EMAIL_DISPATCHES) || "[]");
+    list.unshift({
+      id: "EML-" + Date.now(),
+      orderId: dispatch.orderId,
+      toEmail: dispatch.toEmail,
+      toName: dispatch.toName,
+      subject: dispatch.subject || `Order Confirmation #${dispatch.orderId} — Maison DeepFeel Pakistan`,
+      orderDetails: dispatch.orderDetails,
+      sentAt: new Date().toISOString(),
+      status: "Delivered to Inbox"
+    });
+    localStorage.setItem(STORAGE_KEYS.EMAIL_DISPATCHES, JSON.stringify(list));
+  },
+
+  getEmailDispatches() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.EMAIL_DISPATCHES) || "[]");
   },
 
   updateOrderStatus(orderId, newStatus) {
@@ -421,6 +468,7 @@ const Store = {
     }
     return false;
   },
+
 
   // ----------------------------------------------------
   // USERS & CUSTOMERS

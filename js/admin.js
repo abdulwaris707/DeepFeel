@@ -110,7 +110,7 @@ const AdminApp = {
         if (res.success && res.user.role === "admin") {
           window.location.href = "index.html";
         } else {
-          UI.showToast("Invalid admin credentials. Use admin@deepfeel.com / admin123", "error");
+          UI.showToast("Invalid admin credentials. Use admin@deepfeel.pk / admin123", "error");
         }
       });
     }
@@ -135,7 +135,7 @@ const AdminApp = {
     const prodsEl = document.getElementById("metric-products");
     const lowStockEl = document.getElementById("metric-low-stock");
 
-    if (revEl) revEl.textContent = `$${totalRevenue.toFixed(2)}`;
+    if (revEl) revEl.textContent = Store.formatCurrency(totalRevenue);
     if (ordersEl) ordersEl.textContent = totalOrders;
     if (prodsEl) prodsEl.textContent = activeProducts;
     if (lowStockEl) lowStockEl.textContent = lowStockCount;
@@ -602,7 +602,7 @@ const AdminApp = {
       const outOfStockCount = products.filter(p => p.stock <= 0).length;
 
       if (totalUnitsEl) totalUnitsEl.textContent = totalUnits;
-      if (totalValuationEl) totalValuationEl.textContent = `$${totalValuation.toFixed(2)}`;
+      if (totalValuationEl) totalValuationEl.textContent = Store.formatCurrency(totalValuation);
       if (lowStockCountEl) lowStockCountEl.textContent = lowStockCount;
       if (outOfStockCountEl) outOfStockCountEl.textContent = outOfStockCount;
 
@@ -757,11 +757,14 @@ const AdminApp = {
     if (document.getElementById("detail-cust-email")) document.getElementById("detail-cust-email").textContent = order.customer.email;
     if (document.getElementById("detail-cust-phone")) document.getElementById("detail-cust-phone").textContent = order.customer.phone || "N/A";
     if (document.getElementById("detail-shipping-address")) document.getElementById("detail-shipping-address").textContent = order.customer.address;
-    if (document.getElementById("detail-subtotal")) document.getElementById("detail-subtotal").textContent = `$${order.subtotal.toFixed(2)}`;
-    if (document.getElementById("detail-discount")) document.getElementById("detail-discount").textContent = `-$${(order.discount || 0).toFixed(2)}`;
-    if (document.getElementById("detail-shipping")) document.getElementById("detail-shipping").textContent = order.shipping === 0 ? "FREE" : `$${order.shipping.toFixed(2)}`;
-    if (document.getElementById("detail-tax")) document.getElementById("detail-tax").textContent = `$${order.tax.toFixed(2)}`;
-    if (document.getElementById("detail-total")) document.getElementById("detail-total").textContent = `$${order.total.toFixed(2)}`;
+    if (document.getElementById("detail-payment-method")) document.getElementById("detail-payment-method").textContent = order.paymentMethod || "Cash on Delivery (COD)";
+    if (document.getElementById("detail-payment-status")) document.getElementById("detail-payment-status").textContent = order.paymentStatus || "Verified";
+    if (document.getElementById("detail-subtotal")) document.getElementById("detail-subtotal").textContent = Store.formatCurrency(order.subtotal);
+    if (document.getElementById("detail-discount")) document.getElementById("detail-discount").textContent = `-${Store.formatCurrency(order.discount || 0)}`;
+    if (document.getElementById("detail-shipping")) document.getElementById("detail-shipping").textContent = order.shipping === 0 ? "FREE" : Store.formatCurrency(order.shipping);
+    if (document.getElementById("detail-tax")) document.getElementById("detail-tax").textContent = Store.formatCurrency(order.tax || 0);
+    if (document.getElementById("detail-total")) document.getElementById("detail-total").textContent = Store.formatCurrency(order.total);
+
 
     const statusSel = document.getElementById("detail-status-select");
     if (statusSel) {
@@ -897,7 +900,7 @@ const AdminApp = {
       tableBody.innerHTML = coupons.map(c => `
         <tr>
           <td><strong><code>${c.code}</code></strong></td>
-          <td>${c.discountType === 'percentage' ? `${c.discountValue}%` : `$${c.discountValue}`}</td>
+          <td>${c.discountType === 'percentage' ? `${c.discountValue}%` : Store.formatCurrency(c.discountValue)}</td>
           <td>$${c.minOrder || 0}</td>
           <td>${c.usedCount || 0} / ${c.usageLimit || '∞'}</td>
           <td>${c.expiryDate}</td>
