@@ -101,20 +101,21 @@ const AdminApp = {
     }
 
     if (form) {
-      form.addEventListener("submit", (e) => {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
         const email = document.getElementById("admin-email").value;
         const password = document.getElementById("admin-password").value;
 
-        const res = Auth.login(email, password);
-        if (res.success && res.user.role === "admin") {
+        const res = await Auth.login(email, password);
+        const role = (res.user && res.user.role || '').toLowerCase();
+        if (res.success && (role === "admin" || role === "super_admin" || role === "staff")) {
           window.location.href = "index.html";
         } else {
           UI.showToast("Invalid admin email or password.", "error");
         }
-
       });
     }
+
   },
 
   // ----------------------------------------------------
