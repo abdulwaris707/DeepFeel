@@ -23,7 +23,9 @@ body.admin-body {
   display: flex;
   flex-direction: row;
   overflow-x: hidden;
+  padding-top: 0 !important;
 }
+
 
 /* ----------------------------------------------------
    Admin Sidebar & Backdrop

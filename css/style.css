@@ -133,7 +133,9 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  padding-top: var(--header-height);
 }
+
 
 body.modal-open,
 body.drawer-open {
@@ -386,14 +388,21 @@ ul, ol {
    ========================================================================== */
 
 .site-header {
-  position: relative;
-  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
   height: var(--header-height);
-  background-color: var(--bg-primary);
+  background-color: rgba(250, 248, 245, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-light);
   display: flex;
   align-items: center;
 }
+
 
 
 .header-container {
