@@ -368,6 +368,9 @@ const UI = {
   // ----------------------------------------------------
   // FULL SCREEN MOBILE NAVIGATION OVERLAY
   // ----------------------------------------------------
+  // ----------------------------------------------------
+  // FULL SCREEN / OFF-CANVAS MOBILE NAVIGATION
+  // ----------------------------------------------------
   initMobileMenu() {
     let overlay = document.getElementById("mobile-nav-overlay");
     if (!overlay) {
@@ -377,22 +380,77 @@ const UI = {
       overlay.innerHTML = `
         <div class="mobile-nav-top">
           <a href="index.html" class="brand-logo" style="color:#FFFFFF;">DEEP<span>FEEL</span></a>
-          <button type="button" class="mobile-nav-close" style="font-size:2rem; color:#FFFFFF;" aria-label="Close menu">&times;</button>
+          <button type="button" class="mobile-nav-close" aria-label="Close menu">&times;</button>
         </div>
 
-        <nav class="mobile-nav-links">
-          <a href="index.html" class="mobile-nav-item">01 / HOME</a>
-          <a href="shop.html" class="mobile-nav-item">02 / SHOP FRAGRANCES</a>
-          <a href="categories.html" class="mobile-nav-item">03 / COLLECTIONS</a>
-          <a href="shop.html?category=oud-collection" class="mobile-nav-item">04 / THE OUD VAULT</a>
-          <a href="journal.html" class="mobile-nav-item">05 / JOURNAL</a>
-          <a href="about.html" class="mobile-nav-item">06 / MAISON STORY</a>
-          <a href="wishlist.html" class="mobile-nav-item">07 / SCENT VAULT (<span class="wishlist-count-badge">0</span>)</a>
-        </nav>
+        <div class="mobile-nav-body">
+          <!-- Quick Search Button in Menu -->
+          <button type="button" class="mobile-nav-search-bar" data-open-search>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Search fragrances, notes...</span>
+          </button>
+
+          <!-- Core Navigation -->
+          <div class="mobile-nav-section-title">Explore Fragrances</div>
+          <nav class="mobile-nav-links">
+            <a href="index.html" class="mobile-nav-link">
+              <span>Home</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="shop.html" class="mobile-nav-link">
+              <span>Shop All Fragrances</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="categories.html" class="mobile-nav-link">
+              <span>Collections</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="shop.html?category=oud-collection" class="mobile-nav-link">
+              <span>The Oud Vault</span>
+              <span class="mobile-nav-badge">Prestige</span>
+            </a>
+            <a href="journal.html" class="mobile-nav-link">
+              <span>The Journal</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="about.html" class="mobile-nav-link">
+              <span>About the Maison</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+          </nav>
+
+          <!-- Patron Services -->
+          <div class="mobile-nav-section-title" style="margin-top: 1.5rem;">Patron Services</div>
+          <nav class="mobile-nav-links">
+            <a href="account.html" class="mobile-nav-link mobile-account-link">
+              <span>My Account</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="wishlist.html" class="mobile-nav-link">
+              <span>Saved Scent Vault</span>
+              <span class="badge-count wishlist-count-badge" style="position:static; display:inline-flex;">0</span>
+            </a>
+            <a href="orders.html" class="mobile-nav-link">
+              <span>Order Chronicles</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="faq.html" class="mobile-nav-link">
+              <span>Concierge & FAQ</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="contact.html" class="mobile-nav-link">
+              <span>Contact Atelier</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+          </nav>
+        </div>
 
         <div class="mobile-nav-footer">
-          <span>Maison DeepFeel — Portland & Grasse</span>
-          <a href="contact.html" style="color:var(--accent-gold);">Concierge &rarr;</a>
+          <span style="color:var(--text-light-muted); font-size:0.78rem;">Maison DeepFeel &bull; Pure Extraits</span>
+          <span style="color:var(--accent-gold); font-size:0.78rem; font-weight:600;">Complimentary Delivery $100+</span>
         </div>
       `;
       document.body.appendChild(overlay);
@@ -403,6 +461,14 @@ const UI = {
       b.addEventListener("click", () => {
         overlay.classList.add("active");
         document.body.classList.add("modal-open");
+        
+        // Update account link label in menu
+        const user = Auth.getCurrentUser();
+        const accLink = overlay.querySelector(".mobile-account-link span");
+        if (accLink) {
+          accLink.textContent = user ? `Account (${user.name})` : "Sign In / Register";
+        }
+        Wishlist.updateBadges();
       });
     });
 
@@ -413,6 +479,14 @@ const UI = {
         document.body.classList.remove("modal-open");
       });
     }
+
+    // Close on navigation click
+    overlay.querySelectorAll(".mobile-nav-link").forEach(link => {
+      link.addEventListener("click", () => {
+        overlay.classList.remove("active");
+        document.body.classList.remove("modal-open");
+      });
+    });
   },
 
   // ----------------------------------------------------
@@ -460,6 +534,8 @@ const UI = {
     triggers.forEach(t => {
       t.addEventListener("click", (e) => {
         e.preventDefault();
+        const mobileMenu = document.getElementById("mobile-nav-overlay");
+        if (mobileMenu) mobileMenu.classList.remove("active");
         overlay.classList.add("active");
         document.body.classList.add("modal-open");
         setTimeout(() => {
@@ -468,6 +544,7 @@ const UI = {
         }, 100);
       });
     });
+
 
     const closeBtn = overlay.querySelector(".search-overlay-close");
     if (closeBtn) {

@@ -67,6 +67,13 @@
     grid-template-columns: auto 1fr auto;
   }
 
+  /* On mobile header: keep only Bag and Hamburger; others are accessible in the menu */
+  .header-utilities .nav-search-trigger,
+  .header-utilities .header-account-link,
+  .header-utilities a[href="wishlist.html"] {
+    display: none !important;
+  }
+
   /* Split Sections */
   .split-section,
   .split-section.reverse {
