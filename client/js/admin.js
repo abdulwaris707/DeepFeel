@@ -110,8 +110,9 @@ const AdminApp = {
         if (res.success && res.user.role === "admin") {
           window.location.href = "index.html";
         } else {
-          UI.showToast("Invalid admin credentials. Use admin@deepfeel.pk / admin123", "error");
+          UI.showToast("Invalid admin email or password.", "error");
         }
+
       });
     }
   },

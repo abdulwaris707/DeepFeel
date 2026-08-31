@@ -1075,7 +1075,6 @@ const SEED_USERS = [
     id: "usr_admin",
     name: "DeepFeel Atelier Admin",
     email: "admin@deepfeel.pk",
-    password: "admin123",
     role: "admin",
     createdAt: "2025-01-10T09:00:00.000Z"
   },
@@ -1083,9 +1082,9 @@ const SEED_USERS = [
     id: "usr_customer_1",
     name: "Farhan Tariq",
     email: "farhan.tariq@gmail.com",
-    password: "password123",
     role: "customer",
     phone: "+92 300 8472910",
+
     address: {
       street: "Bungalow 42-A, Sector Y, Phase 5 DHA",
       city: "Lahore",

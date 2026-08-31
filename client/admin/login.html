@@ -21,27 +21,17 @@
       <p style="font-size: 0.9rem; color: var(--text-secondary);">Sign in to manage catalog, orders, and inventory.</p>
     </div>
 
-    <!-- Demo Credentials Notice -->
-    <div style="background-color: var(--accent-subtle); border: 1px solid var(--accent-border); border-radius: var(--radius-sm); padding: 0.9rem; margin-bottom: 1.5rem; font-size: 0.82rem;">
-      <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.2rem;">Demo Admin Credentials:</div>
-      <div style="color: var(--text-secondary);">Email: <code>admin@deepfeel.pk</code></div>
-      <div style="color: var(--text-secondary); margin-bottom: 0.5rem;">Password: <code>admin123</code></div>
-      <button type="button" class="btn btn-outline btn-sm btn-full" id="admin-fill-demo-btn">
-        Fill Admin Credentials
-      </button>
-    </div>
-
     <form id="admin-login-form">
       <div class="form-group">
         <label class="form-label" for="admin-email">Admin Email</label>
-        <input type="email" id="admin-email" class="form-input" placeholder="admin@deepfeel.pk" required />
+        <input type="email" id="admin-email" class="form-input" placeholder="admin@domain.com" required autocomplete="username" />
       </div>
-
 
       <div class="form-group">
         <label class="form-label" for="admin-password">Password</label>
-        <input type="password" id="admin-password" class="form-input" placeholder="••••••••" required />
+        <input type="password" id="admin-password" class="form-input" placeholder="••••••••" required autocomplete="current-password" />
       </div>
+
 
       <button type="submit" class="btn btn-primary btn-lg btn-full" style="margin-top: 1.5rem;">
         Authorize & Enter Suite &rarr;

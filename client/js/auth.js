@@ -35,7 +35,8 @@ const Auth = {
     // Fallback check against local seed store
     const trimmedEmail = email ? email.trim().toLowerCase() : "";
     const users = Store.getUsers();
-    const found = users.find(u => u.email.toLowerCase() === trimmedEmail && (u.password === password || password === "admin123"));
+    const found = users.find(u => u.email.toLowerCase() === trimmedEmail && u.password === password);
+
 
     if (found) {
       localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(found));
@@ -95,20 +96,8 @@ const Auth = {
       return false;
     }
     return true;
-  },
-
-  fillDemoCredentials(type = "admin", emailInputId = "email", passwordInputId = "password") {
-    const emailInput = document.getElementById(emailInputId);
-    const passwordInput = document.getElementById(passwordInputId);
-
-    if (type === "admin") {
-      if (emailInput) emailInput.value = "admin@deepfeel.pk";
-      if (passwordInput) passwordInput.value = "admin123";
-    } else {
-      if (emailInput) emailInput.value = "farhan.tariq@gmail.com";
-      if (passwordInput) passwordInput.value = "password123";
-    }
   }
 };
 
 window.Auth = Auth;
+
