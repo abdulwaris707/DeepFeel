@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Order History — DEEPFEEL</title>
+  <title>The Journal — DEEPFEEL</title>
+  <meta name="description" content="Essays, olfactory guides, ingredient provenance, and fragrance masterclasses from Maison DeepFeel." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
@@ -19,7 +20,7 @@
         <a href="shop.html" class="nav-link">SHOP</a>
         <a href="categories.html" class="nav-link">COLLECTIONS</a>
         <a href="about.html" class="nav-link">ABOUT</a>
-        <a href="journal.html" class="nav-link">JOURNAL</a>
+        <a href="journal.html" class="nav-link active">JOURNAL</a>
       </nav>
 
       <div class="header-utilities">
@@ -30,7 +31,7 @@
           </svg>
         </button>
 
-        <a href="account.html" class="header-icon-btn active" aria-label="Account">
+        <a href="login.html" class="header-icon-btn header-account-link" aria-label="Account">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
@@ -68,13 +69,16 @@
   <main class="section" style="padding-top: 4rem;">
     <div class="container">
       
-      <div class="section-header">
-        <span class="editorial-tagline">ORDER CHRONICLES</span>
-        <h1 class="editorial-heading-lg" style="font-size: 2.6rem;">Past Acquisitions</h1>
+      <div class="text-center" style="max-width: 680px; margin: 0 auto 4.5rem;">
+        <span class="editorial-tagline">THE OLFACTORY ESSAYS</span>
+        <h1 class="editorial-heading-lg" style="margin-bottom: 1rem;">THE JOURNAL</h1>
+        <p class="editorial-lead">
+          Stories exploring scent memory, natural distillation, and the intimate relationship between fragrance and personal presence.
+        </p>
       </div>
 
-      <div id="orders-list-wrap">
-        <!-- Rendered by inline script -->
+      <div class="grid-2" id="journal-articles-grid" style="gap: 4rem;">
+        <!-- Populated by app.js -->
       </div>
 
     </div>
@@ -128,40 +132,5 @@
   <script src="js/wishlist.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
-  <script>
-    const wrap = document.getElementById("orders-list-wrap");
-    const orders = Store.getOrders();
-    if (wrap) {
-      if (orders.length === 0) {
-        wrap.innerHTML = `<div class="empty-state"><p>No previous orders found.</p><a href="shop.html" class="btn btn-primary">Discover Fragrances</a></div>`;
-      } else {
-        wrap.innerHTML = orders.map(ord => `
-          <div style="background:var(--bg-surface); border:1px solid var(--border-light); border-radius:var(--radius-xs); padding:1.8rem; margin-bottom:1.5rem;">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-light); padding-bottom:1rem; margin-bottom:1rem;">
-              <div>
-                <strong>${ord.id}</strong>
-                <span class="text-muted" style="font-size:0.85rem; display:block;">Placed on ${ord.createdAt ? new Date(ord.createdAt).toLocaleDateString() : 'August 28, 2026'}</span>
-              </div>
-              <div>
-                <span class="status-pill status-${ord.status}">${ord.status}</span>
-              </div>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:0.6rem;">
-              ${(ord.items || []).map(i => `
-                <div style="display:flex; justify-content:space-between; font-size:0.92rem;">
-                  <span>${i.name} (${i.size || '50ml'}) × ${i.quantity}</span>
-                  <strong>$${(i.price * i.quantity).toFixed(2)}</strong>
-                </div>
-              `).join("")}
-            </div>
-            <div style="border-top:1px solid var(--border-light); margin-top:1rem; padding-top:1rem; display:flex; justify-content:space-between; align-items:baseline;">
-              <span style="font-weight:600;">Total</span>
-              <strong style="font-size:1.2rem;">$${(ord.total || 0).toFixed(2)}</strong>
-            </div>
-          </div>
-        `).join("");
-      }
-    }
-  </script>
 </body>
 </html>

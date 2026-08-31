@@ -1262,3 +1262,69 @@ const SEED_REVIEWS = [
     verified: true
   }
 ];
+
+const SEED_JOURNAL_ARTICLES = [
+  {
+    id: "journal_1",
+    slug: "how-to-find-your-signature-scent",
+    title: "How to Find Your Signature Scent",
+    subtitle: "The art of discovering an invisible identity that endures in memory.",
+    category: "Olfactory Guides",
+    date: "August 28, 2026",
+    readTime: "4 min read",
+    image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1000&q=80",
+    excerpt: "A signature scent is not a cosmetic accessory; it is an invisible architecture that announces your presence and preserves your memory long after departure.",
+    content: `Finding a signature scent is an intimate exploration of memory, chemistry, and personal temperament. Rather than chasing fleeting commercial trends, consider the emotional architecture of your presence.
+    
+    When testing a new extrait, never judge it on paper blotters alone. High-concentration aromatic oils interact dynamically with your natural skin lipids, body temperature, and pH. Spray directly onto warm pulse points—the base of your throat and inside wrists—and allow the composition to evolve over four distinct hours.
+    
+    A true signature fragrance should evoke quiet confidence rather than overwhelm a room. Look for base notes such as aged amber, creamy Mysore sandalwood, and natural agarwood that dry down into an indelible aura.`
+  },
+  {
+    id: "journal_2",
+    slug: "understanding-fragrance-notes",
+    title: "Understanding Fragrance Notes",
+    subtitle: "Demystifying the three-tier olfactory pyramid: Top, Heart, and Base.",
+    category: "Masterclass",
+    date: "August 15, 2026",
+    readTime: "5 min read",
+    image: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1000&q=80",
+    excerpt: "Learn how the volatile top notes yield to rich floral hearts before settling into resonant base accords that linger for 14+ hours.",
+    content: `Perfume composition is structured like a musical chord. Top notes represent the volatile first impression—bright citrus, sparkling pink pepper, and airy aldehydes that sparkle for the first 15 to 30 minutes.
+    
+    As the initial evaporation subsides, the heart notes emerge. These form the true personality of the perfume: rich Turkish roses, nocturnal Grasse jasmine, cardamom, and cedarwood that radiate for three to five hours.
+    
+    Finally, the base notes anchor the composition. Composed of heavier molecules such as wild agarwood (oud), dark bourbon vanilla, benzoin, and ambers, they bond with your skin for 12 to 16+ hours, leaving an unforgettable trail (sillage).`
+  },
+  {
+    id: "journal_3",
+    slug: "oud-the-soul-of-modern-perfumery",
+    title: "Oud: The Soul of Modern Perfumery",
+    subtitle: "The ancient mystique, sustainable harvesting, and buttery depth of wild agarwood.",
+    category: "Ingredient Provenance",
+    date: "August 02, 2026",
+    readTime: "6 min read",
+    image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=1000&q=80",
+    excerpt: "Known as black liquid gold, pure Assam agarwood possesses a creamy, balsamic depth that cannot be replicated by synthetic molecules.",
+    content: `Agarwood (oud) is one of nature's rarest anomalies. Formed inside the heartwood of Aquilaria trees when infected with a specific mold, the tree produces a dark, resinous essence to protect itself.
+    
+    At Maison DeepFeel, we reject synthetic medicinal accords. Our agarwood is sustainably harvested from 30-year-old plantations in Assam and Trat, followed by traditional copper pot steam distillation. The result is a buttery, smoky, balsamic nectar with profound sensual warmth.`
+  },
+  {
+    id: "journal_4",
+    slug: "how-to-make-your-fragrance-last-longer",
+    title: "How to Make Your Fragrance Last Longer",
+    subtitle: "Atelier techniques for extending the sillage and longevity of pure extraits.",
+    category: "Care & Rituals",
+    date: "July 24, 2026",
+    readTime: "3 min read",
+    image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1000&q=80",
+    excerpt: "Simple moisture layering techniques and pulse point applications to double the longevity of your signature extrait.",
+    content: `High-concentration extraits naturally last 12+ hours, but proper application technique can elevate longevity even further.
+    
+    First, apply perfume immediately after a warm shower onto well-hydrated skin. Dry skin rapidly absorbs alcohol and dissipates scent molecules, whereas well-moisturized skin creates an anchor for essential perfume oils.
+    
+    Second, resist the urge to rub your wrists together. Friction generates heat that destroys delicate top-note molecules before they have a chance to bloom. Finally, store your flacons away from direct sunlight and sudden humidity shifts.`
+  }
+];
+

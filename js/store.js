@@ -523,8 +523,25 @@ const Store = {
     const ids = JSON.parse(localStorage.getItem(STORAGE_KEYS.RECENTLY_VIEWED) || "[]");
     const products = this.getProducts();
     return ids.map(id => products.find(p => p.id === id)).filter(Boolean);
+  },
+
+  // ----------------------------------------------------
+  // JOURNAL & EDITORIAL ARTICLES
+  // ----------------------------------------------------
+  getJournalArticles() {
+    return (typeof SEED_JOURNAL_ARTICLES !== "undefined") ? SEED_JOURNAL_ARTICLES : [];
+  },
+
+  getJournalArticleBySlug(slug) {
+    const articles = this.getJournalArticles();
+    return articles.find(a => a.slug === slug || a.id === slug) || null;
+  },
+
+  recommendByMood(mood) {
+    return this.recommendPerfumesByPreference(mood);
   }
 };
 
 // Automatically initialize store on script load
 Store.init();
+

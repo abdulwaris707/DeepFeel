@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checkout — DeepFeel Haute Parfumerie</title>
-  <meta name="description" content="Securely complete your luxury fragrance acquisition with encrypted checkout and concierge dispatch." />
+  <title>Checkout — DEEPFEEL</title>
+  <meta name="description" content="Securely complete your luxury fragrance acquisition with encrypted checkout and concierge priority dispatch." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
@@ -12,25 +12,26 @@
 
   <!-- Minimal Header -->
   <header class="site-header" style="border-bottom: 1px solid var(--border-light);">
-    <div class="container header-container">
+    <div class="container header-container" style="grid-template-columns: 1fr auto;">
       <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
-      <a href="cart.html" class="btn btn-ghost btn-sm">&larr; Return to Bag</a>
+      <a href="cart.html" class="link-editorial">&larr; Return to Bag</a>
     </div>
   </header>
 
-  <main class="section">
+  <main class="section" style="padding-top: 3.5rem;">
     <div class="container">
       
-      <div class="checkout-layout">
+      <div class="checkout-layout" style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 4.5rem; align-items: flex-start;">
         
         <!-- Left: Form Steps -->
         <div>
           <form id="checkout-form">
             
-            <!-- Step 1: Contact -->
-            <div class="checkout-card" style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 2rem; margin-bottom: 2rem;">
-              <h2 class="font-serif" style="font-size: 1.4rem; margin-bottom: 1.2rem;">1. Patron Contact</h2>
-              
+            <!-- Contact -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-xs); padding: 2.2rem; margin-bottom: 2rem;">
+              <span class="editorial-tagline">STEP 01</span>
+              <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.2rem;">Patron Details</h2>
+
               <div class="form-grid-2">
                 <div class="form-group">
                   <label class="form-label" for="first-name">First Name *</label>
@@ -42,150 +43,84 @@
                 </div>
               </div>
 
-              <div class="form-grid-2">
-                <div class="form-group">
-                  <label class="form-label" for="email">Email Address (for dispatch tracking) *</label>
-                  <input type="email" id="email" class="form-input" placeholder="elena.vance@example.com" required />
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="phone">Phone Number (for courier delivery)</label>
-                  <input type="tel" id="phone" class="form-input" placeholder="+1 (555) 000-0000" />
-                </div>
+              <div class="form-group">
+                <label class="form-label" for="email">Email Address (for priority tracking) *</label>
+                <input type="email" id="email" class="form-input" placeholder="elena.vance@example.com" required />
               </div>
             </div>
 
-            <!-- Step 2: Shipping Destination -->
-            <div class="checkout-card" style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 2rem; margin-bottom: 2rem;">
-              <h2 class="font-serif" style="font-size: 1.4rem; margin-bottom: 1.2rem;">2. Delivery Residence</h2>
+            <!-- Shipping Destination -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-xs); padding: 2.2rem; margin-bottom: 2rem;">
+              <span class="editorial-tagline">STEP 02</span>
+              <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.2rem;">Delivery Residence</h2>
 
               <div class="form-group">
                 <label class="form-label" for="address">Street Address *</label>
                 <input type="text" id="address" class="form-input" placeholder="742 Evergreen Terrace" required />
               </div>
 
-              <div class="form-grid-3">
+              <div class="form-grid-2">
                 <div class="form-group">
                   <label class="form-label" for="city">City *</label>
                   <input type="text" id="city" class="form-input" placeholder="Portland" required />
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="state">State / Province *</label>
-                  <input type="text" id="state" class="form-input" placeholder="Oregon" required />
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="zip">Postal / ZIP Code *</label>
+                  <label class="form-label" for="zip">ZIP / Postal Code *</label>
                   <input type="text" id="zip" class="form-input" placeholder="97201" required />
-                </div>
-              </div>
-
-              <!-- Shipping Speed Option -->
-              <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-light); padding-top: 1.2rem;">
-                <label class="form-label">Select Delivery Speed</label>
-                <div style="display: flex; flex-direction: column; gap: 0.8rem;">
-                  <label class="filter-checkbox-label" style="background: var(--bg-surface-subtle); padding: 0.9rem; border-radius: 4px; border: 1px solid var(--border-light); cursor: pointer;">
-                    <input type="radio" name="shipping-method" value="standard" checked />
-                    <span style="flex: 1;"><strong>Standard Insured Delivery (3–5 Business Days)</strong> — Carbon Neutral</span>
-                    <span>Free over $100</span>
-                  </label>
-                  <label class="filter-checkbox-label" style="background: var(--bg-surface-subtle); padding: 0.9rem; border-radius: 4px; border: 1px solid var(--border-light); cursor: pointer;">
-                    <input type="radio" name="shipping-method" value="express" />
-                    <span style="flex: 1;"><strong>FedEx Priority Express (1–2 Business Days)</strong> — Temperature Regulated</span>
-                    <span>$25.00</span>
-                  </label>
-                </div>
-              </div>
-
-              <!-- Gift Packaging Checkbox -->
-              <div class="gift-packaging-card" style="margin-top: 1.5rem; margin-bottom: 0;">
-                <input type="checkbox" id="checkout-gift-packaging" />
-                <div>
-                  <strong style="font-size: 0.92rem; display: block;">Include Signature Silk & Wax-Sealed Gift Coffret (+$8.00)</strong>
-                  <span style="font-size: 0.82rem; color: var(--text-secondary);">Hand-wrapped in rigid keepsake box with custom gold ribbon.</span>
                 </div>
               </div>
             </div>
 
-            <!-- Step 3: Payment -->
-            <div class="checkout-card" style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 2rem; margin-bottom: 2rem;">
-              <h2 class="font-serif" style="font-size: 1.4rem; margin-bottom: 1.2rem;">3. Payment Method</h2>
-
-              <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem;">
-                <label class="filter-checkbox-label" style="padding: 0.8rem; border: 1px solid var(--border-light); border-radius: 4px;">
-                  <input type="radio" name="payment-method" value="Credit Card" checked />
-                  <span><strong>Encrypted Card (Visa, Mastercard, Amex)</strong></span>
-                </label>
-                <label class="filter-checkbox-label" style="padding: 0.8rem; border: 1px solid var(--border-light); border-radius: 4px;">
-                  <input type="radio" name="payment-method" value="Direct Bank Wire / Concierge" />
-                  <span><strong>Private Client Wire Transfer / Concierge Invoice</strong></span>
-                </label>
-              </div>
+            <!-- Payment -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-xs); padding: 2.2rem; margin-bottom: 2.5rem;">
+              <span class="editorial-tagline">STEP 03</span>
+              <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.2rem;">Encrypted Payment</h2>
 
               <div class="form-group">
-                <label class="form-label" for="card-number">Card Number</label>
-                <input type="text" id="card-number" class="form-input" placeholder="•••• •••• •••• 4242" value="4242 •••• •••• 4242" />
+                <label class="form-label" for="card-num">Card Number</label>
+                <input type="text" id="card-num" class="form-input" placeholder="4242 •••• •••• 4242" value="4242 •••• •••• 4242" />
               </div>
 
               <div class="form-grid-2">
                 <div class="form-group">
-                  <label class="form-label" for="card-expiry">Expiry Date</label>
-                  <input type="text" id="card-expiry" class="form-input" placeholder="MM / YY" value="12/28" />
+                  <label class="form-label">Expiry</label>
+                  <input type="text" class="form-input" placeholder="MM/YY" value="12/28" />
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="card-cvv">Security Code (CVC)</label>
-                  <input type="text" id="card-cvv" class="form-input" placeholder="CVC" value="888" />
+                  <label class="form-label">CVC</label>
+                  <input type="text" class="form-input" placeholder="CVC" value="888" />
                 </div>
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-lg btn-full" style="height: 56px; font-size: 1.05rem;">
-              Authorize & Complete Acquisition &rarr;
+            <button type="submit" class="btn btn-primary btn-full btn-lg" style="height: 56px;">
+              AUTHORIZE & COMPLETE ORDER &rarr;
             </button>
           </form>
         </div>
 
-        <!-- Right: Order Summary Sidebar -->
+        <!-- Right: Summary -->
         <div>
-          <div class="order-summary-card">
-            <h3 class="summary-title font-serif" style="font-size: 1.4rem; margin-bottom: 1rem;">Order Flacons</h3>
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-xs); padding: 2.2rem; position: sticky; top: 110px;">
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1.5rem;">Flacons in Order</h3>
             
-            <div id="checkout-items-summary">
-              <!-- Rendered by app.js -->
+            <div id="checkout-items-summary" style="margin-bottom: 1.5rem;">
+              <!-- Inserted by app.js -->
             </div>
 
-            <div style="border-top: 1px solid var(--border-light); margin: 1.5rem 0; padding-top: 1rem;">
-              <div class="summary-row">
+            <div style="border-top: 1px solid var(--border-light); padding-top: 1.2rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem; font-size: 0.95rem;">
                 <span>Subtotal</span>
                 <strong id="chk-subtotal">$0.00</strong>
               </div>
-
-              <div class="summary-row" id="chk-discount-row" style="display: none; color: var(--color-success);">
-                <span>Discount</span>
-                <strong id="chk-discount">-$0.00</strong>
-              </div>
-
-              <div class="summary-row" id="chk-gift-row" style="display: none; color: var(--accent-primary);">
-                <span>Gift Packaging</span>
-                <strong id="chk-gift">$8.00</strong>
-              </div>
-
-              <div class="summary-row">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem; font-size: 0.95rem;">
                 <span>Shipping</span>
-                <span id="chk-shipping">$0.00</span>
+                <span id="chk-shipping">FREE</span>
               </div>
-
-              <div class="summary-row">
-                <span>Estimated Tax (8%)</span>
-                <span id="chk-tax">$0.00</span>
+              <div style="border-top: 1px solid var(--border-light); margin-top: 1rem; padding-top: 1rem; display: flex; justify-content: space-between; align-items: baseline;">
+                <span style="font-weight: 600;">Total</span>
+                <strong id="chk-total" style="font-size: 1.6rem; color: var(--text-primary);">$0.00</strong>
               </div>
-
-              <div class="summary-row total">
-                <span>Total</span>
-                <strong id="chk-total" style="font-size: 1.3rem;">$0.00</strong>
-              </div>
-            </div>
-
-            <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.6;">
-              🔒 256-Bit SSL Encrypted. All extraits are backed by our 30-day restful trial with complimentary return labels.
             </div>
           </div>
         </div>
@@ -198,7 +133,7 @@
   <!-- Footer -->
   <footer class="site-footer" style="padding: 2rem 0; text-align: center;">
     <div class="container">
-      <p style="font-size: 0.85rem; color: var(--text-muted);">&copy; 2026 Maison DeepFeel Co. All rights reserved.</p>
+      <p style="font-size: 0.82rem; color: var(--text-light-muted);">&copy; 2026 DEEPFEEL. All rights reserved.</p>
     </div>
   </footer>
 

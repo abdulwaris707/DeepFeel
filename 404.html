@@ -3,48 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Page Not Found — DeepFeel</title>
-  <meta name="description" content="The page you are searching for may have been moved or is no longer available." />
+  <title>Page Not Found — DEEPFEEL</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body>
 
-  <!-- Navigation Header -->
-  <header class="site-header">
-    <div class="container header-container">
+  <header class="site-header" style="border-bottom: 1px solid var(--border-light);">
+    <div class="container header-container" style="grid-template-columns: 1fr auto;">
       <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
-      <div class="header-utilities">
-        <a href="shop.html" class="btn btn-outline btn-sm">Explore Shop</a>
-      </div>
+      <a href="shop.html" class="link-editorial">&larr; Return to Shop</a>
     </div>
   </header>
 
-  <main class="section" style="padding-top: 6rem; padding-bottom: 6rem;">
-    <div class="container text-center">
-      <div class="empty-state" style="border: none; box-shadow: none;">
-        <span class="section-subtitle">404 Error</span>
-        <h1 style="font-size: 3rem; margin-bottom: 0.8rem;">Page Not Found</h1>
-        <p style="font-size: 1.1rem; max-width: 480px; margin: 0 auto 2rem;">
-          The page or product link you followed may have been updated or moved to another collection.
-        </p>
-
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a href="index.html" class="btn btn-primary">Return to Homepage</a>
-          <a href="shop.html" class="btn btn-outline">Browse All Products</a>
-        </div>
-      </div>
+  <main class="section" style="padding-top: 6rem; min-height: 70vh; display: flex; align-items: center;">
+    <div class="container-narrow text-center">
+      <span class="editorial-tagline">404 ERROR</span>
+      <h1 class="editorial-heading-lg" style="font-size: 3.2rem; margin-bottom: 1.2rem;">Scent Lost to Time.</h1>
+      <p class="editorial-lead" style="margin-bottom: 2.5rem;">
+        The page or fragrance flacon you are seeking has evaporated or been relocated to our private archives.
+      </p>
+      <a href="index.html" class="btn btn-primary btn-lg">RETURN TO MAISON HOME &rarr;</a>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container text-center" style="padding: 2rem 0;">
-      <p>&copy; 2026 DeepFeel Living Co. All rights reserved.</p>
+  <footer class="site-footer" style="padding: 2rem 0; text-align: center;">
+    <div class="container">
+      <p style="font-size: 0.82rem; color: var(--text-light-muted);">&copy; 2026 DEEPFEEL. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="js/data.js"></script>
   <script src="js/store.js"></script>
   <script src="js/auth.js"></script>
