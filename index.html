@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeepFeel — Designed to Feel Different | Premium Living Essentials</title>
+  <meta name="description"
+    content="Discover thoughtfully selected lifestyle goods, ergonomic textiles, artisan drinkware, and calm ambient lighting made to bring comfort and character to everyday life." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+
+<body>
+
+  <!-- Announcement Bar -->
+  <aside class="announcement-bar" role="region" aria-label="Store Announcement">
+    <div class="container text-center">
+      <span class="announcement-bar-text">Complimentary worldwide shipping on orders over $100 — Consciously
+        Crafted</span>
+      <a href="shop.html">Shop Catalog &rarr;</a>
+    </div>
+  </aside>
+
+  <!-- Sticky Navigation Header -->
+  <header class="site-header" role="banner">
+    <div class="container header-container">
+      <button type="button" class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <a href="index.html" class="brand-logo" aria-label="DeepFeel Home">
+        DEEP<span>FEEL</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="shop.html" class="nav-link">Shop</a>
+        <a href="categories.html" class="nav-link">Categories</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-utilities">
+        <button type="button" class="header-icon-btn nav-search-trigger" aria-label="Search catalog" title="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <a href="wishlist.html" class="header-icon-btn" aria-label="Saved items" title="Wishlist">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+            </path>
+          </svg>
+          <span class="badge-count wishlist-count-badge" style="display: none;">0</span>
+        </a>
+
+        <a href="login.html" class="header-icon-btn header-account-link" aria-label="Customer account" title="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+
+        <a href="cart.html" class="header-icon-btn" aria-label="Shopping bag" title="Shopping Bag">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="badge-count cart-count-badge" style="display: none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Off-Canvas Navigation Drawer -->
+  <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+    <div class="mobile-drawer-overlay"></div>
+    <div class="mobile-drawer-panel">
+      <div class="mobile-drawer-header">
+        <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
+        <button type="button" class="mobile-drawer-close" aria-label="Close navigation">&times;</button>
+      </div>
+      <div class="mobile-drawer-links">
+        <a href="index.html" class="mobile-nav-link">Home</a>
+        <a href="shop.html" class="mobile-nav-link">Shop All Catalog</a>
+        <a href="categories.html" class="mobile-nav-link">Categories</a>
+        <a href="wishlist.html" class="mobile-nav-link">Saved Items (<span class="wishlist-count-badge">0</span>)</a>
+        <a href="cart.html" class="mobile-nav-link">Shopping Bag (<span class="cart-count-badge">0</span>)</a>
+        <a href="about.html" class="mobile-nav-link">Our Philosophy</a>
+        <a href="faq.html" class="mobile-nav-link">Help & FAQs</a>
+        <a href="contact.html" class="mobile-nav-link">Contact Studio</a>
+      </div>
+      <div class="mobile-drawer-footer">
+        <a href="account.html" class="btn btn-outline btn-full">Customer Account</a>
+        <a href="admin/index.html" class="btn btn-ghost btn-full" style="font-size: 0.85rem; margin-top: 0.4rem;">Admin
+          Portal &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main id="main-content">
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <span class="hero-eyebrow">The Fall 2026 Collection</span>
+            <h1 class="hero-title">Designed to Feel Different.</h1>
+            <p class="hero-desc">
+              Discover thoughtfully selected products made to bring tactile quality, enduring comfort, and restorative
+              character into everyday life.
+            </p>
+            <div class="hero-cta-group">
+              <a href="shop.html" class="btn btn-primary btn-lg">Shop Collection &rarr;</a>
+              <a href="shop.html?sort=newest" class="btn btn-outline btn-lg">Explore New Arrivals</a>
+            </div>
+          </div>
+
+          <div class="hero-image-wrap">
+            <img src="https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=1200&q=85"
+              alt="Merino wool weighted blanket on luxury minimalist bedding" class="hero-image" />
+            <div class="hero-badge-overlay">
+              <span class="badge-label">Featured Material</span>
+              <span class="badge-text">100% Certified Organic Merino Wool</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Value Highlights Bar -->
+    <section class="value-props-bar" aria-label="Brand Guarantees">
+      <div class="container">
+        <div class="props-grid">
+          <div class="prop-item">
+            <div class="prop-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <div class="prop-text">
+              <h4>Conscious Craftsmanship</h4>
+              <p>Hand-finished natural materials sourced ethically from certified artisan mills.</p>
+            </div>
+          </div>
+
+          <div class="prop-item">
+            <div class="prop-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+              </svg>
+            </div>
+            <div class="prop-text">
+              <h4>Complimentary Shipping</h4>
+              <p>Carbon-neutral doorstep delivery on all qualified orders over $100.</p>
+            </div>
+          </div>
+
+          <div class="prop-item">
+            <div class="prop-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+            </div>
+            <div class="prop-text">
+              <h4>30-Day Restful Trial</h4>
+              <p>Experience our pieces in your space. Hassle-free exchanges and returns.</p>
+            </div>
+          </div>
+
+          <div class="prop-item">
+            <div class="prop-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div class="prop-text">
+              <h4>Dedicated Care</h4>
+              <p>Human support from our studio specialists available 7 days a week.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-subtitle">Curated Atmospheres</span>
+          <h2 class="section-title">Explore by Living Space</h2>
+          <p class="section-desc">Each object is chosen for its acoustic balance, tactile warmth, and functional
+            longevity.</p>
+        </div>
+
+        <div class="categories-grid" id="featured-categories-grid">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Curated Featured Products -->
+    <section class="section"
+      style="background-color: var(--bg-surface-subtle); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
+      <div class="container">
+        <div class="section-header"
+          style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <span class="section-subtitle">Handpicked Essentials</span>
+            <h2 class="section-title">The Foundation Pieces</h2>
+          </div>
+          <a href="shop.html" class="btn btn-outline">View Complete Catalog &rarr;</a>
+        </div>
+
+        <div class="product-grid" id="featured-products-grid">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Editorial Promo Banner -->
+    <section class="section">
+      <div class="container">
+        <div class="promo-editorial-section">
+          <div class="promo-grid">
+            <div class="promo-content">
+              <span class="promo-tag">Studio Spotlight</span>
+              <h2 class="promo-title">The Komorebi Ceramic Ritual.</h2>
+              <p class="promo-desc">
+                Hand-thrown in Kyoto from coarse sandstone clay, our pour-over set optimizes water flow rate while
+                celebrating tactile organic wabi-sabi imperfections.
+              </p>
+              <a href="product.html?id=df_002" class="btn btn-accent btn-lg">Discover the Brew Set &rarr;</a>
+            </div>
+            <div>
+              <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1000&q=80"
+                alt="Artisan ceramic coffee pour over set on marble counter" class="promo-image" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- New Arrivals & Bestsellers Split Showcase -->
+    <section class="section-sm">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-subtitle">Freshly Crafted</span>
+          <h2 class="section-title">New Arrivals to the Studio</h2>
+          <p class="section-desc">The latest additions to our ongoing study in comfort and spatial calm.</p>
+        </div>
+
+        <div class="product-grid" id="new-arrivals-grid">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Brand Story Section -->
+    <section class="section brand-story-section">
+      <div class="container">
+        <div class="story-grid">
+          <div class="story-image-grid">
+            <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=700&q=80"
+              alt="Artisan weaving organic linen fibers" class="story-img-1" loading="lazy" />
+            <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=700&q=80"
+              alt="Warm ambient lamp on minimal wood sideboard" class="story-img-2" loading="lazy" />
+          </div>
+
+          <div class="story-content">
+            <span class="section-subtitle">Our Philosophy</span>
+            <h2 class="section-title">Objects that quiet the room and ground the senses.</h2>
+            <p style="margin-bottom: 1.2rem;">
+              DeepFeel was founded on a simple observation: modern life is filled with synthetic surfaces and visual
+              clutter. We believe our everyday environments should provide sanctuary.
+            </p>
+            <p style="margin-bottom: 2rem;">
+              Every blanket, lamp, vessel, and workspace piece we produce is crafted from honest organic
+              substances—virgin merino wool, unglazed stoneware, European flax, and natural timber—designed to age with
+              grace.
+            </p>
+            <a href="about.html" class="btn btn-outline">Read Our Craft Story &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Customer Testimonials -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-subtitle">Real Experiences</span>
+          <h2 class="section-title">Loved by Thoughtful Homes</h2>
+          <p class="section-desc">Read unfiltered impressions from our community across the country.</p>
+        </div>
+
+        <div class="testimonials-grid">
+          <article class="testimonial-card">
+            <div class="testimonial-stars">
+              <span class="rating-stars">★★★★★</span>
+            </div>
+            <p class="testimonial-quote">
+              "The Merino Wool Weighted Throw is unlike anything I've ever owned. The chunky open knit prevents
+              overheating while providing a deeply calming weight."
+            </p>
+            <div class="testimonial-author">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                alt="Claire Dupont" class="author-avatar" />
+              <div>
+                <div class="author-name">Claire Dupont</div>
+                <div class="author-badge">✓ Verified Collector</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="testimonial-card">
+            <div class="testimonial-stars">
+              <span class="rating-stars">★★★★★</span>
+            </div>
+            <p class="testimonial-quote">
+              "The Aura Lamp has transformed my evening desk sessions. The capacitive brass dimmer feels so tactile, and
+              the 2700K amber glow is completely glare-free."
+            </p>
+            <div class="testimonial-author">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
+                alt="Liam O'Connor" class="author-avatar" />
+              <div>
+                <div class="author-name">Liam O'Connor</div>
+                <div class="author-badge">✓ Verified Collector</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="testimonial-card">
+            <div class="testimonial-stars">
+              <span class="rating-stars">★★★★★</span>
+            </div>
+            <p class="testimonial-quote">
+              "Every detail down to the recycled unboxing materials speaks of uncompromising consideration. DeepFeel
+              products are truly built to last decades."
+            </p>
+            <div class="testimonial-author">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
+                alt="Maya Lin" class="author-avatar" />
+              <div>
+                <div class="author-name">Maya Lin</div>
+                <div class="author-badge">✓ Verified Collector</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+      <div class="container">
+        <div class="newsletter-card">
+          <span class="section-subtitle">Stay in the Know</span>
+          <h2 class="section-title">DeepFeel Chronicles</h2>
+          <p class="section-desc">
+            Receive intimate dispatches on spatial design, seasonal artisan releases, and subscriber-only previews.
+            Never spam.
+          </p>
+
+          <form class="newsletter-form" id="newsletter-form">
+            <input type="email" placeholder="Enter your email address..." required aria-label="Email address" />
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
+          <p class="footer-desc">
+            Thoughtfully crafted living objects made to ground the senses and bring enduring calm into modern spaces.
+          </p>
+          <p style="font-size: 0.85rem; color: #71717A;">Portland Studio: 1024 Hawthorne Blvd, Portland, OR</p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Collections</h4>
+          <ul class="footer-links">
+            <li><a href="shop.html?category=rest-wellness">Rest & Wellness</a></li>
+            <li><a href="shop.html?category=artisan-drinkware">Artisan Drinkware</a></li>
+            <li><a href="shop.html?category=ambient-lighting">Ambient Lighting</a></li>
+            <li><a href="shop.html?category=home-living">Home & Living</a></li>
+            <li><a href="shop.html?category=studio-workspace">Studio & Workspace</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">Our Philosophy</a></li>
+            <li><a href="faq.html">Help & FAQ</a></li>
+            <li><a href="contact.html">Contact Studio</a></li>
+            <li><a href="account.html">Customer Account</a></li>
+            <li><a href="admin/index.html">Admin Command Suite</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Customer Care</h4>
+          <ul class="footer-links">
+            <li><a href="faq.html#shipping">Shipping & Delivery</a></li>
+            <li><a href="faq.html#returns">30-Day Returns</a></li>
+            <li><a href="faq.html#warranty">Product Warranty</a></li>
+            <li><a href="orders.html">Track My Order</a></li>
+            <li><a href="contact.html">Trade & Hospitality</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 DeepFeel Living Co. All rights reserved. Designed to Feel Different.</p>
+        <div class="footer-legal-links">
+          <a href="faq.html">Privacy Policy</a>
+          <a href="faq.html">Terms of Service</a>
+          <a href="faq.html">Accessibility</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
