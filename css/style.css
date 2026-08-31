@@ -845,8 +845,57 @@ ul, ol {
 }
 
 /* ==========================================================================
+   Page Layouts (Shop, Cart, Checkout, Account)
+   ========================================================================== */
+
+.shop-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: var(--space-2xl);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.shop-header-row {
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-2xl);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--space-2xl);
+  align-items: flex-start;
+  width: 100%;
+}
+
+.account-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+  width: 100%;
+}
+
+/* ==========================================================================
    Mood Matcher (Fragrance Discovery)
    ========================================================================== */
+
 
 .mood-discovery-wrap {
   text-align: center;

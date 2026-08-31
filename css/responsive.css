@@ -96,19 +96,27 @@
 
   /* Shop Layout & Filter Trigger */
   .shop-layout {
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
+    display: block;
+    width: 100%;
+    gap: 0;
   }
 
   .shop-sidebar.desktop-only {
-    display: none;
+    display: none !important;
+  }
+
+  .shop-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .mobile-filter-trigger-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-md);
+    display: block;
+    margin-bottom: 1.5rem;
+    width: 100%;
   }
 
   /* PDP */
@@ -123,7 +131,8 @@
 
   /* Cart & Checkout */
   .cart-layout,
-  .checkout-layout {
+  .checkout-layout,
+  .account-grid {
     grid-template-columns: 1fr;
     gap: var(--space-xl);
   }
@@ -137,6 +146,7 @@
     gap: var(--space-xl);
   }
 }
+
 
 /* --------------------------------------------------------------------------
    3. Portrait Tablets & Large Mobiles (<= 768px)
@@ -176,13 +186,60 @@
   /* 2-Column Product Grids on Mobile for High Visual Density */
   .grid-4,
   .grid-3 {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-md);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+    width: 100%;
   }
 
   .grid-2 {
     grid-template-columns: 1fr;
     gap: var(--space-lg);
+  }
+
+  .product-card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .product-card-media {
+    width: 100%;
+    aspect-ratio: 4/5;
+    margin-bottom: 0.5rem;
+  }
+
+  .product-card-info {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .product-card-title {
+    font-size: 0.95rem;
+    line-height: 1.25;
+  }
+
+  .product-card-price-row {
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+  }
+
+  .product-card-actions {
+    position: static;
+    transform: none;
+    opacity: 1;
+    padding: 0.4rem 0 0;
+    gap: 0.35rem;
+  }
+
+  .product-card-quick-add {
+    padding: 0.45rem 0.5rem;
+    font-size: 0.65rem;
+    min-height: 36px;
+  }
+
+  .product-card-wish-btn {
+    width: 36px;
+    height: 36px;
   }
 
   .collection-tiles-grid {
@@ -294,16 +351,19 @@
   /* Product Card on Small Screens: 2 Columns with refined aspect ratio */
   .grid-4,
   .grid-3 {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-xs);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+    width: 100%;
   }
 
   .product-card-media {
-    margin-bottom: var(--space-xs);
+    margin-bottom: 0.4rem;
   }
 
   .product-card-title {
-    font-size: var(--text-md);
+    font-size: 0.88rem;
+    line-height: 1.2;
   }
 
   .product-card-price-row {
@@ -311,8 +371,14 @@
   }
 
   .product-card-quick-add {
-    font-size: 0.65rem;
-    padding: 0.5rem;
+    font-size: 0.62rem;
+    padding: 0.4rem 0.45rem;
+    min-height: 34px;
+  }
+
+  .product-card-wish-btn {
+    width: 34px;
+    height: 34px;
   }
 
   .size-btn-group {
@@ -338,6 +404,10 @@
 }
 
 @media (max-width: 360px) {
+  :root {
+    --container-gutter: 0.75rem;
+  }
+
   .brand-logo {
     font-size: 1.05rem;
   }
@@ -346,8 +416,10 @@
   .grid-3 {
     grid-template-columns: 1fr;
     gap: var(--space-md);
+    width: 100%;
   }
 }
+
 
 /* ==========================================================================
    Global Overflow Prevention Guard
