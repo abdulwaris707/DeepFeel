@@ -527,8 +527,8 @@ ul, ol {
 
 .hero-section {
   position: relative;
-  min-height: 82vh;
-  max-height: 840px;
+  min-height: calc(100vh - var(--header-height));
+  min-height: calc(100dvh - var(--header-height));
   display: flex;
   align-items: center;
   background-color: var(--bg-dark);
@@ -541,6 +541,7 @@ ul, ol {
   color: #FFFFFF;
   overflow: hidden;
 }
+
 
 .hero-content {
   max-width: 640px;

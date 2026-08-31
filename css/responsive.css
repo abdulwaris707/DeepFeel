@@ -173,12 +173,20 @@
     padding-bottom: var(--space-xl);
   }
 
-  /* Dedicated Stacked Hero Composition on Mobile */
+  /* Full-Screen Hero on Mobile */
   .hero-section {
-    min-height: auto;
-    padding: 4.5rem 0 3.5rem;
-    background-position: center right;
+    min-height: calc(100vh - var(--header-height));
+    min-height: calc(100dvh - var(--header-height));
+    padding: 3rem 0;
+    background-image: 
+      linear-gradient(to bottom, rgba(14, 14, 16, 0.82) 0%, rgba(14, 14, 16, 0.92) 100%),
+      url('https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1200&q=85');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
   }
+
 
   .hero-cta-group {
     flex-direction: column;
