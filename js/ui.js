@@ -396,31 +396,44 @@ const UI = {
           <!-- Core Navigation -->
           <div class="mobile-nav-section-title">Explore Fragrances</div>
           <nav class="mobile-nav-links">
-            <a href="index.html" class="mobile-nav-link">
-              <span>Home</span>
-              <span class="mobile-nav-arrow">&rarr;</span>
-            </a>
             <a href="shop.html" class="mobile-nav-link">
-              <span>Shop All Fragrances</span>
+              <span>SHOP</span>
               <span class="mobile-nav-arrow">&rarr;</span>
             </a>
             <a href="categories.html" class="mobile-nav-link">
-              <span>Collections</span>
+              <span>COLLECTIONS</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="shop.html?gender=Men" class="mobile-nav-link">
+              <span>MEN</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="shop.html?gender=Women" class="mobile-nav-link">
+              <span>WOMEN</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="shop.html?gender=Unisex" class="mobile-nav-link">
+              <span>UNISEX</span>
               <span class="mobile-nav-arrow">&rarr;</span>
             </a>
             <a href="shop.html?category=oud-collection" class="mobile-nav-link">
-              <span>The Oud Vault</span>
+              <span>OUD</span>
               <span class="mobile-nav-badge">Prestige</span>
             </a>
-            <a href="journal.html" class="mobile-nav-link">
-              <span>The Journal</span>
+            <a href="about.html" class="mobile-nav-link">
+              <span>ABOUT</span>
               <span class="mobile-nav-arrow">&rarr;</span>
             </a>
-            <a href="about.html" class="mobile-nav-link">
-              <span>About the Maison</span>
+            <a href="journal.html" class="mobile-nav-link">
+              <span>JOURNAL</span>
+              <span class="mobile-nav-arrow">&rarr;</span>
+            </a>
+            <a href="contact.html" class="mobile-nav-link">
+              <span>CONTACT</span>
               <span class="mobile-nav-arrow">&rarr;</span>
             </a>
           </nav>
+
 
           <!-- Patron Services -->
           <div class="mobile-nav-section-title" style="margin-top: 1.5rem;">Patron Services</div>
