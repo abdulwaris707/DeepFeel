@@ -108,7 +108,16 @@ const API = {
 
   async adminGetAuditLogs() {
     return this.request('/admin/audit-logs');
+  },
+
+  async changeEmail(currentPassword, newEmail, confirmEmail) {
+    return this.request('/admin/change-email', { method: 'POST', body: { currentPassword, newEmail, confirmEmail } });
+  },
+
+  async changePassword(currentPassword, newPassword, confirmPassword) {
+    return this.request('/admin/change-password', { method: 'POST', body: { currentPassword, newPassword, confirmPassword } });
   }
 };
 
 window.API = API;
+

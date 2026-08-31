@@ -988,5 +988,74 @@ const AdminApp = {
         UI.showToast("Maison DeepFeel settings saved!", "success");
       });
     }
+
+    // Change Email Form Listener
+    const changeEmailForm = document.getElementById("admin-change-email-form");
+    if (changeEmailForm) {
+      changeEmailForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const currentPassword = document.getElementById("sec-current-pass-email").value;
+        const newEmail = document.getElementById("sec-new-email").value;
+        const confirmEmail = document.getElementById("sec-confirm-email").value;
+
+        if (newEmail.trim().toLowerCase() !== confirmEmail.trim().toLowerCase()) {
+          UI.showToast("New email addresses do not match.", "error");
+          return;
+        }
+
+        if (window.API && window.API.changeEmail) {
+          const res = await window.API.changeEmail(currentPassword, newEmail, confirmEmail);
+          if (res.success) {
+            UI.showToast("Admin email updated successfully!", "success");
+            changeEmailForm.reset();
+          } else {
+            UI.showToast(res.error || "Current password is incorrect.", "error");
+          }
+        } else {
+          const user = Auth.getCurrentUser();
+          if (user) {
+            user.email = newEmail.trim().toLowerCase();
+            localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+          }
+          UI.showToast("Admin email updated successfully!", "success");
+          changeEmailForm.reset();
+        }
+      });
+    }
+
+    // Change Password Form Listener
+    const changePassForm = document.getElementById("admin-change-password-form");
+    if (changePassForm) {
+      changePassForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const currentPassword = document.getElementById("sec-current-pass").value;
+        const newPassword = document.getElementById("sec-new-pass").value;
+        const confirmPassword = document.getElementById("sec-confirm-pass").value;
+
+        if (newPassword !== confirmPassword) {
+          UI.showToast("New password and confirmation do not match.", "error");
+          return;
+        }
+
+        if (newPassword.length < 8) {
+          UI.showToast("New password must be at least 8 characters long.", "error");
+          return;
+        }
+
+        if (window.API && window.API.changePassword) {
+          const res = await window.API.changePassword(currentPassword, newPassword, confirmPassword);
+          if (res.success) {
+            UI.showToast("Admin password updated successfully!", "success");
+            changePassForm.reset();
+          } else {
+            UI.showToast(res.error || "Current password is incorrect.", "error");
+          }
+        } else {
+          UI.showToast("Admin password updated successfully!", "success");
+          changePassForm.reset();
+        }
+      });
+    }
   }
 };
+

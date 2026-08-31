@@ -144,10 +144,27 @@
                 <input type="url" id="prod-image-url" class="form-input" placeholder="https://images.unsplash.com/..." />
               </div>
 
+              <!-- Camera & Gallery Import Buttons -->
+              <div style="margin-bottom: 1rem;">
+                <label class="form-label" style="margin-bottom: 0.5rem;">Import Photo from Device</label>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <label for="prod-image-camera" class="btn btn-outline btn-sm" style="flex: 1; min-width: 120px; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.6rem;">
+                    📷 Camera
+                    <input type="file" id="prod-image-camera" accept="image/*" capture="environment" style="display: none;" onchange="if(this.files&&this.files[0]){const reader=new FileReader(); reader.onload=e=>{document.getElementById('prod-image-url').value=e.target.result; document.getElementById('prod-image-preview').innerHTML='<img src=\''+e.target.result+'\' alt=\'Preview\' />';}; reader.readAsDataURL(this.files[0]);}" />
+                  </label>
+
+                  <label for="prod-image-gallery" class="btn btn-outline btn-sm" style="flex: 1; min-width: 120px; text-align: center; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.6rem;">
+                    🖼️ Gallery
+                    <input type="file" id="prod-image-gallery" accept="image/*" style="display: none;" onchange="if(this.files&&this.files[0]){const reader=new FileReader(); reader.onload=e=>{document.getElementById('prod-image-url').value=e.target.result; document.getElementById('prod-image-preview').innerHTML='<img src=\''+e.target.result+'\' alt=\'Preview\' />';}; reader.readAsDataURL(this.files[0]);}" />
+                  </label>
+                </div>
+              </div>
+
               <div class="image-preview-box" id="prod-image-preview">
                 <span class="text-muted" style="font-size: 0.85rem;">Flacon image preview will appear here</span>
               </div>
             </div>
+
 
             <!-- Merchandising Badges -->
             <div class="admin-card">
