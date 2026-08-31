@@ -51,9 +51,23 @@ const AdminApp = {
   initLayout() {
     const toggle = document.querySelector(".admin-mobile-toggle");
     const sidebar = document.querySelector(".admin-sidebar");
+    
+    let backdrop = document.querySelector(".admin-sidebar-backdrop");
+    if (!backdrop) {
+      backdrop = document.createElement("div");
+      backdrop.className = "admin-sidebar-backdrop";
+      document.body.appendChild(backdrop);
+    }
+
     if (toggle && sidebar) {
       toggle.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
+        const isOpen = sidebar.classList.toggle("open");
+        backdrop.classList.toggle("active", isOpen);
+      });
+
+      backdrop.addEventListener("click", () => {
+        sidebar.classList.remove("open");
+        backdrop.classList.remove("active");
       });
     }
 

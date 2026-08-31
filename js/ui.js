@@ -547,6 +547,47 @@ const UI = {
   },
 
   // ----------------------------------------------------
+  // ----------------------------------------------------
+  // MOBILE FILTER DRAWER (SHOP CATALOG)
+  // ----------------------------------------------------
+  initFilterDrawer() {
+    const trigger = document.getElementById("mobile-filter-trigger");
+    const overlay = document.getElementById("filter-drawer-overlay");
+    const closeBtn = document.getElementById("filter-drawer-close");
+    const applyBtn = document.getElementById("filter-drawer-apply");
+
+    if (trigger && overlay) {
+      trigger.addEventListener("click", () => {
+        overlay.classList.add("active");
+        document.body.classList.add("modal-open");
+      });
+    }
+
+    if (closeBtn && overlay) {
+      closeBtn.addEventListener("click", () => {
+        overlay.classList.remove("active");
+        document.body.classList.remove("modal-open");
+      });
+    }
+
+    if (applyBtn && overlay) {
+      applyBtn.addEventListener("click", () => {
+        overlay.classList.remove("active");
+        document.body.classList.remove("modal-open");
+      });
+    }
+
+    if (overlay) {
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove("active");
+          document.body.classList.remove("modal-open");
+        }
+      });
+    }
+  },
+
+  // ----------------------------------------------------
   // GLOBAL EVENT DELEGATION
   // ----------------------------------------------------
   initGlobalEvents() {
@@ -593,6 +634,11 @@ const UI = {
           mobileMenu.classList.remove("active");
           document.body.classList.remove("modal-open");
         }
+        const filterOverlay = document.getElementById("filter-drawer-overlay");
+        if (filterOverlay && filterOverlay.classList.contains("active")) {
+          filterOverlay.classList.remove("active");
+          document.body.classList.remove("modal-open");
+        }
       }
     });
 
@@ -613,8 +659,10 @@ const UI = {
     this.initCartDrawer();
     this.initMobileMenu();
     this.initSearchOverlay();
+    this.initFilterDrawer();
     this.initGlobalEvents();
   }
 };
 
 document.addEventListener("DOMContentLoaded", () => UI.init());
+

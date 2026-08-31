@@ -70,18 +70,18 @@
     <div class="container">
       
       <!-- Catalog Heading -->
-      <div style="border-bottom: 1px solid var(--border-light); padding-bottom: 2.5rem; margin-bottom: 3rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem;">
+      <div style="border-bottom: 1px solid var(--border-light); padding-bottom: 2rem; margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1.5rem;">
         <div>
           <span class="editorial-tagline">CATALOG</span>
-          <h1 class="editorial-heading-lg" style="font-size: 2.8rem;">SHOP ALL FRAGRANCES</h1>
-          <p class="editorial-lead" style="font-size: 1.05rem;">"Explore the complete DeepFeel collection."</p>
+          <h1 class="editorial-heading-lg" style="font-size: var(--text-3xl);">SHOP ALL FRAGRANCES</h1>
+          <p class="editorial-lead" style="font-size: var(--text-base);">"Explore the complete DeepFeel collection."</p>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
           <span id="shop-results-count" class="text-muted" style="font-size: 0.85rem;"></span>
           <div style="display: flex; align-items: center; gap: 0.5rem;">
-            <label for="shop-sort-select" style="font-size: 0.82rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted);">Sort:</label>
-            <select id="shop-sort-select" style="padding: 0.5rem 0.8rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: transparent; font-size: 0.85rem; outline: none;">
+            <label for="shop-sort-select" style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Sort:</label>
+            <select id="shop-sort-select" style="padding: 0.5rem 0.8rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: transparent; font-size: 0.85rem; outline: none; min-height: 40px;">
               <option value="featured">Featured</option>
               <option value="newest">Newest</option>
               <option value="bestseller">Best Selling</option>
@@ -92,11 +92,29 @@
         </div>
       </div>
 
+      <!-- Mobile Filter & Sort Trigger Bar -->
+      <div class="mobile-filter-trigger-bar">
+        <button type="button" id="mobile-filter-trigger" class="btn btn-outline btn-full" style="display: flex; align-items: center; justify-content: center; gap: 0.6rem;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="4" y1="21" x2="4" y2="14"></line>
+            <line x1="4" y1="10" x2="4" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12" y2="3"></line>
+            <line x1="20" y1="21" x2="20" y2="16"></line>
+            <line x1="20" y1="12" x2="20" y2="3"></line>
+            <line x1="1" y1="14" x2="7" y2="14"></line>
+            <line x1="9" y1="8" x2="15" y2="8"></line>
+            <line x1="17" y1="16" x2="23" y2="16"></line>
+          </svg>
+          FILTER & SORT FRAGRANCES
+        </button>
+      </div>
+
       <!-- Shop Layout: Filter Sidebar + Products Grid -->
       <div class="shop-layout" style="display: grid; grid-template-columns: 240px 1fr; gap: 3.5rem;">
         
-        <!-- Sticky Filter Sidebar -->
-        <aside class="shop-sidebar">
+        <!-- Sticky Filter Sidebar (Desktop) -->
+        <aside class="shop-sidebar desktop-only">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
             <h3 style="font-family: var(--font-sans); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;">Filters</h3>
             <button type="button" id="reset-filters-btn" class="btn-ghost" style="font-size: 0.78rem; padding: 0; text-decoration: underline;">Reset All</button>
@@ -105,7 +123,7 @@
           <!-- Collection Dropdown -->
           <div style="margin-bottom: 2rem;">
             <label class="editorial-tagline" style="margin-bottom: 0.5rem;">Collection</label>
-            <select id="shop-category-filter" style="width: 100%; padding: 0.6rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); background: transparent; font-size: 0.85rem;">
+            <select id="shop-category-filter" class="form-select" style="padding: 0.6rem; font-size: 0.85rem; min-height: 42px;">
               <option value="all">All Collections</option>
             </select>
           </div>
@@ -114,10 +132,10 @@
           <div style="margin-bottom: 2rem;">
             <label class="editorial-tagline" style="margin-bottom: 0.5rem;">Gender</label>
             <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem;">
-              <label><input type="radio" name="gender-filter" value="all" checked /> All Fragrances</label>
-              <label><input type="radio" name="gender-filter" value="Men" /> Men</label>
-              <label><input type="radio" name="gender-filter" value="Women" /> Women</label>
-              <label><input type="radio" name="gender-filter" value="Unisex" /> Unisex</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="gender-filter" value="all" checked /> All Fragrances</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="gender-filter" value="Men" /> Men</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="gender-filter" value="Women" /> Women</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="gender-filter" value="Unisex" /> Unisex</label>
             </div>
           </div>
 
@@ -125,15 +143,15 @@
           <div style="margin-bottom: 2rem;">
             <label class="editorial-tagline" style="margin-bottom: 0.5rem;">Fragrance Family</label>
             <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem;">
-              <label><input type="radio" name="family-filter" value="all" checked /> All Families</label>
-              <label><input type="radio" name="family-filter" value="Woody" /> Woody</label>
-              <label><input type="radio" name="family-filter" value="Floral" /> Floral</label>
-              <label><input type="radio" name="family-filter" value="Oriental" /> Oriental & Oud</label>
-              <label><input type="radio" name="family-filter" value="Amber" /> Amber</label>
-              <label><input type="radio" name="family-filter" value="Fresh" /> Fresh</label>
-              <label><input type="radio" name="family-filter" value="Citrus" /> Citrus</label>
-              <label><input type="radio" name="family-filter" value="Gourmand" /> Gourmand</label>
-              <label><input type="radio" name="family-filter" value="Musky" /> Musky</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="family-filter" value="all" checked /> All Families</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="family-filter" value="Woody" /> Woody</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="family-filter" value="Floral" /> Floral</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="family-filter" value="Oriental" /> Oriental & Oud</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="family-filter" value="Amber" /> Amber</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="family-filter" value="Fresh" /> Fresh</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="family-filter" value="Citrus" /> Citrus</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="family-filter" value="Gourmand" /> Gourmand</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="family-filter" value="Musky" /> Musky</label>
             </div>
           </div>
 
@@ -141,9 +159,9 @@
           <div style="margin-bottom: 2rem;">
             <label class="editorial-tagline" style="margin-bottom: 0.5rem;">Concentration</label>
             <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem;">
-              <label><input type="radio" name="concentration-filter" value="all" checked /> All Strengths</label>
-              <label><input type="radio" name="concentration-filter" value="Extrait de Parfum" /> Extrait de Parfum (30%)</label>
-              <label><input type="radio" name="concentration-filter" value="Eau de Parfum" /> Eau de Parfum (20%)</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="concentration-filter" value="all" checked /> All Strengths</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="concentration-filter" value="Extrait de Parfum" /> Extrait de Parfum (30%)</label>
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;"><input type="radio" name="concentration-filter" value="Eau de Parfum" /> Eau de Parfum (20%)</label>
             </div>
           </div>
 
@@ -153,18 +171,18 @@
               <label class="editorial-tagline" style="margin-bottom: 0;">Max Price</label>
               <strong id="price-range-val" style="font-size: 0.88rem; color: var(--accent-gold);">$400</strong>
             </div>
-            <input type="range" id="price-range-slider" min="50" max="400" step="10" value="400" style="width: 100%; accent-color: var(--accent-gold);" />
+            <input type="range" id="price-range-slider" min="50" max="400" step="10" value="400" style="width: 100%; accent-color: var(--accent-gold); height: 6px;" />
           </div>
 
           <!-- In Stock -->
           <div style="margin-bottom: 2rem;">
             <label style="font-size: 0.88rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-              <input type="checkbox" id="in-stock-only" /> In Stock Only
+              <input type="checkbox" id="in-stock-only" style="accent-color: var(--accent-gold); width: 16px; height: 16px;" /> In Stock Only
             </label>
           </div>
         </aside>
 
-        <!-- Product Cards Grid -->
+        <!-- Product Cards Grid (4 cols desktop, 3 cols laptop, 2 cols tablet/mobile) -->
         <div>
           <div class="grid-3" id="shop-products-grid">
             <!-- Populated dynamically by app.js -->
@@ -175,6 +193,45 @@
 
     </div>
   </main>
+
+  <!-- Mobile Off-Canvas Filter Drawer -->
+  <div class="filter-drawer-overlay" id="filter-drawer-overlay">
+    <div class="filter-drawer" role="dialog" aria-modal="true" aria-label="Filters">
+      <div class="filter-drawer-header">
+        <h3 style="font-family: var(--font-display); font-size: 1.4rem;">Filter Fragrances</h3>
+        <button type="button" id="filter-drawer-close" style="font-size: 1.8rem; line-height: 1; color: var(--text-muted);">&times;</button>
+      </div>
+
+      <div class="filter-drawer-body">
+        <!-- Replicated filters inside mobile drawer -->
+        <div style="margin-bottom: 1.5rem;">
+          <label class="editorial-tagline">Gender</label>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.92rem;">
+            <label style="display: flex; align-items: center; gap: 0.6rem;"><input type="radio" name="gender-filter" value="all" checked /> All Fragrances</label>
+            <label style="display: flex; align-items: center; gap: 0.6rem;"><input type="radio" name="gender-filter" value="Men" /> Men</label>
+            <label style="display: flex; align-items: center; gap: 0.6rem;"><input type="radio" name="gender-filter" value="Women" /> Women</label>
+            <label style="display: flex; align-items: center; gap: 0.6rem;"><input type="radio" name="gender-filter" value="Unisex" /> Unisex</label>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <label class="editorial-tagline">Fragrance Family</label>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.92rem;">
+            <label style="display: flex; align-items: center; gap: 0.6rem;"><input type="radio" name="family-filter" value="all" checked /> All Families</label>
+            <label style="display: flex; align-items: center; gap: 0.6rem;"><input type="radio" name="family-filter" value="Woody" /> Woody</label>
+            <label style="display: flex; align-items: center; gap: 0.6rem;"><input type="radio" name="family-filter" value="Floral" /> Floral</label>
+            <label style="display: flex; align-items: center; gap: 0.6rem;"><input type="radio" name="family-filter" value="Oriental" /> Oriental & Oud</label>
+            <label style="display: flex; align-items: center; gap: 0.6rem;"><input type="radio" name="family-filter" value="Amber" /> Amber</label>
+            <label style="display: flex; align-items: center; gap: 0.6rem;"><input type="radio" name="family-filter" value="Fresh" /> Fresh</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-drawer-footer">
+        <button type="button" id="filter-drawer-apply" class="btn btn-primary btn-full btn-lg">Apply Filters</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Footer -->
   <footer class="site-footer">

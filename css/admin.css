@@ -26,8 +26,24 @@ body.admin-body {
 }
 
 /* ----------------------------------------------------
-   Admin Sidebar
+   Admin Sidebar & Backdrop
    ---------------------------------------------------- */
+.admin-sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(14, 14, 16, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-smooth);
+}
+
+.admin-sidebar-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
 .admin-sidebar {
   width: var(--admin-sidebar-width);
   background-color: var(--admin-sidebar-bg);
@@ -97,6 +113,7 @@ body.admin-body {
   border-radius: var(--radius-xs);
   transition: all var(--transition-fast);
   position: relative;
+  min-height: 44px;
 }
 
 .admin-nav-item svg {
@@ -171,6 +188,11 @@ body.admin-body {
 
 .admin-mobile-toggle {
   display: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
 }
 
 .admin-page-title {
@@ -212,10 +234,10 @@ body.admin-body {
 }
 
 .metric-label {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--text-muted);
 }
 
@@ -299,7 +321,7 @@ body.admin-body {
 }
 
 /* ----------------------------------------------------
-   Admin Data Tables
+   Admin Data Tables (Responsive Horizontal Scrolling)
    ---------------------------------------------------- */
 .admin-card {
   background-color: var(--admin-surface);
@@ -312,7 +334,9 @@ body.admin-body {
 
 .admin-table-wrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   width: 100%;
+  margin-bottom: 0.5rem;
 }
 
 .admin-table {
@@ -320,6 +344,7 @@ body.admin-body {
   border-collapse: collapse;
   text-align: left;
   font-size: 0.88rem;
+  min-width: 650px; /* Ensures clean layout with scroll on small devices */
 }
 
 .admin-table th {
@@ -357,6 +382,7 @@ body.admin-body {
   object-fit: cover;
   border-radius: var(--radius-xs);
   background-color: var(--bg-secondary);
+  flex-shrink: 0;
 }
 
 .table-product-name {
@@ -429,54 +455,13 @@ body.admin-body {
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
+  min-height: 28px;
 }
 
 .stock-adjust-btn:hover {
   background: var(--admin-accent);
   color: #FFFFFF;
   border-color: var(--admin-accent);
-}
-
-.switch-toggle {
-  position: relative;
-  display: inline-block;
-  width: 38px;
-  height: 22px;
-}
-
-.switch-toggle input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.switch-slider {
-  position: absolute;
-  cursor: pointer;
-  inset: 0;
-  background-color: #D4D4D8;
-  border-radius: 22px;
-  transition: 0.25s;
-}
-
-.switch-slider::before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  border-radius: 50%;
-  transition: 0.25s;
-}
-
-.switch-toggle input:checked + .switch-slider {
-  background-color: var(--admin-accent);
-}
-
-.switch-toggle input:checked + .switch-slider::before {
-  transform: translateX(16px);
 }
 
 /* ----------------------------------------------------
@@ -486,52 +471,6 @@ body.admin-body {
   display: grid;
   grid-template-columns: 1.8fr 1fr;
   gap: 2rem;
-}
-
-.form-group {
-  margin-bottom: 1.3rem;
-}
-
-.form-label {
-  display: block;
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-secondary);
-  margin-bottom: 0.4rem;
-}
-
-.form-input,
-.form-select,
-.form-textarea {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--admin-border);
-  border-radius: var(--radius-xs);
-  background-color: var(--admin-surface);
-  color: var(--text-primary);
-  font-size: 0.92rem;
-  outline: none;
-  transition: border-color var(--transition-fast);
-}
-
-.form-input:focus,
-.form-select:focus,
-.form-textarea:focus {
-  border-color: var(--admin-accent);
-}
-
-.form-grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-}
-
-.form-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
 }
 
 .image-preview-box {
@@ -554,12 +493,13 @@ body.admin-body {
 }
 
 /* ----------------------------------------------------
-   Admin Responsive
+   Admin Responsive Rules
    ---------------------------------------------------- */
 @media (max-width: 992px) {
   .admin-sidebar {
     position: fixed;
     transform: translateX(-100%);
+    z-index: 110;
   }
 
   .admin-sidebar.open {
@@ -567,7 +507,7 @@ body.admin-body {
   }
 
   .admin-mobile-toggle {
-    display: block;
+    display: flex;
   }
 
   .metrics-grid {
@@ -590,5 +530,9 @@ body.admin-body {
 
   .admin-content {
     padding: 1.25rem;
+  }
+
+  .admin-topbar {
+    padding: 0 1.25rem;
   }
 }
