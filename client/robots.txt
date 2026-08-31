@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /admin
+Disallow: /api/
+Disallow: /checkout.html
+Disallow: /order-confirmation.html
+Disallow: /account.html
+
+Sitemap: https://deepfeel.pk/sitemap.xml

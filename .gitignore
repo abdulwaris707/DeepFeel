@@ -2,3 +2,10 @@
 Thumbs.db
 node_modules/
 .vercel/
+.env
+*.env
+server/.env
+*.log
+logs/
+.system_generated/
+

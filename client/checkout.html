@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — DEEPFEEL</title>
+  <meta name="description" content="Securely complete your luxury fragrance acquisition with encrypted checkout and concierge priority dispatch." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <!-- Minimal Header -->
+  <header class="site-header" style="border-bottom: 1px solid var(--border-light);">
+    <div class="container header-container" style="grid-template-columns: 1fr auto;">
+      <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
+      <a href="cart.html" class="link-editorial">&larr; Return to Bag</a>
+    </div>
+  </header>
+
+  <main class="section" style="padding-top: 3.5rem;">
+    <div class="container">
+      
+      <div class="checkout-layout">
+        
+        <!-- Left: Form Steps -->
+        <div>
+          <form id="checkout-form">
+            
+            <!-- STEP 01: Contact & Identification -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-xs); padding: 2.2rem; margin-bottom: 2rem;">
+              <span class="editorial-tagline">STEP 01</span>
+              <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.2rem;">Patron Details & Email Delivery</h2>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="first-name">First Name *</label>
+                  <input type="text" id="first-name" class="form-input" placeholder="e.g. Farhan" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="last-name">Last Name *</label>
+                  <input type="text" id="last-name" class="form-input" placeholder="e.g. Tariq" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="email">Email Address (Order Summary & Invoice will be sent here) *</label>
+                <input type="email" id="email" class="form-input" placeholder="e.g. farhan.tariq@gmail.com" required />
+                <span class="form-help">A detailed PDF-style receipt & tracking number will be dispatched to this inbox upon order confirmation.</span>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="phone">WhatsApp / Mobile Contact (for Courier Rider) *</label>
+                <input type="tel" id="phone" class="form-input" placeholder="e.g. 0300 8472910 or +92 300 8472910" required />
+              </div>
+            </div>
+
+            <!-- STEP 02: Shipping Destination in Pakistan -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-xs); padding: 2.2rem; margin-bottom: 2rem;">
+              <span class="editorial-tagline">STEP 02</span>
+              <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.2rem;">Delivery Residence Across Pakistan</h2>
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="city">Destination City *</label>
+                  <select id="city" class="form-select" required>
+                    <option value="">Select City in Pakistan...</option>
+                    <option value="Karachi" selected>Karachi</option>
+                    <option value="Lahore">Lahore</option>
+                    <option value="Islamabad">Islamabad</option>
+                    <option value="Rawalpindi">Rawalpindi</option>
+                    <option value="Faisalabad">Faisalabad</option>
+                    <option value="Peshawar">Peshawar</option>
+                    <option value="Multan">Multan</option>
+                    <option value="Sialkot">Sialkot</option>
+                    <option value="Quetta">Quetta</option>
+                    <option value="Gujranwala">Gujranwala</option>
+                    <option value="Hyderabad">Hyderabad</option>
+                    <option value="Bahawalpur">Bahawalpur</option>
+                    <option value="Abbottabad">Abbottabad</option>
+                    <option value="Sargodha">Sargodha</option>
+                    <option value="Sukkur">Sukkur</option>
+                    <option value="Mardan">Mardan</option>
+                    <option value="Gujrat">Gujrat</option>
+                    <option value="Kasur">Kasur</option>
+                    <option value="Jhelum">Jhelum</option>
+                    <option value="Wah Cantt">Wah Cantt</option>
+                    <option value="Sheikhupura">Sheikhupura</option>
+                    <option value="Rahim Yar Khan">Rahim Yar Khan</option>
+                    <option value="Other">Other City / District</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="zip">Postal / Area Code (Optional)</label>
+                  <input type="text" id="zip" class="form-input" placeholder="e.g. 54000" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="address">Full Street Address (House/Bungalow/Flat, Street, Sector/Phase) *</label>
+                <input type="text" id="address" class="form-input" placeholder="e.g. Bungalow 42-A, Street 7, Sector Y, Phase 5 DHA" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="landmark">Nearest Landmark / Gate Instructions (Optional)</label>
+                <input type="text" id="landmark" class="form-input" placeholder="e.g. Near Jalal Sons / Next to Askari Bank" />
+              </div>
+            </div>
+
+            <!-- STEP 03: Pakistani Payment Method Selection -->
+            <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-xs); padding: 2.2rem; margin-bottom: 2.5rem;">
+              <span class="editorial-tagline">STEP 03</span>
+              <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.2rem;">Payment Method</h2>
+
+              <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+                
+                <!-- Cash on Delivery (COD) -->
+                <label class="payment-method-card" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.2rem; border: 1px solid var(--border-medium); border-radius: var(--radius-xs); cursor: pointer; background: var(--bg-primary);">
+                  <input type="radio" name="payment-method" value="Cash on Delivery (COD)" checked style="margin-top: 0.3rem;" />
+                  <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+                      <strong style="font-size: 1rem; color: var(--text-primary);">Cash on Delivery (COD)</strong>
+                      <span style="font-size: 0.72rem; font-weight: 700; color: #166534; background: #DCFCE7; padding: 0.2rem 0.6rem; border-radius: 4px;">MOST POPULAR</span>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0;">Pay in cash to courier rider (TCS / Leopard / PostEx) upon receiving the parcel at your doorstep.</p>
+                  </div>
+                </label>
+
+                <!-- Easypaisa -->
+                <label class="payment-method-card" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.2rem; border: 1px solid var(--border-light); border-radius: var(--radius-xs); cursor: pointer; background: var(--bg-primary);">
+                  <input type="radio" name="payment-method" value="Easypaisa Mobile Account" style="margin-top: 0.3rem;" />
+                  <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+                      <strong style="font-size: 1rem; color: var(--text-primary);">Easypaisa Mobile Wallet / QR</strong>
+                      <span style="font-size: 0.72rem; font-weight: 700; color: #047857; background: #D1FAE5; padding: 0.2rem 0.6rem; border-radius: 4px;">INSTANT TRANSFER</span>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0;">Transfer order amount to our verified Easypaisa Business Account.</p>
+                  </div>
+                </label>
+
+                <!-- Easypaisa Instructions Box (Revealed when selected) -->
+                <div id="easypaisa-fields" style="display: none; background: #F0FDF4; border: 1px solid #BBF7D0; padding: 1.2rem; border-radius: var(--radius-xs); margin-left: 2rem;">
+                  <div style="font-size: 0.85rem; color: #166534; line-height: 1.6; margin-bottom: 1rem;">
+                    <strong>Easypaisa Account Title:</strong> Maison DeepFeel (Pvt) Ltd<br>
+                    <strong>Easypaisa Account Number:</strong> <span style="font-size: 1.05rem; font-weight: 700; letter-spacing: 0.05em;">0300-1234567</span><br>
+                    <strong>Till ID:</strong> 882910
+                  </div>
+                  <div class="form-grid-2">
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label class="form-label" style="font-size: 0.78rem;">Sender Easypaisa Number</label>
+                      <input type="text" id="ep-sender" class="form-input" placeholder="03XX-XXXXXXX" />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label class="form-label" style="font-size: 0.78rem;">Transaction ID (TID / 10 digits)</label>
+                      <input type="text" id="ep-tid" class="form-input" placeholder="e.g. 9982310452" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- JazzCash -->
+                <label class="payment-method-card" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.2rem; border: 1px solid var(--border-light); border-radius: var(--radius-xs); cursor: pointer; background: var(--bg-primary);">
+                  <input type="radio" name="payment-method" value="JazzCash Mobile Account" style="margin-top: 0.3rem;" />
+                  <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+                      <strong style="font-size: 1rem; color: var(--text-primary);">JazzCash Mobile Wallet / QR</strong>
+                      <span style="font-size: 0.72rem; font-weight: 700; color: #B91C1C; background: #FEE2E2; padding: 0.2rem 0.6rem; border-radius: 4px;">FAST WALLET</span>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0;">Transfer order amount to our verified JazzCash Merchant Account.</p>
+                  </div>
+                </label>
+
+                <!-- JazzCash Instructions Box -->
+                <div id="jazzcash-fields" style="display: none; background: #FEF2F2; border: 1px solid #FECACA; padding: 1.2rem; border-radius: var(--radius-xs); margin-left: 2rem;">
+                  <div style="font-size: 0.85rem; color: #991B1B; line-height: 1.6; margin-bottom: 1rem;">
+                    <strong>JazzCash Account Title:</strong> Maison DeepFeel (Pvt) Ltd<br>
+                    <strong>JazzCash Account Number:</strong> <span style="font-size: 1.05rem; font-weight: 700; letter-spacing: 0.05em;">0301-7654321</span><br>
+                    <strong>Till ID:</strong> 449102
+                  </div>
+                  <div class="form-grid-2">
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label class="form-label" style="font-size: 0.78rem;">Sender JazzCash Number</label>
+                      <input type="text" id="jc-sender" class="form-input" placeholder="03XX-XXXXXXX" />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label class="form-label" style="font-size: 0.78rem;">Transaction ID (TID / 10 digits)</label>
+                      <input type="text" id="jc-tid" class="form-input" placeholder="e.g. 4482109821" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Credit / Debit Cards -->
+                <label class="payment-method-card" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.2rem; border: 1px solid var(--border-light); border-radius: var(--radius-xs); cursor: pointer; background: var(--bg-primary);">
+                  <input type="radio" name="payment-method" value="Credit / Debit Card" style="margin-top: 0.3rem;" />
+                  <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+                      <strong style="font-size: 1rem; color: var(--text-primary);">Credit / Debit Card (Visa, Mastercard, PayPak)</strong>
+                      <span style="font-size: 0.72rem; font-weight: 700; color: #1E40AF; background: #DBEAFE; padding: 0.2rem 0.6rem; border-radius: 4px;">256-BIT SECURE</span>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0;">Direct encrypted authorization via Pakistani banking gateway.</p>
+                  </div>
+                </label>
+
+                <!-- Card Details Box -->
+                <div id="card-fields" style="display: none; background: var(--bg-surface); border: 1px solid var(--border-medium); padding: 1.2rem; border-radius: var(--radius-xs); margin-left: 2rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="card-num">Card Number *</label>
+                    <input type="text" id="card-num" class="form-input" placeholder="4242 •••• •••• 4242" value="4242 •••• •••• 4242" />
+                  </div>
+                  <div class="form-grid-2">
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label class="form-label">Expiry</label>
+                      <input type="text" class="form-input" placeholder="MM/YY" value="12/28" />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                      <label class="form-label">CVC / CVV</label>
+                      <input type="text" class="form-input" placeholder="CVC" value="888" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Direct Bank Transfer / Raast -->
+                <label class="payment-method-card" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.2rem; border: 1px solid var(--border-light); border-radius: var(--radius-xs); cursor: pointer; background: var(--bg-primary);">
+                  <input type="radio" name="payment-method" value="Direct Bank Transfer (IBFT / Raast)" style="margin-top: 0.3rem;" />
+                  <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+                      <strong style="font-size: 1rem; color: var(--text-primary);">Direct Bank Transfer (IBFT / Raast P2P)</strong>
+                      <span style="font-size: 0.72rem; font-weight: 700; color: #4B5563; background: #F3F4F6; padding: 0.2rem 0.6rem; border-radius: 4px;">RAAST / IBFT</span>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0;">Online inter-bank funds transfer from any Pakistani bank (Meezan, Alfalah, HBL, UBL, etc.).</p>
+                  </div>
+                </label>
+
+                <!-- Bank Details Box -->
+                <div id="bank-fields" style="display: none; background: #F9FAFB; border: 1px solid var(--border-medium); padding: 1.2rem; border-radius: var(--radius-xs); margin-left: 2rem;">
+                  <div style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;">
+                    <strong>Bank Name:</strong> Meezan Bank Ltd (Islamic Banking)<br>
+                    <strong>Account Title:</strong> Maison DeepFeel Fragrances (Pvt) Ltd<br>
+                    <strong>IBAN:</strong> <span style="font-family: monospace; font-weight: 700;">PK82MEZN0001234567890123</span><br>
+                    <strong>Raast ID / Alias:</strong> <span style="font-weight: 700; color: var(--accent-gold);">03001234567</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Submit CTA -->
+            <button type="submit" class="btn btn-primary btn-full btn-lg" style="height: 56px; font-size: 1rem; letter-spacing: 0.12em;">
+              PLACE ORDER & DISPATCH EMAIL RECEIPT &rarr;
+            </button>
+            <div style="text-align: center; margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted);">
+              🔒 100% Authentic Handcrafted Extraits • Sealed Luxury Presentation Flacon
+            </div>
+          </form>
+        </div>
+
+        <!-- Right: Comprehensive Order Summary -->
+        <div>
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-xs); padding: 2.2rem; position: sticky; top: 110px;">
+            <h3 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1.2rem;">Order Summary</h3>
+            
+            <!-- Items in Cart -->
+            <div id="checkout-items-summary" style="margin-bottom: 1.5rem; max-height: 280px; overflow-y: auto; padding-right: 0.25rem;">
+              <!-- Inserted dynamically by app.js -->
+            </div>
+
+            <!-- Promo Code Form -->
+            <div style="margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--border-light);">
+              <label class="form-label" for="checkout-coupon" style="font-size: 0.78rem;">Have a Promo / Voucher Code?</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="checkout-coupon" class="form-input" placeholder="e.g. WELCOME10, EID20" style="text-transform: uppercase;" />
+                <button type="button" class="btn btn-outline btn-sm" id="chk-apply-coupon" style="white-space: nowrap; padding: 0 1rem;">Apply</button>
+              </div>
+              <div id="chk-coupon-msg" style="font-size: 0.78rem; margin-top: 0.4rem;"></div>
+            </div>
+
+            <!-- Financial Breakdown -->
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem; font-size: 0.95rem;">
+                <span>Subtotal</span>
+                <strong id="chk-subtotal">Rs. 0</strong>
+              </div>
+              
+              <div id="chk-discount-row" style="display: none; justify-content: space-between; margin-bottom: 0.6rem; font-size: 0.95rem; color: #166534;">
+                <span>Voucher Discount</span>
+                <strong id="chk-discount">-Rs. 0</strong>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem; font-size: 0.95rem;">
+                <span>Delivery (TCS Express)</span>
+                <span id="chk-shipping" style="font-weight: 600; color: #166534;">FREE</span>
+              </div>
+
+              <div style="border-top: 1px solid var(--border-light); margin-top: 1rem; padding-top: 1rem; display: flex; justify-content: space-between; align-items: baseline;">
+                <span style="font-weight: 600; font-size: 1.05rem;">Grand Total</span>
+                <strong id="chk-total" style="font-size: 1.65rem; color: var(--text-primary);">Rs. 0</strong>
+              </div>
+            </div>
+
+            <!-- Email Notification Badge -->
+            <div style="background: var(--bg-secondary); border-radius: var(--radius-xs); padding: 0.9rem 1rem; margin-top: 1.5rem; display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5;">
+              <span style="font-size: 1.1rem; color: var(--accent-gold);">✉️</span>
+              <div>
+                <strong>Instant Order Dispatch Email:</strong> A full itemized order confirmation with tracking link will be sent to your provided email address immediately.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+
+  <!-- Footer -->
+  <footer class="site-footer" style="padding: 2rem 0; text-align: center;">
+    <div class="container">
+      <p style="font-size: 0.82rem; color: var(--text-light-muted);">&copy; 2026 DEEPFEEL. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Details & Invoice — DeepFeel Admin</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <!-- Left Sidebar -->
+  <aside class="admin-sidebar" aria-label="Admin Navigation">
+    <div class="admin-brand">
+      <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
+      <span class="admin-badge-role">Admin</span>
+    </div>
+
+    <nav class="admin-nav">
+      <div class="admin-nav-section-title">Overview</div>
+      <a href="index.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        Dashboard
+      </a>
+
+      <div class="admin-nav-section-title">Catalog & Stock</div>
+      <a href="products.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        Products
+      </a>
+      <a href="inventory.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        Inventory
+      </a>
+      <a href="categories.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"></path></svg>
+        Categories
+      </a>
+
+      <div class="admin-nav-section-title">Sales & Fulfillment</div>
+      <a href="orders.html" class="admin-nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        Orders
+      </a>
+      <a href="customers.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        Customers
+      </a>
+      <a href="coupons.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        Coupons
+      </a>
+
+      <div class="admin-nav-section-title">Store Operations</div>
+      <a href="settings.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        Store Settings
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main View Area -->
+  <div class="admin-main">
+    
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+        <a href="orders.html" class="btn btn-ghost btn-sm">&larr; Back to Orders</a>
+        <h1 class="admin-page-title">Order Processing</h1>
+      </div>
+      <div class="admin-topbar-right">
+        <button type="button" class="btn btn-outline btn-sm" onclick="window.print()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+          Print Invoice
+        </button>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+        
+        <!-- Left: Order Items & Financials -->
+        <div>
+          <div class="admin-card">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+              <div>
+                <span class="section-subtitle" style="margin-bottom: 0.2rem;">Invoice Details</span>
+                <h2 style="font-size: 1.4rem;">Order <span id="detail-order-id">DF-00000</span></h2>
+                <span id="detail-order-date" class="text-muted" style="font-size: 0.85rem;">Date</span>
+              </div>
+              <div>
+                <label style="font-size: 0.85rem; font-weight: 600; margin-right: 0.5rem;">Workflow Status:</label>
+                <select id="detail-status-select" class="admin-select">
+                  <option value="Pending">Pending</option>
+                  <option value="Processing">Processing</option>
+                  <option value="Shipped">Shipped</option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Items Table -->
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Unit Price</th>
+                    <th>Qty</th>
+                    <th>Line Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody id="detail-items-table-body">
+                  <!-- Populated by admin.js -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Financial Summary -->
+            <div style="max-width: 320px; margin-left: auto; margin-top: 2rem;">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="detail-subtotal">Rs. 0</strong>
+              </div>
+              <div class="summary-row" style="color: var(--color-success);">
+                <span>Discount</span>
+                <strong id="detail-discount">-Rs. 0</strong>
+              </div>
+              <div class="summary-row">
+                <span>Shipping</span>
+                <span id="detail-shipping">Rs. 0</span>
+              </div>
+              <div class="summary-row">
+                <span>Tax</span>
+                <span id="detail-tax">Rs. 0</span>
+              </div>
+              <div class="summary-row total">
+                <span>Total</span>
+                <strong id="detail-total">Rs. 0</strong>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: Customer Info & Timeline Tracker -->
+        <div>
+          <!-- Customer Info -->
+          <div class="admin-card">
+            <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Customer & Shipping</h3>
+            
+            <div style="margin-bottom: 1rem;">
+              <span class="text-muted" style="font-size: 0.78rem; text-transform: uppercase; font-weight: 600; display: block;">Recipient</span>
+              <strong id="detail-cust-name">Elena Vance</strong>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+              <span class="text-muted" style="font-size: 0.78rem; text-transform: uppercase; font-weight: 600; display: block;">Email Address</span>
+              <span id="detail-cust-email">elena@example.com</span>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+              <span class="text-muted" style="font-size: 0.78rem; text-transform: uppercase; font-weight: 600; display: block;">Contact Phone</span>
+              <span id="detail-cust-phone">+1 (555) 000-0000</span>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+              <span class="text-muted" style="font-size: 0.78rem; text-transform: uppercase; font-weight: 600; display: block;">Delivery Address</span>
+              <p id="detail-shipping-address" style="font-size: 0.88rem;"></p>
+            </div>
+
+            <div style="border-top: 1px solid var(--admin-border); padding-top: 1rem; margin-top: 1rem;">
+              <span class="text-muted" style="font-size: 0.78rem; text-transform: uppercase; font-weight: 600; display: block;">Payment Method</span>
+              <strong id="detail-payment-method">Credit Card</strong>
+              <div id="detail-payment-status" style="font-size: 0.82rem; color: var(--color-success); font-weight: 600;">Paid</div>
+            </div>
+          </div>
+
+          <!-- Timeline Tracker -->
+          <div class="admin-card">
+            <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Order Audit Trail</h3>
+            <ul id="detail-timeline-list" style="padding-left: 0;">
+              <!-- Populated by admin.js -->
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/store.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

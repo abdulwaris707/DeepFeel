@@ -1,135 +1,156 @@
-# DeepFeel — Premium E-Commerce Website & Admin Suite
+# DeepFeel Haute Parfumerie — Production E-Commerce Platform & Admin Suite
 
-DeepFeel is a complete, production-quality e-commerce platform built strictly using **vanilla HTML5, CSS3, and modern ES6+ JavaScript**. It contains **zero external frontend frameworks or UI libraries** (no React, Next.js, Vue, Angular, Bootstrap, or Tailwind).
-
----
-
-## 🌟 Brand Philosophy & Visual Identity
-- **Visual Design**: Warm off-white / ivory background (`#FBF9F5`, `#F5F2EB`), deep charcoal typography (`#18181B`), sophisticated warm cognac/earth accent (`#8C6D53`), crisp white product cards, hairline borders (`#E7E2DA`), and minimal soft elevation shadows.
-- **Typography**: Clean, professional pairing using **DM Sans** and **Inter**.
-- **Tactile Comfort**: Organically curated lifestyle products (Merino wool throws, Kyoto ceramic pour-overs, capacitive brass desk lamps, Hinoki bath boards, Belgian stonewashed linen, and full-grain leather goods).
+DeepFeel is a full-stack, production-grade e-commerce application built with a **Node.js + Express.js REST API**, **PostgreSQL Database**, and a **Vanilla HTML5/CSS3/JavaScript Client**.
 
 ---
 
-## 📁 Project Structure
+## 🏗️ Production Architecture
 
 ```
 DeepFeel/
 │
-├── index.html                  # High-end Storefront Homepage
-├── shop.html                   # Catalog with multi-filter sidebar & sort controls
-├── product.html                # PDP with vanilla image zoom, variants, tabs & reviews
-├── categories.html             # Categories Hub & collections directory
-├── cart.html                   # Cart table, coupon validator, free shipping progress
-├── checkout.html               # Multi-section checkout with validation & card preview
-├── order-confirmation.html     # Dynamic receipt, timeline tracker, printable invoice
-├── wishlist.html               # Saved items gallery with 1-click move to bag
-├── about.html                  # Brand craftsmanship story & tenets
-├── contact.html                # Studio contact form with instant toast alerts
-├── faq.html                    # Interactive categorized accordion FAQs
-├── login.html                  # Customer authentication gateway + demo quick fill
-├── register.html               # Customer account creation
-├── account.html                # Customer profile & saved addresses editor
-├── orders.html                 # Customer order history table with status pills
-├── 404.html                    # Polished 404 error page
+├── client/                      # Customer & Admin Frontend App
+│   ├── index.html               # Storefront Homepage
+│   ├── shop.html                # Fragrance Catalog & Filtering
+│   ├── product.html             # Product Details & Image Zoom
+│   ├── cart.html                # Shopping Bag
+│   ├── checkout.html            # Pakistani Payment Gateways & Address
+│   ├── order-confirmation.html  # Tax Invoice Receipt & Email Confirmation
+│   ├── account.html             # Customer Profile
+│   ├── orders.html              # Patron Order Chronicles
+│   ├── wishlist.html            # Scent Vault
+│   ├── login.html               # Patron Sign In
+│   ├── register.html            # Patron Registration
+│   ├── admin/                   # Administrative Management Command Center
+│   │   ├── login.html           # Admin Authentication Gateway (Protected)
+│   │   ├── index.html           # Executive KPI Dashboard & Charts
+│   │   ├── products.html        # Product CRUD Manager
+│   │   ├── inventory.html       # Stock & Inventory Control
+│   │   ├── orders.html          # Order Logistics Workflow
+│   │   ├── order-details.html   # Order Detail & Packing Invoice
+│   │   ├── customers.html       # Customer Directory
+│   │   ├── categories.html      # Category Management
+│   │   ├── coupons.html         # Voucher Engine
+│   │   └── settings.html        # Atelier Store Settings
+│   ├── css/                     # Production Stylesheets
+│   ├── js/                      # Frontend JavaScript Controllers
+│   │   ├── api.js               # Unified REST API Client
+│   │   ├── auth.js              # Session & Role Management
+│   │   ├── cart.js              # Shopping Cart Engine
+│   │   ├── wishlist.js          # Saved Items Engine
+│   │   ├── ui.js                # Toast, Modal & UI Controls
+│   │   ├── app.js               # Storefront Controller
+│   │   └── admin.js             # Admin Suite Controller
+│   ├── robots.txt               # SEO Crawl Rules & Admin Protection
+│   └── sitemap.xml              # Storefront XML Sitemap
 │
-├── admin/
-│   ├── login.html              # Admin Authentication Gateway (Protected)
-│   ├── index.html              # Executive Dashboard (KPI metrics, SVG/Canvas charts)
-│   ├── products.html           # Product Catalog CRUD (Search, Filters, Switches)
-│   ├── product-form.html       # Add / Edit Product interface with image preview & SKU
-│   ├── inventory.html          # Inventory Command Center (Quick +/- stock adjusters)
-│   ├── orders.html             # Order processing with status dropdown workflow
-│   ├── order-details.html      # Order detail view & printable official receipt
-│   ├── customers.html          # Customer Directory with lifetime spending analytics
-│   ├── categories.html         # Category CRUD & live SKU count recalculation
-│   ├── coupons.html            # Coupon & discount engine
-│   └── settings.html           # Store settings (Tax, Shipping, Factory Data Reset)
+├── server/                      # Node.js + Express.js Backend API
+│   ├── src/
+│   │   ├── config/              # Environment (env.js) & DB Connection (db.js)
+│   │   ├── controllers/         # Auth, Product, Order, Admin, Coupon Controllers
+│   │   ├── middleware/          # Auth JWT/RBAC, Rate Limits, Security, Error Handler
+│   │   ├── routes/              # Express API Route Routers
+│   │   ├── services/            # DataStore Data Access & Audit Logger
+│   │   ├── utils/               # Password Hashing, JWT, Logger, Sanitization
+│   │   └── app.js               # Main Express Server
+│   ├── package.json
+│   └── .env.example
 │
-├── css/
-│   ├── style.css               # Core CSS variables, typography, cards, modals, toasts
-│   ├── responsive.css          # Breakpoints (Laptop, Tablet, Mobile) & Off-canvas drawer
-│   └── admin.css               # Admin Dashboard layout, data tables, and metrics
+├── database/                    # Database Resources
+│   ├── schema.sql               # PostgreSQL Schema Definition
+│   ├── migrations/              # SQL Database Migrations (001_init.sql)
+│   └── seed/                    # Seed Datasets
 │
-├── js/
-│   ├── data.js                 # 22 Curated lifestyle products, categories, seed orders
-│   ├── store.js                # Complete LocalStorage Data Access Layer & Store engine
-│   ├── auth.js                 # Session management, role guarding, demo fill
-│   ├── cart.js                 # Cart state machine, discount math, shipping thresholds
-│   ├── wishlist.js             # Wishlist state machine, heart sync, move to cart
-│   ├── ui.js                   # Toast engine, modal manager, live debounced search
-│   ├── app.js                  # Storefront page controllers
-│   └── admin.js                # Admin suite controller (charts, CRUD, inventory)
-│
+├── .gitignore
+├── package.json                 # Root Project Runner
 └── README.md
 ```
 
 ---
 
-## 🔑 Demo Credentials & Accounts
+## 🔒 Security Measures Implemented
 
-### Administrator Account (Full Admin Panel Access)
-- **Portal URL**: `admin/login.html` (or `admin/index.html`)
-- **Email**: `admin@deepfeel.com`
-- **Password**: `admin123`
-- *Note: One-click "Fill Admin Credentials" button is provided on the admin login page for instant access.*
+1. **Server-Side Authentication & Authorization**:
+   - Passwords hashed using **bcrypt** with 12 salt rounds.
+   - JWT session management via **HttpOnly SameSite cookies**.
+   - Server-side Role-Based Access Control (`requireAdmin`, `requireRole`) enforcing permissions on every sensitive API route.
+   - Admin routes block unauthorized customers returning `401 Unauthorized` / `403 Forbidden`.
 
-### Customer Demo Account
-- **Portal URL**: `login.html`
-- **Email**: `elena.vance@example.com`
-- **Password**: `password123`
-- *Note: One-click "Customer Demo" button is provided on the customer login page.*
+2. **Server-Side Price & Checkout Verification**:
+   - Cart order totals are recalculated on the backend directly from PostgreSQL product pricing and valid vouchers.
+   - Client-submitted unit prices or line totals are completely ignored.
 
----
+3. **IDOR / BOLA Prevention**:
+   - `GET /api/orders/:id` verifies ownership server-side. Customers can only view their own orders; admins can view all.
 
-## 🎟️ Active Promotional Coupon Codes
+4. **Security Headers & CORS**:
+   - Configured with `helmet` for CSP, HSTS, X-Content-Type-Options, Frame protection, and Referrer-Policy.
+   - Strict CORS origin validation preventing unauthorized domain access.
 
-You can apply any of the following valid codes during cart review or checkout:
+5. **Rate Limiting**:
+   - IP rate limiting on `/api/auth/login`, `/api/auth/register`, `/api/orders`, and admin endpoints.
 
-| Coupon Code | Discount | Minimum Order | Description |
-| :--- | :--- | :--- | :--- |
-| `WELCOME10` | 10% Off | $50.00 | 10% off on your first order over $50 |
-| `DEEPFEEL20` | 20% Off | $150.00 | 20% VIP discount on orders over $150 |
-| `COMFORT15` | $15.00 Off | $80.00 | $15 off on comfort essentials over $80 |
-| `FREESHIP` | $10.00 Off | $40.00 | Free shipping equivalent credit |
-
----
-
-## ✨ Features & Functionality
-
-### Storefront Experience
-1. **Interactive Global Search**: Live debounced product search overlay accessible from any page.
-2. **Product Quick View**: Modal dialog with multi-image thumbnail selector, color/size options, and instant add to bag.
-3. **Vanilla JS Image Zoom**: Smooth coordinate-based lens zoom on product detail pages without external plugins.
-4. **Live Cart & Free Shipping Tracker**: Real-time progress bar calculating how much more is needed to unlock free shipping.
-5. **Interactive Reviews System**: Verified reviews display and a working "Write a Review" form that recalculates product star averages in real time.
-6. **Robust Checkout Flow**: Complete form validation, live order summary, coupon calculation, payment method selection, and order creation.
-7. **Wishlist Sync**: Real-time heart animation state persisted in `localStorage` with 1-click move to bag.
-8. **Fully Responsive Mobile Drawer**: Off-canvas sliding navigation with touch-friendly controls and zero layout shift.
-
-### Admin Command Suite
-1. **Executive Dashboard**: Real-time KPI metric cards (Total Revenue, Orders, Products, Low Stock) and responsive Canvas-rendered charts.
-2. **Product Catalog CRUD**: Search by SKU or title, filter by category/stock, instant featured/bestseller toggle switches, and product deletion.
-3. **Product Editor**: Add or edit products with live image URL previews, automated slug/SKU handling, and threshold alerts.
-4. **Dedicated Inventory Hub**: Real-time inventory valuation summary and single-click stock adjusters (`-1`, `+5`, `Set Exact`).
-5. **Order Processing Workflow**: Track status transitions (`Pending` &rarr; `Processing` &rarr; `Shipped` &rarr; `Delivered` &rarr; `Cancelled`) with audit trails.
-6. **Printable Invoices**: Clean `@media print` layout for packing slips and official receipts.
-7. **Coupon Builder**: Manage percentage or dollar discounts, minimum order conditions, and usage counters.
-8. **Store Settings & Data Reset**: Configure tax rates, shipping rates, and reset demo data back to initial factory state.
+6. **SEO & Search Crawler Disallow**:
+   - `robots.txt` disallows `/admin/` and `/api/` indexing.
+   - `<meta name="robots" content="noindex, nofollow" />` applied to all administrative pages.
 
 ---
 
-## 🚀 How to Run
+## 🚀 Quick Start Guide
 
-Because DeepFeel uses standard web technologies with zero build steps, you can run it directly:
+### Prerequisites
+- Node.js (v18.0.0 or higher)
+- PostgreSQL (v14 or higher, optional for local test mode)
 
-1. Open `index.html` in any modern web browser (Chrome, Edge, Firefox, Safari).
-2. Or serve locally with any static file server:
-   ```bash
-   # Using Python:
-   python -m http.server 8000
-   
-   # Using Node (npx):
-   npx serve .
-   ```
-3. Navigate to `http://localhost:8000` to browse the storefront, or `http://localhost:8000/admin/` to open the Admin panel.
+### 1. Installation
+```bash
+git clone https://github.com/abdulwaris707/DeepFeel.git
+cd DeepFeel
+npm install
+```
+
+### 2. Environment Setup
+Copy `.env.example` to `server/.env`:
+```bash
+cp server/.env.example server/.env
+```
+
+Set your production secrets in `server/.env`:
+```env
+NODE_ENV=production
+PORT=5000
+DATABASE_URL=postgresql://deepfeel_user:password@localhost:5432/deepfeel_db
+JWT_SECRET=your_secure_jwt_secret_key_here
+INITIAL_ADMIN_EMAIL=admin@deepfeel.pk
+INITIAL_ADMIN_PASSWORD=AdminSecurePass2026!
+```
+
+### 3. Launching the Production Server
+```bash
+npm start
+```
+The server will start listening on `http://localhost:5000`.
+
+### 4. Admin Gateway Credentials
+- **URL**: `http://localhost:5000/admin/login.html`
+- **Email**: `admin@deepfeel.pk`
+- **Password**: `admin123` *(or your configured INITIAL_ADMIN_PASSWORD)*
+
+---
+
+## 🧪 Health & Security Verification
+To verify server health and security:
+```bash
+# Health Check Endpoint
+curl http://localhost:5000/api/health
+
+# Verify Admin Protection (Returns 401 Unauthorized)
+curl -i http://localhost:5000/api/admin/customers
+```
+
+---
+
+## 🌐 Production Hosting Recommendation
+- **Backend API**: Render, Railway, or Node VPS.
+- **Frontend**: Vercel, Netlify, or served directly via Nginx / Node static middleware.
+- **Database**: Managed PostgreSQL (Supabase, Neon, AWS RDS, Railway PostgreSQL).

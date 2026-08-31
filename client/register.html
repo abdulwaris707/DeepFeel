@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account — DEEPFEEL</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <header class="site-header" style="border-bottom: 1px solid var(--border-light);">
+    <div class="container header-container" style="grid-template-columns: 1fr auto;">
+      <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
+      <a href="shop.html" class="link-editorial">&larr; Back to Shop</a>
+    </div>
+  </header>
+
+  <main class="section" style="padding-top: 5rem; min-height: 75vh; display: flex; align-items: center;">
+    <div class="container" style="max-width: 440px;">
+      
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-xs); padding: 3rem 2.2rem;">
+        <div class="text-center" style="margin-bottom: 2rem;">
+          <span class="editorial-tagline">JOIN THE MAISON</span>
+          <h1 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 0.5rem;">Create Account</h1>
+          <p style="font-size: 0.88rem; color: var(--text-secondary);">Enjoy private fragrance invitations and order tracking.</p>
+        </div>
+
+        <form id="register-form">
+          <div class="form-group">
+            <label class="form-label" for="reg-name">Full Name</label>
+            <input type="text" id="reg-name" class="form-input" placeholder="Elena Vance" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email Address</label>
+            <input type="email" id="reg-email" class="form-input" placeholder="elena.vance@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="reg-password">Password</label>
+            <input type="password" id="reg-password" class="form-input" placeholder="••••••••" required />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top: 1rem;">
+            CREATE ACCOUNT &rarr;
+          </button>
+        </form>
+
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); text-align: center; font-size: 0.85rem; color: var(--text-secondary);">
+          Already have an account? <a href="login.html" style="color: var(--accent-gold); font-weight: 600; text-decoration: underline;">Sign In</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer" style="padding: 2rem 0; text-align: center;">
+    <div class="container">
+      <p style="font-size: 0.82rem; color: var(--text-light-muted);">&copy; 2026 DEEPFEEL. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById("register-form")?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("reg-name").value;
+      const email = document.getElementById("reg-email").value;
+      const pass = document.getElementById("reg-password").value;
+      const res = Auth.register({ name, email, password: pass });
+      if (res.success) {
+        UI.showToast("Account created. Welcome to DeepFeel.", "success");
+        setTimeout(() => { window.location.href = "account.html"; }, 800);
+      } else {
+        UI.showToast(res.message || "Registration error", "error");
+      }
+    });
+  </script>
+</body>
+</html>
