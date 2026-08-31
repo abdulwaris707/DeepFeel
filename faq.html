@@ -3,53 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Frequently Asked Questions — DeepFeel</title>
-  <meta name="description" content="Find answers regarding orders, shipping methods, 30-day restful trial, and natural material care." />
+  <title>Frequently Asked Questions — DeepFeel Parfumerie</title>
+  <meta name="description" content="Answers regarding our extrait de parfum concentrations, sample discovery sets, longevity, and worldwide delivery." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
-  <style>
-    .faq-accordion-item {
-      background-color: var(--bg-surface);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-md);
-      margin-bottom: 1rem;
-      overflow: hidden;
-      transition: all var(--transition-fast);
-    }
-    .faq-header {
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1.05rem;
-    }
-    .faq-header:hover {
-      background-color: var(--bg-surface-subtle);
-    }
-    .faq-icon {
-      font-size: 1.3rem;
-      transition: transform var(--transition-normal);
-    }
-    .faq-accordion-item.open .faq-icon {
-      transform: rotate(45deg);
-    }
-    .faq-body {
-      display: none;
-      padding: 0 1.5rem 1.5rem;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-    .faq-accordion-item.open .faq-body {
-      display: block;
-    }
-  </style>
 </head>
 <body>
 
-  <!-- Navigation Header -->
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="container announcement-content">
+      <span>Complimentary worldwide shipping on all orders over $100</span>
+      <a href="shop.html" class="announcement-link">Explore Fragrances &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Header -->
   <header class="site-header">
     <div class="container header-container">
       <button type="button" class="mobile-menu-toggle" aria-label="Toggle navigation menu">
@@ -64,10 +33,11 @@
 
       <nav class="desktop-nav">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="shop.html" class="nav-link">Shop</a>
-        <a href="categories.html" class="nav-link">Categories</a>
-        <a href="about.html" class="nav-link">About</a>
-        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="shop.html" class="nav-link">Fragrances</a>
+        <a href="categories.html" class="nav-link">Collections</a>
+        <a href="shop.html?category=oud-collection" class="nav-link">The Oud Vault</a>
+        <a href="about.html" class="nav-link">Maison Story</a>
+        <a href="contact.html" class="nav-link">Concierge</a>
       </nav>
 
       <div class="header-utilities">
@@ -104,102 +74,83 @@
     </div>
   </header>
 
-  <!-- Mobile Drawer -->
-  <div class="mobile-nav-drawer" id="mobile-nav-drawer">
-    <div class="mobile-drawer-overlay"></div>
-    <div class="mobile-drawer-panel">
-      <div class="mobile-drawer-header">
-        <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
-        <button type="button" class="mobile-drawer-close" aria-label="Close navigation">&times;</button>
-      </div>
-      <div class="mobile-drawer-links">
-        <a href="index.html" class="mobile-nav-link">Home</a>
-        <a href="shop.html" class="mobile-nav-link">Shop All Catalog</a>
-        <a href="categories.html" class="mobile-nav-link">Categories</a>
-        <a href="wishlist.html" class="mobile-nav-link">Saved Items (<span class="wishlist-count-badge">0</span>)</a>
-        <a href="cart.html" class="mobile-nav-link">Shopping Bag (<span class="cart-count-badge">0</span>)</a>
-        <a href="about.html" class="mobile-nav-link">Our Philosophy</a>
-        <a href="faq.html" class="mobile-nav-link">Help & FAQs</a>
-        <a href="contact.html" class="mobile-nav-link">Contact Studio</a>
-      </div>
-    </div>
-  </div>
-
   <main class="section">
-    <div class="container-narrow">
+    <div class="container" style="max-width: 840px;">
+      
       <div class="section-header text-center">
-        <span class="section-subtitle">Help Center</span>
-        <h1 class="section-title">Frequently Asked Questions</h1>
-        <p class="section-desc">Clear answers regarding shipping, care instructions, and our 30-day guarantee.</p>
+        <span class="section-subtitle">Client Inquiries</span>
+        <h1 class="section-title font-serif" style="font-size: 2.6rem;">Frequently Asked Questions</h1>
+        <p class="section-desc">Everything you need to know regarding our formulations, discovery sets, and delivery.</p>
       </div>
 
-      <!-- Shipping & Orders Group -->
-      <h2 style="font-size: 1.3rem; margin-top: 2.5rem; margin-bottom: 1.2rem;">Shipping & Delivery</h2>
+      <div class="faq-accordion">
+        
+        <div class="faq-item open">
+          <button type="button" class="faq-header">
+            <span>What is the difference between Extrait de Parfum and Eau de Parfum?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>
+              The difference lies in aromatic concentration. Standard Eau de Parfum contains 15%–20% perfume oils, while Maison DeepFeel Extrait de Parfum carries <strong>22% to 33% pure aromatic essences</strong>. This elevated concentration ensures deeper development of base notes (Oud, Amber, Sandalwood) and provides 12 to 16+ hours of projection.
+            </p>
+          </div>
+        </div>
 
-      <div class="faq-accordion-item open">
-        <div class="faq-header">
-          <span>How does complimentary carbon-neutral shipping work?</span>
-          <span class="faq-icon">+</span>
+        <div class="faq-item">
+          <button type="button" class="faq-header">
+            <span>How does the Discovery Set voucher work?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>
+              When you purchase our 5 x 10ml Maison Discovery Set ($85), you will automatically receive a $40 digital voucher code in the box. You can apply this code toward any full 50ml or 100ml flacon within 12 months.
+            </p>
+          </div>
         </div>
-        <div class="faq-body">
-          All orders over $100 automatically qualify for free standard shipping. We partner with verified carbon offset programs to neutralize 100% of the emissions generated from our studio to your doorstep.
+
+        <div class="faq-item">
+          <button type="button" class="faq-header">
+            <span>How should I apply my extrait for maximum sillage?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>
+              Because of our high natural oil concentration, 2 to 3 spritzes are sufficient. Spray directly on warm pulse points: the base of your neck, inner wrists, and behind your earlobes. Do not rub your wrists together, as friction destroys the delicate top-note molecules.
+            </p>
+          </div>
         </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-header">
+            <span>Are your agarwood (oud) oils ethically sourced?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>
+              Yes. We partner exclusively with sustainable, CITES-certified heritage plantations in Assam and Trat. For every harvested tree used in distillation, our partner plantations plant five new agarwood saplings.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-header">
+            <span>What is your return policy?</span>
+            <span class="faq-toggle-icon">+</span>
+          </button>
+          <div class="faq-body">
+            <p>
+              Each full-size flacon includes a matching 2ml trial vial. We invite you to test the 2ml vial first. If the scent does not suit your skin chemistry, return the unopened, cellophane-sealed 50ml or 100ml bottle within 30 days for a full refund.
+            </p>
+          </div>
+        </div>
+
       </div>
 
-      <div class="faq-accordion-item">
-        <div class="faq-header">
-          <span>How long will my order take to arrive?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-body">
-          Standard continental US delivery takes 3 to 5 business days from dispatch. Express priority courier delivery takes 1 to 2 business days. You will receive an email confirmation with active tracking once dispatched.
-        </div>
-      </div>
-
-      <!-- Returns & Guarantee Group -->
-      <h2 style="font-size: 1.3rem; margin-top: 2.5rem; margin-bottom: 1.2rem;">30-Day Restful At-Home Trial</h2>
-
-      <div class="faq-accordion-item">
-        <div class="faq-header">
-          <span>What is your 30-day return policy?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-body">
-          We want you to feel the difference in your everyday sanctuary. If any DeepFeel item does not meet your expectations, return it within 30 days of receipt in original unwashed condition for a prompt refund to your original payment method.
-        </div>
-      </div>
-
-      <div class="faq-accordion-item">
-        <div class="faq-header">
-          <span>How do I initiate an exchange or return?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-body">
-          Simply contact our client care team at support@deepfeel.com or use our Contact page with your Order Number (e.g. DF-84920). We will provide a pre-paid return shipping label.
-        </div>
-      </div>
-
-      <!-- Material & Care Group -->
-      <h2 style="font-size: 1.3rem; margin-top: 2.5rem; margin-bottom: 1.2rem;">Materials & Craft Care</h2>
-
-      <div class="faq-accordion-item">
-        <div class="faq-header">
-          <span>How do I care for the Merino Wool Weighted Throw?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-body">
-          Because pure merino wool possesses natural lanolin that resists odor and dust, weighted throws rarely need full washing. We recommend seasonal outdoor aeration in shade, spot cleaning with cold water and gentle wool detergent, or eco dry-cleaning.
-        </div>
-      </div>
-
-      <div class="faq-accordion-item">
-        <div class="faq-header">
-          <span>Are the ceramic pour-over sets dishwasher safe?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-body">
-          The ceramic dripper and borosilicate glass carafe are 100% dishwasher safe. Please remove the oiled American walnut wooden collar before washing to preserve the natural grain.
-        </div>
+      <div class="text-center" style="margin-top: 4rem; padding: 2.5rem; background: var(--bg-surface-subtle); border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+        <h3 class="font-serif" style="font-size: 1.6rem; margin-bottom: 0.5rem;">Still Have Questions?</h3>
+        <p class="text-secondary" style="font-size: 0.95rem; margin-bottom: 1.5rem;">Our private fragrance concierge is available 7 days a week for olfactory consultations.</p>
+        <a href="contact.html" class="btn btn-primary">Connect with Concierge &rarr;</a>
       </div>
 
     </div>
@@ -207,9 +158,49 @@
 
   <!-- Footer -->
   <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a href="index.html" class="brand-logo" style="margin-bottom: 1rem;">DEEP<span>FEEL</span></a>
+        <p class="footer-desc">
+          Haute parfumerie crafted with wild botanicals, aged ambers, and sustainable agarwoods. Scent that leaves a memory.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Fragrance Vault</h4>
+        <ul class="footer-links">
+          <li><a href="shop.html">All Extraits</a></li>
+          <li><a href="shop.html?category=signature-collection">Signature Collection</a></li>
+          <li><a href="shop.html?category=oud-collection">The Oud Collection</a></li>
+          <li><a href="shop.html?gender=men">For Him</a></li>
+          <li><a href="shop.html?gender=women">For Her</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Maison</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">Atelier Story</a></li>
+          <li><a href="faq.html">Sillage & Care FAQs</a></li>
+          <li><a href="contact.html">Concierge & Trade</a></li>
+          <li><a href="admin/login.html">Atelier Portal</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Concierge Atelier</h4>
+        <p class="footer-desc" style="font-size: 0.9rem; margin-bottom: 0.8rem;">
+          Maison DeepFeel<br>
+          1024 Hawthorne Blvd, Suite 400<br>
+          Portland, OR 97214
+        </p>
+        <span style="font-size: 0.88rem; color: var(--accent-primary); font-weight: 600;">concierge@deepfeel.com</span>
+      </div>
+    </div>
+
     <div class="container">
       <div class="footer-bottom">
-        <p>&copy; 2026 DeepFeel Living Co. All rights reserved.</p>
+        <p>&copy; 2026 Maison DeepFeel Co. All rights reserved.</p>
       </div>
     </div>
   </footer>

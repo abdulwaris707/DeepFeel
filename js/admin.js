@@ -1,6 +1,6 @@
 /**
  * DeepFeel - Admin Management Suite Controller
- * Powers executive dashboard charts, product CRUD, inventory manager, order workflows,
+ * Powers executive dashboard charts, perfume product CRUD, inventory manager, order workflows,
  * coupon manager, category manager, customer directory, and store settings.
  */
 
@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const AdminApp = {
   init() {
-    // Check if on admin login page or protected admin pages
     const path = window.location.pathname.toLowerCase();
     
     if (path.includes("admin/login.html") || path.endsWith("admin/login")) {
@@ -50,7 +49,6 @@ const AdminApp = {
   },
 
   initLayout() {
-    // Mobile sidebar toggle
     const toggle = document.querySelector(".admin-mobile-toggle");
     const sidebar = document.querySelector(".admin-sidebar");
     if (toggle && sidebar) {
@@ -59,7 +57,6 @@ const AdminApp = {
       });
     }
 
-    // Admin Logout
     const logoutBtn = document.getElementById("admin-logout-btn");
     if (logoutBtn) {
       logoutBtn.addEventListener("click", (e) => {
@@ -68,7 +65,6 @@ const AdminApp = {
       });
     }
 
-    // Low stock badge in sidebar
     const lowStockCount = Store.getProducts().filter(p => p.stock <= p.lowStockThreshold).length;
     const invBadge = document.getElementById("sidebar-low-stock-badge");
     if (invBadge && lowStockCount > 0) {
@@ -78,7 +74,7 @@ const AdminApp = {
   },
 
   // ----------------------------------------------------
-  // ADMIN LOGIN PAGE
+  // ADMIN LOGIN
   // ----------------------------------------------------
   initAdminLoginPage() {
     const form = document.getElementById("admin-login-form");
@@ -98,67 +94,72 @@ const AdminApp = {
 
         const res = Auth.login(email, password);
         if (res.success && res.user.role === "admin") {
-          UI.showToast("Admin credentials verified. Welcome to DeepFeel Command.", "success");
-          setTimeout(() => {
-            window.location.href = "index.html";
-          }, 450);
+          window.location.href = "index.html";
         } else {
-          UI.showToast("Invalid admin credentials. Use demo button above.", "error");
+          UI.showToast("Invalid admin credentials. Use admin@deepfeel.com / admin123", "error");
         }
       });
     }
   },
 
   // ----------------------------------------------------
-  // ADMIN DASHBOARD
+  // EXECUTIVE DASHBOARD
   // ----------------------------------------------------
   initDashboard() {
     const orders = Store.getOrders();
     const products = Store.getProducts();
-    const customers = Store.getCustomers();
+    const categories = Store.getCategories();
 
-    // 1. Calculate Metrics
+    // 1. KPI Metrics Calculation
     const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
-    const lowStockProducts = products.filter(p => p.stock <= p.lowStockThreshold);
+    const totalOrders = orders.length;
+    const activeProducts = products.length;
+    const lowStockCount = products.filter(p => p.stock <= p.lowStockThreshold).length;
 
     const revEl = document.getElementById("metric-revenue");
-    const ordEl = document.getElementById("metric-orders");
-    const prodEl = document.getElementById("metric-products");
-    const custEl = document.getElementById("metric-customers");
+    const ordersEl = document.getElementById("metric-orders");
+    const prodsEl = document.getElementById("metric-products");
     const lowStockEl = document.getElementById("metric-low-stock");
 
-    if (revEl) revEl.textContent = Store.formatCurrency(totalRevenue);
-    if (ordEl) ordEl.textContent = orders.length;
-    if (prodEl) prodEl.textContent = products.length;
-    if (custEl) custEl.textContent = customers.length;
-    if (lowStockEl) lowStockEl.textContent = lowStockProducts.length;
+    if (revEl) revEl.textContent = `$${totalRevenue.toFixed(2)}`;
+    if (ordersEl) ordersEl.textContent = totalOrders;
+    if (prodsEl) prodsEl.textContent = activeProducts;
+    if (lowStockEl) lowStockEl.textContent = lowStockCount;
 
-    // 2. Render Charts (Native HTML5 Canvas)
+    // 2. Render Revenue Canvas Chart
     this.renderRevenueChart();
-    this.renderSalesByCategoryChart();
 
-    // 3. Recent Orders Feed
-    const recentOrdersTable = document.getElementById("dashboard-recent-orders-body");
-    if (recentOrdersTable) {
-      recentOrdersTable.innerHTML = orders.slice(0, 5).map(o => `
-        <tr>
-          <td><strong>${o.id}</strong></td>
-          <td>${o.customer.name}</td>
-          <td>${Store.formatDate(o.createdAt)}</td>
-          <td><strong>${Store.formatCurrency(o.total)}</strong></td>
-          <td><span class="status-pill status-${o.status.toLowerCase()}">${o.status}</span></td>
-          <td><a href="order-details.html?id=${o.id}" class="btn btn-outline btn-sm">Manage</a></td>
-        </tr>
-      `).join("");
+    // 3. Render Olfactory Family Distribution Chart
+    this.renderCategoryChart();
+
+    // 4. Render Recent Orders Feed
+    const recentOrdersBody = document.getElementById("dashboard-recent-orders-body");
+    if (recentOrdersBody) {
+      const recent = orders.slice(0, 5);
+      if (recent.length === 0) {
+        recentOrdersBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted" style="padding:1.5rem;">No orders placed yet.</td></tr>`;
+      } else {
+        recentOrdersBody.innerHTML = recent.map(o => `
+          <tr>
+            <td><strong><a href="order-details.html?id=${o.id}">${o.id}</a></strong></td>
+            <td>${o.customer.name}</td>
+            <td>${new Date(o.createdAt).toLocaleDateString()}</td>
+            <td><strong>$${o.total.toFixed(2)}</strong></td>
+            <td><span class="status-pill status-${o.status.toLowerCase()}">${o.status}</span></td>
+            <td><a href="order-details.html?id=${o.id}" class="btn btn-outline btn-sm">Process &rarr;</a></td>
+          </tr>
+        `).join("");
+      }
     }
 
-    // 4. Low Stock Alert Table
-    const lowStockTable = document.getElementById("dashboard-low-stock-body");
-    if (lowStockTable) {
-      if (lowStockProducts.length === 0) {
-        lowStockTable.innerHTML = `<tr><td colspan="4" class="text-muted text-center" style="padding: 1.5rem;">All inventory levels are healthy!</td></tr>`;
+    // 5. Render Low Stock Action Card
+    const lowStockBody = document.getElementById("dashboard-low-stock-body");
+    if (lowStockBody) {
+      const lowStockItems = products.filter(p => p.stock <= p.lowStockThreshold).slice(0, 5);
+      if (lowStockItems.length === 0) {
+        lowStockBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted" style="padding:1.5rem;">All fragrance flacons sufficiently stocked.</td></tr>`;
       } else {
-        lowStockTable.innerHTML = lowStockProducts.slice(0, 5).map(p => `
+        lowStockBody.innerHTML = lowStockItems.map(p => `
           <tr>
             <td>
               <div class="table-product-cell">
@@ -169,10 +170,12 @@ const AdminApp = {
                 </div>
               </div>
             </td>
-            <td><strong style="color: ${p.stock === 0 ? 'var(--color-error)' : 'var(--color-warning)'}">${p.stock} units</strong></td>
-            <td>${p.lowStockThreshold} units</td>
+            <td><span style="color:var(--color-error); font-weight:700;">${p.stock}</span></td>
+            <td>${p.lowStockThreshold}</td>
             <td>
-              <button type="button" class="btn btn-primary btn-sm" onclick="AdminApp.quickRestock('${p.id}', 10)">+10 Restock</button>
+              <button type="button" class="btn btn-outline btn-sm" onclick="AdminApp.quickRestock('${p.id}', 10)">
+                +10 Flacons
+              </button>
             </td>
           </tr>
         `).join("");
@@ -183,147 +186,159 @@ const AdminApp = {
   renderRevenueChart() {
     const canvas = document.getElementById("revenue-chart-canvas");
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
 
+    const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * dpr;
-    canvas.height = 240 * dpr;
+    canvas.height = rect.height * dpr;
     ctx.scale(dpr, dpr);
 
-    const width = rect.width;
-    const height = 240;
-    const padding = { top: 30, right: 20, bottom: 40, left: 50 };
+    const w = rect.width;
+    const h = rect.height;
 
-    const data = [
-      { day: "Mon", rev: 1420 },
-      { day: "Tue", rev: 2180 },
-      { day: "Wed", rev: 1890 },
-      { day: "Thu", rev: 2950 },
-      { day: "Fri", rev: 3420 },
-      { day: "Sat", rev: 4100 },
-      { day: "Sun", rev: 3850 }
+    ctx.clearRect(0, 0, w, h);
+
+    const points = [
+      { label: "Mon", val: 1420 },
+      { label: "Tue", val: 2180 },
+      { label: "Wed", val: 1890 },
+      { label: "Thu", val: 2840 },
+      { label: "Fri", val: 3450 },
+      { label: "Sat", val: 4120 },
+      { label: "Sun", val: 3890 }
     ];
 
-    const maxVal = 5000;
-    const chartW = width - padding.left - padding.right;
-    const chartH = height - padding.top - padding.bottom;
+    const padding = { top: 30, right: 25, bottom: 35, left: 55 };
+    const chartW = w - padding.left - padding.right;
+    const chartH = h - padding.top - padding.bottom;
 
-    // Draw Grid Lines & Y-Axis Labels
-    ctx.strokeStyle = "#E4DFD5";
+    const maxVal = 5000;
+    const minVal = 0;
+
+    // Grid lines
+    ctx.strokeStyle = "#E7E2DA";
+    ctx.lineWidth = 1;
     ctx.fillStyle = "#8E8E93";
     ctx.font = "11px Inter, sans-serif";
-    ctx.lineWidth = 1;
+    ctx.textAlign = "right";
 
-    for (let i = 0; i <= 4; i++) {
-      const yVal = (maxVal / 4) * i;
-      const y = height - padding.bottom - (yVal / maxVal) * chartH;
-
+    const gridSteps = 4;
+    for (let i = 0; i <= gridSteps; i++) {
+      const yVal = minVal + ((maxVal - minVal) / gridSteps) * i;
+      const y = padding.top + chartH - (i / gridSteps) * chartH;
       ctx.beginPath();
       ctx.moveTo(padding.left, y);
-      ctx.lineTo(width - padding.right, y);
+      ctx.lineTo(w - padding.right, y);
       ctx.stroke();
-
-      ctx.fillText(`$${yVal}`, 8, y + 4);
+      ctx.fillText(`$${(yVal / 1000).toFixed(1)}k`, padding.left - 8, y + 4);
     }
 
-    // Draw Smooth Area Gradient & Line
-    const points = data.map((d, index) => ({
-      x: padding.left + (index / (data.length - 1)) * chartW,
-      y: height - padding.bottom - (d.rev / maxVal) * chartH,
-      label: d.day,
-      val: d.rev
-    }));
+    // Coordinates
+    const coords = points.map((pt, i) => {
+      const x = padding.left + (i / (points.length - 1)) * chartW;
+      const y = padding.top + chartH - ((pt.val - minVal) / (maxVal - minVal)) * chartH;
+      return { x, y, label: pt.label, val: pt.val };
+    });
 
-    // Area Fill
-    const gradient = ctx.createLinearGradient(0, padding.top, 0, height - padding.bottom);
-    gradient.addColorStop(0, "rgba(140, 109, 83, 0.35)");
-    gradient.addColorStop(1, "rgba(140, 109, 83, 0.0)");
+    // Area fill gradient
+    const gradient = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartH);
+    gradient.addColorStop(0, "rgba(163, 128, 91, 0.35)");
+    gradient.addColorStop(1, "rgba(163, 128, 91, 0.0)");
 
     ctx.beginPath();
-    ctx.moveTo(points[0].x, height - padding.bottom);
-    points.forEach(p => ctx.lineTo(p.x, p.y));
-    ctx.lineTo(points[points.length - 1].x, height - padding.bottom);
+    ctx.moveTo(coords[0].x, padding.top + chartH);
+    coords.forEach(c => ctx.lineTo(c.x, c.y));
+    ctx.lineTo(coords[coords.length - 1].x, padding.top + chartH);
     ctx.closePath();
     ctx.fillStyle = gradient;
     ctx.fill();
 
-    // Line Stroke
+    // Trend Line
     ctx.beginPath();
-    ctx.strokeStyle = "#8C6D53";
-    ctx.lineWidth = 3;
-    points.forEach((p, idx) => {
-      if (idx === 0) ctx.moveTo(p.x, p.y);
-      else ctx.lineTo(p.x, p.y);
+    ctx.strokeStyle = "#A3805B";
+    ctx.lineWidth = 2.5;
+    coords.forEach((c, idx) => {
+      if (idx === 0) ctx.moveTo(c.x, c.y);
+      else ctx.lineTo(c.x, c.y);
     });
     ctx.stroke();
 
-    // Points & X Labels
-    points.forEach(p => {
+    // Data points & X labels
+    coords.forEach(c => {
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = "#FFFFFF";
+      ctx.arc(c.x, c.y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = "#A3805B";
       ctx.fill();
-      ctx.strokeStyle = "#8C6D53";
+      ctx.strokeStyle = "#FFFFFF";
       ctx.lineWidth = 2;
       ctx.stroke();
 
       ctx.fillStyle = "#52525B";
       ctx.textAlign = "center";
-      ctx.fillText(p.label, p.x, height - 12);
+      ctx.font = "11px Inter, sans-serif";
+      ctx.fillText(c.label, c.x, h - 10);
     });
   },
 
-  renderSalesByCategoryChart() {
+  renderCategoryChart() {
     const canvas = document.getElementById("category-chart-canvas");
     if (!canvas) return;
-
     const ctx = canvas.getContext("2d");
     const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
 
+    const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width * dpr;
-    canvas.height = 240 * dpr;
+    canvas.height = rect.height * dpr;
     ctx.scale(dpr, dpr);
 
-    const categories = Store.getCategories();
-    const width = rect.width;
-    const height = 240;
-    const padding = { top: 20, right: 20, bottom: 30, left: 100 };
+    const w = rect.width;
+    const h = rect.height;
 
-    const chartW = width - padding.left - padding.right;
+    ctx.clearRect(0, 0, w, h);
+
+    const products = Store.getProducts();
+    const familyCounts = {};
+    products.forEach(p => {
+      const fam = p.fragranceFamily || "Oriental";
+      familyCounts[fam] = (familyCounts[fam] || 0) + 1;
+    });
+
+    const entries = Object.entries(familyCounts).map(([name, count]) => ({ name, count }));
+    const maxCount = Math.max(...entries.map(e => e.count), 1);
+
+    const padding = { top: 25, right: 35, bottom: 25, left: 110 };
+    const chartW = w - padding.left - padding.right;
     const barHeight = 22;
-    const gap = 16;
-    const maxCount = Math.max(...categories.map(c => c.productCount), 8);
+    const gap = 12;
 
-    categories.slice(0, 5).forEach((cat, i) => {
+    entries.slice(0, 5).forEach((item, i) => {
       const y = padding.top + i * (barHeight + gap);
-      const barW = (cat.productCount / maxCount) * chartW;
+      const barW = (item.count / maxCount) * chartW;
 
       // Label
       ctx.fillStyle = "#18181B";
       ctx.font = "500 11px Inter, sans-serif";
       ctx.textAlign = "right";
-      ctx.fillText(cat.name.slice(0, 14), padding.left - 12, y + 15);
+      ctx.fillText(item.name.slice(0, 15), padding.left - 12, y + 15);
 
-      // Background Track
-      ctx.fillStyle = "#E4DFD5";
+      // Track
+      ctx.fillStyle = "#EBE5DB";
       ctx.beginPath();
       ctx.roundRect(padding.left, y, chartW, barHeight, 4);
       ctx.fill();
 
       // Active Bar
-      ctx.fillStyle = i === 0 ? "#8C6D53" : "#A47E5B";
+      ctx.fillStyle = i === 0 ? "#A3805B" : "#BBA082";
       ctx.beginPath();
-      ctx.roundRect(padding.left, y, Math.max(10, barW), barHeight, 4);
+      ctx.roundRect(padding.left, y, Math.max(12, barW), barHeight, 4);
       ctx.fill();
 
-      // Value text
+      // Value
       ctx.fillStyle = "#FFFFFF";
       ctx.font = "600 10px Inter, sans-serif";
       ctx.textAlign = "left";
-      ctx.fillText(`${cat.productCount}`, padding.left + 8, y + 15);
+      ctx.fillText(`${item.count} SKUs`, padding.left + 8, y + 15);
     });
   },
 
@@ -331,13 +346,13 @@ const AdminApp = {
     const product = Store.getProductById(productId);
     if (product) {
       Store.updateStock(productId, product.stock + amount);
-      UI.showToast(`Added ${amount} units to "${product.name}"`, "success");
+      UI.showToast(`Added ${amount} flacons to "${product.name}"`, "success");
       this.initDashboard();
     }
   },
 
   // ----------------------------------------------------
-  // ADMIN PRODUCTS MANAGEMENT (CRUD)
+  // PRODUCTS LIST
   // ----------------------------------------------------
   initProductsList() {
     const tableBody = document.getElementById("admin-products-table-body");
@@ -345,20 +360,13 @@ const AdminApp = {
     const categorySelect = document.getElementById("admin-product-category-filter");
     const stockSelect = document.getElementById("admin-product-stock-filter");
 
-    // Populate category dropdown
     if (categorySelect) {
       const categories = Store.getCategories();
-      categorySelect.innerHTML = `
-        <option value="all">All Categories</option>
-        ${categories.map(c => `<option value="${c.slug}">${c.name}</option>`).join("")}
-      `;
+      categorySelect.innerHTML = `<option value="all">All Fragrance Collections</option>` +
+        categories.map(c => `<option value="${c.slug}">${c.name}</option>`).join("");
     }
 
-    let filters = {
-      search: "",
-      category: "all",
-      stockStatus: "all"
-    };
+    let filters = { search: "", category: "all", stockStatus: "all" };
 
     const render = () => {
       let products = Store.getProducts({
@@ -374,8 +382,10 @@ const AdminApp = {
         products = products.filter(p => p.stock <= 0);
       }
 
+      if (!tableBody) return;
+
       if (products.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding: 2.5rem;">No matching products found in inventory.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding:2.5rem;">No matching fragrance flacons found.</td></tr>`;
         return;
       }
 
@@ -386,18 +396,18 @@ const AdminApp = {
               <img src="${p.images[0]}" alt="${p.name}" class="table-product-thumb" />
               <div>
                 <div class="table-product-name">${p.name}</div>
-                <div class="table-product-sku">${p.sku}</div>
+                <div class="table-product-sku">${p.sku} • ${p.fragranceFamily || 'Extrait'}</div>
               </div>
             </div>
           </td>
           <td>${p.category}</td>
           <td>
-            <strong>${Store.formatCurrency(p.price)}</strong>
-            ${p.originalPrice > p.price ? `<span class="price-original" style="font-size: 0.8rem; margin-left: 4px;">${Store.formatCurrency(p.originalPrice)}</span>` : ''}
+            <strong>$${p.price.toFixed(2)}</strong>
+            ${p.originalPrice > p.price ? `<span class="price-original" style="font-size:0.8rem; margin-left:4px;">$${p.originalPrice.toFixed(2)}</span>` : ''}
           </td>
           <td>
             <span class="stock-status-pill ${p.stock <= 0 ? 'out-stock' : (p.stock <= p.lowStockThreshold ? 'low-stock' : 'in-stock')}">
-              ${p.stock} units
+              ${p.stock} flacons
             </span>
           </td>
           <td>
@@ -413,35 +423,18 @@ const AdminApp = {
             </label>
           </td>
           <td>
-            <div style="display: flex; gap: 0.4rem;">
+            <div style="display:flex; gap:0.4rem;">
               <a href="product-form.html?id=${p.id}" class="btn btn-outline btn-sm">Edit</a>
-              <button type="button" class="btn btn-outline btn-sm" style="color: var(--color-error);" onclick="AdminApp.deleteProductPrompt('${p.id}')">Delete</button>
+              <button type="button" class="btn btn-outline btn-sm" style="color:var(--color-error);" onclick="AdminApp.deleteProductPrompt('${p.id}')">Delete</button>
             </div>
           </td>
         </tr>
       `).join("");
     };
 
-    if (searchInput) {
-      searchInput.addEventListener("input", (e) => {
-        filters.search = e.target.value;
-        render();
-      });
-    }
-
-    if (categorySelect) {
-      categorySelect.addEventListener("change", (e) => {
-        filters.category = e.target.value;
-        render();
-      });
-    }
-
-    if (stockSelect) {
-      stockSelect.addEventListener("change", (e) => {
-        filters.stockStatus = e.target.value;
-        render();
-      });
-    }
+    if (searchInput) searchInput.addEventListener("input", (e) => { filters.search = e.target.value; render(); });
+    if (categorySelect) categorySelect.addEventListener("change", (e) => { filters.category = e.target.value; render(); });
+    if (stockSelect) stockSelect.addEventListener("change", (e) => { filters.stockStatus = e.target.value; render(); });
 
     render();
   },
@@ -458,16 +451,15 @@ const AdminApp = {
   deleteProductPrompt(productId) {
     const product = Store.getProductById(productId);
     if (!product) return;
-
     if (confirm(`Are you sure you want to permanently delete "${product.name}"?`)) {
       Store.deleteProduct(productId);
-      UI.showToast("Product deleted from catalog", "info");
+      UI.showToast("Fragrance flacon deleted from catalog", "info");
       this.initProductsList();
     }
   },
 
   // ----------------------------------------------------
-  // ADD / EDIT PRODUCT FORM
+  // PRODUCT FORM (ADD / EDIT)
   // ----------------------------------------------------
   initProductForm() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -480,7 +472,6 @@ const AdminApp = {
     const imageInput = document.getElementById("prod-image-url");
     const imagePreview = document.getElementById("prod-image-preview");
 
-    // Populate categories
     if (categorySelect) {
       const categories = Store.getCategories();
       categorySelect.innerHTML = categories.map(c => `
@@ -488,26 +479,25 @@ const AdminApp = {
       `).join("");
     }
 
-    if (pageTitle) pageTitle.textContent = isEdit ? "Edit Product" : "Add New Product";
+    if (pageTitle) pageTitle.textContent = isEdit ? "Edit Fragrance Creation" : "Create New Fragrance Flacon";
 
-    // If edit mode, load product data
     if (isEdit) {
       const product = Store.getProductById(productId);
       if (product) {
-        document.getElementById("prod-name").value = product.name;
-        document.getElementById("prod-sku").value = product.sku;
-        document.getElementById("prod-price").value = product.price;
-        document.getElementById("prod-orig-price").value = product.originalPrice || product.price;
-        document.getElementById("prod-stock").value = product.stock;
-        document.getElementById("prod-threshold").value = product.lowStockThreshold || 10;
-        document.getElementById("prod-short-desc").value = product.shortDescription || "";
-        document.getElementById("prod-full-desc").value = product.description || "";
-        document.getElementById("prod-featured").checked = Boolean(product.featured);
-        document.getElementById("prod-bestseller").checked = Boolean(product.bestseller);
-        document.getElementById("prod-new").checked = Boolean(product.isNew);
+        if (document.getElementById("prod-name")) document.getElementById("prod-name").value = product.name;
+        if (document.getElementById("prod-sku")) document.getElementById("prod-sku").value = product.sku;
+        if (document.getElementById("prod-price")) document.getElementById("prod-price").value = product.price;
+        if (document.getElementById("prod-orig-price")) document.getElementById("prod-orig-price").value = product.originalPrice || product.price;
+        if (document.getElementById("prod-stock")) document.getElementById("prod-stock").value = product.stock;
+        if (document.getElementById("prod-threshold")) document.getElementById("prod-threshold").value = product.lowStockThreshold || 10;
+        if (document.getElementById("prod-short-desc")) document.getElementById("prod-short-desc").value = product.shortDescription || "";
+        if (document.getElementById("prod-full-desc")) document.getElementById("prod-full-desc").value = product.description || "";
+        if (document.getElementById("prod-featured")) document.getElementById("prod-featured").checked = Boolean(product.featured);
+        if (document.getElementById("prod-bestseller")) document.getElementById("prod-bestseller").checked = Boolean(product.bestseller);
+        if (document.getElementById("prod-new")) document.getElementById("prod-new").checked = Boolean(product.isNew);
         if (categorySelect) categorySelect.value = product.category;
 
-        if (product.images && product.images.length > 0) {
+        if (product.images && product.images.length > 0 && imageInput && imagePreview) {
           imageInput.value = product.images[0];
           imagePreview.innerHTML = `<img src="${product.images[0]}" alt="Preview" />`;
         }
@@ -518,7 +508,7 @@ const AdminApp = {
       imageInput.addEventListener("input", (e) => {
         const url = e.target.value.trim();
         if (url) {
-          imagePreview.innerHTML = `<img src="${url}" alt="Preview" onerror="this.src='https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=600&q=80'" />`;
+          imagePreview.innerHTML = `<img src="${url}" alt="Preview" />`;
         } else {
           imagePreview.innerHTML = `<span>No image URL provided</span>`;
         }
@@ -544,7 +534,7 @@ const AdminApp = {
         const categoryName = selectedCatOpt.value;
         const categorySlug = selectedCatOpt.getAttribute("data-slug");
 
-        const imageUrl = imageInput.value.trim() || "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=900&q=80";
+        const imageUrl = imageInput.value.trim() || "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80";
 
         const productData = {
           name,
@@ -561,16 +551,16 @@ const AdminApp = {
           featured,
           bestseller,
           isNew,
+          sizes: ["30ml", "50ml", "100ml"],
+          sizePricing: { "30ml": price * 0.7, "50ml": price, "100ml": price * 1.45 },
           status: stock > 0 ? "active" : "draft",
           images: [imageUrl]
         };
 
-        if (isEdit) {
-          productData.id = productId;
-        }
+        if (isEdit) productData.id = productId;
 
         Store.saveProduct(productData);
-        UI.showToast(`Product "${name}" saved successfully!`, "success");
+        UI.showToast(`Fragrance "${name}" saved to vault!`, "success");
 
         setTimeout(() => {
           window.location.href = "products.html";
@@ -580,7 +570,7 @@ const AdminApp = {
   },
 
   // ----------------------------------------------------
-  // DEDICATED INVENTORY MANAGEMENT
+  // INVENTORY PAGE
   // ----------------------------------------------------
   initInventoryPage() {
     const tableBody = document.getElementById("admin-inventory-table-body");
@@ -598,7 +588,7 @@ const AdminApp = {
       const outOfStockCount = products.filter(p => p.stock <= 0).length;
 
       if (totalUnitsEl) totalUnitsEl.textContent = totalUnits;
-      if (totalValuationEl) totalValuationEl.textContent = Store.formatCurrency(totalValuation);
+      if (totalValuationEl) totalValuationEl.textContent = `$${totalValuation.toFixed(2)}`;
       if (lowStockCountEl) lowStockCountEl.textContent = lowStockCount;
       if (outOfStockCountEl) outOfStockCountEl.textContent = outOfStockCount;
 
@@ -608,8 +598,10 @@ const AdminApp = {
           if (p.stock <= 0) {
             statusHtml = '<span class="status-pill status-cancelled">Out of Stock</span>';
           } else if (p.stock <= p.lowStockThreshold) {
-            statusHtml = '<span class="status-pill status-pending">Low Stock Alert</span>';
+            statusHtml = '<span class="status-pill status-pending">Low Stock Reserve</span>';
           }
+
+          const sizesList = (p.sizes || ["50ml"]).join(", ");
 
           return `
             <tr>
@@ -618,14 +610,14 @@ const AdminApp = {
                   <img src="${p.images[0]}" alt="${p.name}" class="table-product-thumb" />
                   <div>
                     <div class="table-product-name">${p.name}</div>
-                    <div class="table-product-sku">${p.sku}</div>
+                    <div class="table-product-sku">${p.sku} • Sizes: ${sizesList}</div>
                   </div>
                 </div>
               </td>
               <td>${p.category}</td>
               <td><strong>${p.stock}</strong></td>
               <td>${p.lowStockThreshold}</td>
-              <td>${Store.formatCurrency(p.stock * p.price)}</td>
+              <td>$${(p.stock * p.price).toFixed(2)}</td>
               <td>${statusHtml}</td>
               <td>
                 <div class="stock-adjust-group">
@@ -656,8 +648,7 @@ const AdminApp = {
   setStockPrompt(productId) {
     const product = Store.getProductById(productId);
     if (!product) return;
-
-    const val = prompt(`Enter exact stock count for "${product.name}":`, product.stock);
+    const val = prompt(`Enter exact flacon stock for "${product.name}":`, product.stock);
     if (val !== null && !isNaN(parseInt(val, 10))) {
       const newStock = Math.max(0, parseInt(val, 10));
       Store.updateStock(productId, newStock);
@@ -667,7 +658,7 @@ const AdminApp = {
   },
 
   // ----------------------------------------------------
-  // ADMIN ORDERS & STATUS WORKFLOW
+  // ORDERS PAGE
   // ----------------------------------------------------
   initOrdersPage() {
     const tableBody = document.getElementById("admin-orders-table-body");
@@ -678,13 +669,21 @@ const AdminApp = {
     let searchQ = "";
 
     const render = () => {
-      const orders = Store.getOrders({
-        status: filterStatus,
-        search: searchQ
-      });
+      let orders = Store.getOrders();
+
+      if (filterStatus !== "all") {
+        orders = orders.filter(o => o.status.toLowerCase() === filterStatus.toLowerCase());
+      }
+
+      if (searchQ) {
+        const q = searchQ.toLowerCase();
+        orders = orders.filter(o => o.id.toLowerCase().includes(q) || (o.customer && o.customer.name.toLowerCase().includes(q)));
+      }
+
+      if (!tableBody) return;
 
       if (orders.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding: 2rem;">No orders match the selected filter.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted" style="padding:2rem;">No orders match the selected filter.</td></tr>`;
         return;
       }
 
@@ -692,14 +691,14 @@ const AdminApp = {
         <tr>
           <td><strong>${o.id}</strong></td>
           <td>
-            <div style="font-weight: 600;">${o.customer.name}</div>
-            <div class="text-muted" style="font-size: 0.78rem;">${o.customer.email}</div>
+            <div style="font-weight:600;">${o.customer.name}</div>
+            <div class="text-muted" style="font-size:0.78rem;">${o.customer.email}</div>
           </td>
-          <td>${Store.formatDate(o.createdAt)}</td>
-          <td>${o.items.length} items</td>
-          <td><strong>${Store.formatCurrency(o.total)}</strong></td>
+          <td>${new Date(o.createdAt).toLocaleDateString()}</td>
+          <td>${o.items ? o.items.length : 1} flacon${o.items && o.items.length > 1 ? 's' : ''}</td>
+          <td><strong>$${o.total.toFixed(2)}</strong></td>
           <td>
-            <select class="admin-select" style="padding: 0.25rem 0.6rem; font-size: 0.8rem;" onchange="AdminApp.changeOrderStatus('${o.id}', this.value)">
+            <select class="admin-select" onchange="AdminApp.updateOrderStatus('${o.id}', this.value)" style="font-size:0.82rem; padding:4px 8px;">
               <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
               <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
               <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
@@ -708,34 +707,26 @@ const AdminApp = {
             </select>
           </td>
           <td>
-            <a href="order-details.html?id=${o.id}" class="btn btn-outline btn-sm">View Details</a>
+            <a href="order-details.html?id=${o.id}" class="btn btn-outline btn-sm">Details &rarr;</a>
           </td>
         </tr>
       `).join("");
     };
 
-    if (searchInput) {
-      searchInput.addEventListener("input", (e) => {
-        searchQ = e.target.value;
-        render();
-      });
-    }
-
-    if (statusSelect) {
-      statusSelect.addEventListener("change", (e) => {
-        filterStatus = e.target.value;
-        render();
-      });
-    }
+    if (searchInput) searchInput.addEventListener("input", (e) => { searchQ = e.target.value; render(); });
+    if (statusSelect) statusSelect.addEventListener("change", (e) => { filterStatus = e.target.value; render(); });
 
     render();
   },
 
-  changeOrderStatus(orderId, newStatus) {
+  updateOrderStatus(orderId, newStatus) {
     Store.updateOrderStatus(orderId, newStatus);
-    UI.showToast(`Order ${orderId} status changed to ${newStatus}`, "success");
+    UI.showToast(`Order ${orderId} status changed to "${newStatus}"`, "success");
   },
 
+  // ----------------------------------------------------
+  // ORDER DETAILS
+  // ----------------------------------------------------
   initOrderDetailsPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get("id");
@@ -746,60 +737,55 @@ const AdminApp = {
       return;
     }
 
-    document.getElementById("detail-order-id").textContent = order.id;
-    document.getElementById("detail-order-date").textContent = Store.formatDate(order.createdAt);
-    document.getElementById("detail-cust-name").textContent = order.customer.name;
-    document.getElementById("detail-cust-email").textContent = order.customer.email;
-    document.getElementById("detail-cust-phone").textContent = order.customer.phone || "N/A";
-    document.getElementById("detail-shipping-address").textContent = order.customer.address;
-    document.getElementById("detail-payment-method").textContent = order.paymentMethod;
-    document.getElementById("detail-payment-status").textContent = order.paymentStatus;
+    if (document.getElementById("detail-order-id")) document.getElementById("detail-order-id").textContent = order.id;
+    if (document.getElementById("detail-order-date")) document.getElementById("detail-order-date").textContent = new Date(order.createdAt).toLocaleString();
+    if (document.getElementById("detail-cust-name")) document.getElementById("detail-cust-name").textContent = order.customer.name;
+    if (document.getElementById("detail-cust-email")) document.getElementById("detail-cust-email").textContent = order.customer.email;
+    if (document.getElementById("detail-cust-phone")) document.getElementById("detail-cust-phone").textContent = order.customer.phone || "N/A";
+    if (document.getElementById("detail-shipping-address")) document.getElementById("detail-shipping-address").textContent = order.customer.address;
+    if (document.getElementById("detail-subtotal")) document.getElementById("detail-subtotal").textContent = `$${order.subtotal.toFixed(2)}`;
+    if (document.getElementById("detail-discount")) document.getElementById("detail-discount").textContent = `-$${(order.discount || 0).toFixed(2)}`;
+    if (document.getElementById("detail-shipping")) document.getElementById("detail-shipping").textContent = order.shipping === 0 ? "FREE" : `$${order.shipping.toFixed(2)}`;
+    if (document.getElementById("detail-tax")) document.getElementById("detail-tax").textContent = `$${order.tax.toFixed(2)}`;
+    if (document.getElementById("detail-total")) document.getElementById("detail-total").textContent = `$${order.total.toFixed(2)}`;
 
-    // Subtotals breakdown
-    document.getElementById("detail-subtotal").textContent = Store.formatCurrency(order.subtotal);
-    document.getElementById("detail-discount").textContent = `-${Store.formatCurrency(order.discount || 0)}`;
-    document.getElementById("detail-shipping").textContent = Store.formatCurrency(order.shipping || 0);
-    document.getElementById("detail-tax").textContent = Store.formatCurrency(order.tax || 0);
-    document.getElementById("detail-total").textContent = Store.formatCurrency(order.total);
+    const statusSel = document.getElementById("detail-status-select");
+    if (statusSel) {
+      statusSel.value = order.status;
+      statusSel.addEventListener("change", (e) => {
+        AdminApp.updateOrderStatus(order.id, e.target.value);
+      });
+    }
 
-    // Items list
-    const itemsTable = document.getElementById("detail-items-table-body");
-    if (itemsTable) {
-      itemsTable.innerHTML = order.items.map(item => `
+    const itemsBody = document.getElementById("detail-items-table-body");
+    if (itemsBody && order.items) {
+      itemsBody.innerHTML = order.items.map(item => `
         <tr>
           <td>
             <div class="table-product-cell">
               <img src="${item.image}" alt="${item.name}" class="table-product-thumb" />
               <div>
                 <div class="table-product-name">${item.name}</div>
-                ${item.variant ? `<div class="text-muted" style="font-size: 0.78rem;">${item.variant}</div>` : ''}
+                <div class="table-product-sku">${item.size || '50ml'} • ${item.variant || 'Flacon'}</div>
               </div>
             </div>
           </td>
-          <td>${Store.formatCurrency(item.price)}</td>
+          <td>$${item.price.toFixed(2)}</td>
           <td>${item.quantity}</td>
-          <td><strong>${Store.formatCurrency(item.price * item.quantity)}</strong></td>
+          <td><strong>$${(item.price * item.quantity).toFixed(2)}</strong></td>
         </tr>
       `).join("");
     }
 
-    // Status Selector
-    const statusSelect = document.getElementById("detail-status-select");
-    if (statusSelect) {
-      statusSelect.value = order.status;
-      statusSelect.addEventListener("change", (e) => {
-        Store.updateOrderStatus(order.id, e.target.value);
-        UI.showToast(`Order status updated to ${e.target.value}`, "success");
-        this.initOrderDetailsPage();
-      });
-    }
-
-    // Timeline Log
     const timelineList = document.getElementById("detail-timeline-list");
     if (timelineList && order.timeline) {
       timelineList.innerHTML = order.timeline.map(t => `
-        <li style="margin-bottom: 0.8rem; font-size: 0.88rem;">
-          <strong>${t.status}</strong> — <span class="text-muted">${t.date}</span>
+        <li style="margin-bottom:0.8rem; list-style:none; display:flex; gap:0.6rem; align-items:flex-start;">
+          <span style="color:var(--color-success); font-weight:700;">✓</span>
+          <div>
+            <strong>${t.status}</strong>
+            <span class="text-muted" style="font-size:0.75rem; display:block;">${t.date}</span>
+          </div>
         </li>
       `).join("");
     }
@@ -810,23 +796,19 @@ const AdminApp = {
   // ----------------------------------------------------
   initCustomersPage() {
     const tableBody = document.getElementById("admin-customers-table-body");
-    const customers = Store.getCustomers();
+    if (!tableBody) return;
 
-    if (tableBody) {
-      tableBody.innerHTML = customers.map(c => `
-        <tr>
-          <td>
-            <div style="font-weight: 600;">${c.name}</div>
-            <div class="text-muted" style="font-size: 0.8rem;">Registered: ${Store.formatDate(c.createdAt)}</div>
-          </td>
-          <td>${c.email}</td>
-          <td>${c.phone || '+1 (555) 000-0000'}</td>
-          <td><strong>${c.ordersCount}</strong></td>
-          <td><strong>${Store.formatCurrency(c.totalSpent)}</strong></td>
-          <td><span class="status-pill status-delivered">Active</span></td>
-        </tr>
-      `).join("");
-    }
+    const users = Store.getUsers();
+    tableBody.innerHTML = users.map(u => `
+      <tr>
+        <td><strong>${u.name}</strong></td>
+        <td>${u.email}</td>
+        <td>${u.phone || 'N/A'}</td>
+        <td>${u.ordersCount || 0}</td>
+        <td><strong>$${(u.totalSpent || 0).toFixed(2)}</strong></td>
+        <td><span class="status-pill status-${u.role === 'admin' ? 'shipped' : 'delivered'}">${u.role}</span></td>
+      </tr>
+    `).join("");
   },
 
   // ----------------------------------------------------
@@ -837,26 +819,31 @@ const AdminApp = {
     const form = document.getElementById("add-category-form");
 
     const render = () => {
-      const categories = Store.getCategories();
-      if (tableBody) {
-        tableBody.innerHTML = categories.map(cat => `
+      const cats = Store.getCategories();
+      if (!tableBody) return;
+
+      tableBody.innerHTML = cats.map(c => {
+        const count = Store.getProducts({ category: c.slug }).length;
+        return `
           <tr>
             <td>
-              <div class="table-product-cell">
-                <img src="${cat.image}" alt="${cat.name}" class="table-product-thumb" />
-                <strong>${cat.name}</strong>
+              <div style="display:flex; align-items:center; gap:0.8rem;">
+                <img src="${c.image}" alt="${c.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />
+                <strong>${c.name}</strong>
               </div>
             </td>
-            <td><code>${cat.slug}</code></td>
-            <td>${cat.description || "N/A"}</td>
-            <td><strong>${cat.productCount}</strong></td>
+            <td><code>${c.slug}</code></td>
+            <td>${c.description.slice(0, 45)}...</td>
+            <td><strong>${count} SKUs</strong></td>
             <td>
-              <button type="button" class="btn btn-outline btn-sm" style="color: var(--color-error);" onclick="AdminApp.deleteCategoryPrompt('${cat.id}')">Delete</button>
+              <button type="button" class="btn btn-outline btn-sm" style="color:var(--color-error);" onclick="AdminApp.deleteCategoryPrompt('${c.id}')">Delete</button>
             </td>
           </tr>
-        `).join("");
-      }
+        `;
+      }).join("");
     };
+
+    render();
 
     if (form) {
       form.addEventListener("submit", (e) => {
@@ -864,35 +851,26 @@ const AdminApp = {
         const name = document.getElementById("cat-name").value.trim();
         const slug = document.getElementById("cat-slug").value.trim() || name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
         const desc = document.getElementById("cat-desc").value.trim();
-        const image = document.getElementById("cat-image").value.trim() || "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80";
+        const img = document.getElementById("cat-image").value.trim() || "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80";
 
-        Store.saveCategory({
-          name,
-          slug,
-          description: desc,
-          image,
-          featured: true
-        });
-
-        UI.showToast(`Category "${name}" created successfully!`, "success");
+        Store.saveCategory({ name, slug, description: desc, image: img });
+        UI.showToast(`Category "${name}" created!`, "success");
         form.reset();
         render();
       });
     }
-
-    render();
   },
 
-  deleteCategoryPrompt(catId) {
-    if (confirm("Delete this category? Products in this category will remain.")) {
-      Store.deleteCategory(catId);
-      UI.showToast("Category removed.", "info");
+  deleteCategoryPrompt(id) {
+    if (confirm("Delete this fragrance category?")) {
+      Store.deleteCategory(id);
+      UI.showToast("Category removed", "info");
       this.initCategoriesPage();
     }
   },
 
   // ----------------------------------------------------
-  // COUPONS ENGINE
+  // COUPONS MANAGEMENT
   // ----------------------------------------------------
   initCouponsPage() {
     const tableBody = document.getElementById("admin-coupons-table-body");
@@ -900,27 +878,24 @@ const AdminApp = {
 
     const render = () => {
       const coupons = Store.getCoupons();
-      if (tableBody) {
-        tableBody.innerHTML = coupons.map(cp => `
-          <tr>
-            <td><strong><code>${cp.code}</code></strong></td>
-            <td>${cp.discountType === 'percentage' ? `${cp.discountValue}% Off` : `$${cp.discountValue} Off`}</td>
-            <td>${Store.formatCurrency(cp.minOrder || 0)}</td>
-            <td>${cp.usedCount || 0} / ${cp.usageLimit || '∞'}</td>
-            <td>${cp.expiryDate || 'Never'}</td>
-            <td>
-              <label class="switch-toggle">
-                <input type="checkbox" ${cp.active ? 'checked' : ''} onchange="AdminApp.toggleCouponActive('${cp.id}', this.checked)">
-                <span class="switch-slider"></span>
-              </label>
-            </td>
-            <td>
-              <button type="button" class="btn btn-outline btn-sm" style="color: var(--color-error);" onclick="AdminApp.deleteCouponPrompt('${cp.id}')">Delete</button>
-            </td>
-          </tr>
-        `).join("");
-      }
+      if (!tableBody) return;
+
+      tableBody.innerHTML = coupons.map(c => `
+        <tr>
+          <td><strong><code>${c.code}</code></strong></td>
+          <td>${c.discountType === 'percentage' ? `${c.discountValue}%` : `$${c.discountValue}`}</td>
+          <td>$${c.minOrder || 0}</td>
+          <td>${c.usedCount || 0} / ${c.usageLimit || '∞'}</td>
+          <td>${c.expiryDate}</td>
+          <td><span class="status-pill status-${c.active ? 'delivered' : 'cancelled'}">${c.active ? 'Active' : 'Disabled'}</span></td>
+          <td>
+            <button type="button" class="btn btn-outline btn-sm" style="color:var(--color-error);" onclick="AdminApp.deleteCouponPrompt('${c.id}')">Delete</button>
+          </td>
+        </tr>
+      `).join("");
     };
+
+    render();
 
     if (form) {
       form.addEventListener("submit", (e) => {
@@ -929,7 +904,7 @@ const AdminApp = {
         const type = document.getElementById("cp-type").value;
         const val = parseFloat(document.getElementById("cp-val").value);
         const minOrder = parseFloat(document.getElementById("cp-min-order").value) || 0;
-        const limit = parseInt(document.getElementById("cp-limit").value, 10) || 500;
+        const limit = parseInt(document.getElementById("cp-limit").value, 10) || 100;
         const expiry = document.getElementById("cp-expiry").value || "2027-12-31";
 
         Store.saveCoupon({
@@ -939,74 +914,59 @@ const AdminApp = {
           minOrder,
           usageLimit: limit,
           expiryDate: expiry,
-          active: true
+          active: true,
+          description: `${type === 'percentage' ? val + '%' : '$' + val} luxury fragrance discount`
         });
 
-        UI.showToast(`Coupon "${code}" created successfully!`, "success");
+        UI.showToast(`Coupon "${code}" saved!`, "success");
         form.reset();
         render();
       });
     }
-
-    render();
   },
 
-  toggleCouponActive(couponId, active) {
-    const coupons = Store.getCoupons();
-    const cp = coupons.find(c => c.id === couponId);
-    if (cp) {
-      cp.active = active;
-      Store.saveCoupon(cp);
-      UI.showToast(`Coupon ${cp.code} is now ${active ? 'Active' : 'Deactivated'}`, "info");
-    }
-  },
-
-  deleteCouponPrompt(couponId) {
-    if (confirm("Delete this coupon?")) {
-      Store.deleteCoupon(couponId);
-      UI.showToast("Coupon deleted.", "info");
+  deleteCouponPrompt(id) {
+    if (confirm("Delete this promotional coupon code?")) {
+      Store.deleteCoupon(id);
+      UI.showToast("Coupon removed", "info");
       this.initCouponsPage();
     }
   },
 
   // ----------------------------------------------------
-  // STORE SETTINGS & DEMO RESET
+  // SETTINGS & FACTORY RESET
   // ----------------------------------------------------
   initSettingsPage() {
     const form = document.getElementById("admin-settings-form");
     const resetBtn = document.getElementById("reset-demo-data-btn");
 
-    const settings = Store.getSettings();
-
-    if (form) {
-      document.getElementById("set-store-name").value = settings.storeName || "DeepFeel";
-      document.getElementById("set-currency").value = settings.currencySymbol || "$";
-      document.getElementById("set-tax-rate").value = settings.taxRate || 8.0;
-      document.getElementById("set-free-ship").value = settings.freeShippingThreshold || 100;
-      document.getElementById("set-flat-ship").value = settings.flatShippingRate || 10;
-      document.getElementById("set-announcement").value = settings.announcementText || "";
-
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        Store.saveSettings({
-          storeName: document.getElementById("set-store-name").value.trim(),
-          currencySymbol: document.getElementById("set-currency").value.trim(),
-          taxRate: parseFloat(document.getElementById("set-tax-rate").value),
-          freeShippingThreshold: parseFloat(document.getElementById("set-free-ship").value),
-          flatShippingRate: parseFloat(document.getElementById("set-flat-ship").value),
-          announcementText: document.getElementById("set-announcement").value.trim()
-        });
-        UI.showToast("Store settings saved successfully!", "success");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        if (confirm("Reset all perfume stock, orders, and demo accounts back to original factory state?")) {
+          Store.resetDemoData();
+          UI.showToast("Maison DeepFeel dataset has been reset to factory state!", "success");
+        }
       });
     }
 
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
-        if (confirm("Reset all store data, orders, products, and inventory back to factory seed demo values? This will erase custom additions.")) {
-          Store.resetDemoData();
-          UI.showToast("Demo data reloaded to initial factory state.", "success");
-          setTimeout(() => window.location.reload(), 600);
-        }
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const storeName = document.getElementById("set-store-name").value.trim();
+        const taxRate = parseFloat(document.getElementById("set-tax-rate").value);
+        const freeShip = parseFloat(document.getElementById("set-free-ship").value);
+        const flatShip = parseFloat(document.getElementById("set-flat-ship").value);
+        const announcement = document.getElementById("set-announcement").value.trim();
+
+        Store.saveSettings({
+          storeName,
+          taxRate,
+          freeShippingThreshold: freeShip,
+          flatShippingRate: flatShip,
+          announcementText: announcement
+        });
+
+        UI.showToast("Maison DeepFeel settings saved!", "success");
       });
     }
   }

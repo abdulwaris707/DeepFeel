@@ -1,6 +1,6 @@
 /**
- * DeepFeel - Cart Management Module
- * Manages shopping cart state, quantity controls, calculations, and UI badge synchronization.
+ * DeepFeel - Fragrance Cart Management Module
+ * Manages shopping bag state, size variants, gift packaging, and calculations.
  */
 
 const Cart = {
@@ -14,20 +14,23 @@ const Cart = {
     window.dispatchEvent(new CustomEvent("cart:updated", { detail: { cart } }));
   },
 
-  addItem(productId, quantity = 1, selectedVariant = null) {
+  addItem(productId, quantity = 1, options = {}) {
     const product = Store.getProductById(productId);
     if (!product) {
-      if (window.UI) UI.showToast("Product not found", "error");
+      if (window.UI) UI.showToast("Fragrance not found", "error");
       return false;
     }
 
     if (product.stock <= 0) {
-      if (window.UI) UI.showToast("This item is currently out of stock", "error");
+      if (window.UI) UI.showToast("This flacon is currently out of stock", "error");
       return false;
     }
 
+    const selectedSize = options.size || (product.sizes && product.sizes.length ? product.sizes[0] : "50ml");
+    const itemPrice = options.price || (product.sizePricing && product.sizePricing[selectedSize] ? product.sizePricing[selectedSize] : product.price);
+
     let cart = this.getCart();
-    const variantKey = selectedVariant ? JSON.stringify(selectedVariant) : "";
+    const variantKey = `${productId}_${selectedSize}`;
     
     const existingIndex = cart.findIndex(item => 
       item.productId === productId && 
@@ -39,27 +42,29 @@ const Cart = {
     if (existingIndex > -1) {
       const currentQty = cart[existingIndex].quantity;
       if (currentQty + qtyToAdd > product.stock) {
-        if (window.UI) UI.showToast(`Only ${product.stock} items available in stock`, "warning");
+        if (window.UI) UI.showToast(`Only ${product.stock} flacons available in stock`, "warning");
         cart[existingIndex].quantity = product.stock;
       } else {
         cart[existingIndex].quantity += qtyToAdd;
-        if (window.UI) UI.showToast(`Updated "${product.name}" quantity in your bag`, "success");
+        if (window.UI) UI.showToast(`Updated "${product.name} (${selectedSize})" quantity in bag`, "success");
       }
     } else {
       const finalQty = Math.min(qtyToAdd, product.stock);
       cart.push({
         productId: product.id,
         name: product.name,
-        price: product.price,
+        size: selectedSize,
+        price: itemPrice,
         originalPrice: product.originalPrice,
         image: product.images && product.images.length ? product.images[0] : "",
         category: product.category,
+        fragranceFamily: product.fragranceFamily || "Oriental",
+        concentration: product.concentration || "Extrait de Parfum",
         sku: product.sku,
         quantity: finalQty,
-        variant: selectedVariant,
         variantKey: variantKey
       });
-      if (window.UI) UI.showToast(`Added "${product.name}" to your bag`, "success");
+      if (window.UI) UI.showToast(`Added "${product.name} (${selectedSize})" to your bag`, "success");
     }
 
     this.saveCart(cart);
@@ -80,12 +85,12 @@ const Cart = {
 
     if (parsedQty <= 0) {
       cart.splice(index, 1);
-      if (window.UI) UI.showToast("Item removed from bag", "info");
+      if (window.UI) UI.showToast("Fragrance removed from bag", "info");
     } else {
       const maxStock = product ? product.stock : 99;
       if (parsedQty > maxStock) {
         cart[index].quantity = maxStock;
-        if (window.UI) UI.showToast(`Maximum available stock is ${maxStock}`, "warning");
+        if (window.UI) UI.showToast(`Maximum available flacons is ${maxStock}`, "warning");
       } else {
         cart[index].quantity = parsedQty;
       }
@@ -98,7 +103,7 @@ const Cart = {
     let cart = this.getCart();
     cart = cart.filter(item => !(item.productId === productId && (item.variantKey || "") === (variantKey || "")));
     this.saveCart(cart);
-    if (window.UI) UI.showToast("Item removed from bag", "info");
+    if (window.UI) UI.showToast("Fragrance removed from bag", "info");
   },
 
   clearCart() {
@@ -115,7 +120,7 @@ const Cart = {
     return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   },
 
-  getTotals(couponCode = "", shippingMethod = "standard") {
+  getTotals(couponCode = "", shippingMethod = "standard", giftPackaging = false) {
     const subtotal = this.getSubtotal();
     const settings = Store.getSettings();
     
@@ -128,9 +133,12 @@ const Cart = {
       if (shippingMethod === "express") {
         shipping = settings.expressShippingRate || 25;
       } else {
-        shipping = subtotal >= freeShippingThreshold ? 0 : (settings.flatShippingRate || 10);
+        shipping = subtotal >= freeShippingThreshold ? 0 : (settings.flatShippingRate || 12);
       }
     }
+
+    // Gift packaging fee
+    const giftFee = (giftPackaging && subtotal > 0) ? (settings.giftPackagingFee || 8.00) : 0;
 
     // Coupon discount calculation
     let discount = 0;
@@ -140,7 +148,7 @@ const Cart = {
     if (couponCode && couponCode.trim()) {
       const validation = Store.validateCoupon(couponCode, subtotal);
       if (validation.valid) {
-        discount = validation.discount;
+        discount = validation.discountAmount || 0;
         appliedCoupon = validation.coupon;
         couponMessage = validation.message;
       } else {
@@ -151,13 +159,14 @@ const Cart = {
     const discountedSubtotal = Math.max(0, subtotal - discount);
     const taxRate = (settings.taxRate || 8.0) / 100;
     const tax = Math.round(discountedSubtotal * taxRate * 100) / 100;
-    const total = subtotal > 0 ? Math.round((discountedSubtotal + shipping + tax) * 100) / 100 : 0;
+    const total = subtotal > 0 ? Math.round((discountedSubtotal + shipping + giftFee + tax) * 100) / 100 : 0;
 
     return {
       subtotal: Math.round(subtotal * 100) / 100,
       discount: Math.round(discount * 100) / 100,
       discountedSubtotal: Math.round(discountedSubtotal * 100) / 100,
       shipping: Math.round(shipping * 100) / 100,
+      giftFee: Math.round(giftFee * 100) / 100,
       tax: Math.round(tax * 100) / 100,
       total: total,
       appliedCoupon,

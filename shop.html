@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shop All Products — DeepFeel</title>
-  <meta name="description" content="Explore the full DeepFeel catalog of organic merino blankets, handcrafted ceramic drinkware, ambient lighting, and workspace essentials." />
+  <title>Fragrance Catalog — DeepFeel Haute Parfumerie</title>
+  <meta name="description" content="Explore the complete collection of DeepFeel luxury perfumes, extraits, ouds, and discovery sets." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body>
 
-  <!-- Announcement Bar -->
-  <aside class="announcement-bar">
-    <div class="container text-center">
-      <span class="announcement-bar-text">Complimentary worldwide shipping on orders over $100 — Consciously Crafted</span>
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="container announcement-content">
+      <span>Complimentary worldwide shipping on all orders over $100 — Consciously Crafted</span>
+      <a href="shop.html" class="announcement-link">Explore Fragrances &rarr;</a>
     </div>
-  </aside>
+  </div>
 
-  <!-- Navigation Header -->
+  <!-- Main Navigation Header -->
   <header class="site-header">
     <div class="container header-container">
       <button type="button" class="mobile-menu-toggle" aria-label="Toggle navigation menu">
@@ -32,10 +33,11 @@
 
       <nav class="desktop-nav">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="shop.html" class="nav-link active">Shop</a>
-        <a href="categories.html" class="nav-link">Categories</a>
-        <a href="about.html" class="nav-link">About</a>
-        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="shop.html" class="nav-link active">Fragrances</a>
+        <a href="categories.html" class="nav-link">Collections</a>
+        <a href="shop.html?category=oud-collection" class="nav-link">The Oud Vault</a>
+        <a href="about.html" class="nav-link">Maison Story</a>
+        <a href="contact.html" class="nav-link">Concierge</a>
       </nav>
 
       <div class="header-utilities">
@@ -82,16 +84,14 @@
       </div>
       <div class="mobile-drawer-links">
         <a href="index.html" class="mobile-nav-link">Home</a>
-        <a href="shop.html" class="mobile-nav-link">Shop All Catalog</a>
-        <a href="categories.html" class="mobile-nav-link">Categories</a>
+        <a href="shop.html" class="mobile-nav-link">All Fragrances</a>
+        <a href="categories.html" class="mobile-nav-link">Collections</a>
+        <a href="shop.html?category=oud-collection" class="mobile-nav-link">The Oud Vault</a>
         <a href="wishlist.html" class="mobile-nav-link">Saved Items (<span class="wishlist-count-badge">0</span>)</a>
         <a href="cart.html" class="mobile-nav-link">Shopping Bag (<span class="cart-count-badge">0</span>)</a>
         <a href="about.html" class="mobile-nav-link">Our Philosophy</a>
         <a href="faq.html" class="mobile-nav-link">Help & FAQs</a>
-        <a href="contact.html" class="mobile-nav-link">Contact Studio</a>
-      </div>
-      <div class="mobile-drawer-footer">
-        <a href="account.html" class="btn btn-outline btn-full">Customer Account</a>
+        <a href="contact.html" class="mobile-nav-link">Contact Concierge</a>
       </div>
     </div>
   </div>
@@ -99,129 +99,157 @@
   <main class="section">
     <div class="container">
       
-      <!-- Page Header -->
-      <div class="section-header">
-        <span class="section-subtitle">The Complete Collection</span>
-        <h1 class="section-title">Designed for Living Well</h1>
-        <p class="section-desc">Each piece in our catalog is engineered to bring sensory quiet and functional longevity.</p>
+      <!-- Catalog Header -->
+      <div class="shop-header">
+        <div>
+          <span class="section-subtitle">Olfactive Vault</span>
+          <h1 class="section-title font-serif" style="font-size: 2.6rem;">All Fragrances</h1>
+          <p id="shop-results-count" class="text-secondary" style="margin-top: 0.2rem;">Loading fragrances...</p>
+        </div>
+
+        <div class="shop-controls">
+          <div class="shop-sort-wrap">
+            <label for="shop-sort-select">Sort By:</label>
+            <select id="shop-sort-select" class="form-select">
+              <option value="featured">Featured Curations</option>
+              <option value="bestseller">Best Sellers</option>
+              <option value="price_asc">Price: Low to High</option>
+              <option value="price_desc">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+              <option value="newest">New Arrivals</option>
+            </select>
+          </div>
+        </div>
       </div>
 
-      <!-- Shop Layout: Filters + Product Grid -->
+      <!-- Shop Layout: Sidebar Filters + Products Grid -->
       <div class="shop-layout">
         
-        <!-- Desktop / Mobile Filter Sidebar -->
-        <aside class="shop-sidebar" aria-label="Catalog Filters">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
-            <h3 style="font-size: 1.1rem;">Filters</h3>
-            <button type="button" id="mobile-filter-close" class="btn-ghost" style="display: none;">&times; Close</button>
+        <!-- Filter Sidebar -->
+        <aside class="shop-sidebar">
+          <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.1rem;">Fragrance Filters</h3>
+            <button type="button" id="reset-filters-btn" class="btn btn-ghost btn-sm" style="padding: 0; font-size: 0.82rem; color: var(--accent-primary);">
+              Reset All
+            </button>
           </div>
 
-          <!-- Category Filter -->
+          <!-- Collection Dropdown -->
           <div class="filter-group">
-            <h4 class="filter-title">Collections</h4>
-            <ul class="filter-list" id="category-filter-list">
-              <!-- Rendered by app.js -->
-            </ul>
+            <h4 class="filter-title">Collection</h4>
+            <select id="shop-category-filter" class="form-select">
+              <option value="all">All Fragrance Collections</option>
+            </select>
+          </div>
+
+          <!-- Gender Filter -->
+          <div class="filter-group">
+            <h4 class="filter-title">Intended Wear</h4>
+            <div class="filter-options">
+              <label class="filter-checkbox-label">
+                <input type="radio" name="gender-filter" value="all" checked />
+                <span>All Fragrances</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="gender-filter" value="Unisex" />
+                <span>Unisex</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="gender-filter" value="Men" />
+                <span>For Him</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="gender-filter" value="Women" />
+                <span>For Her</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Fragrance Family Filter -->
+          <div class="filter-group">
+            <h4 class="filter-title">Fragrance Family</h4>
+            <div class="filter-options">
+              <label class="filter-checkbox-label">
+                <input type="radio" name="family-filter" value="all" checked />
+                <span>All Families</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="family-filter" value="Woody" />
+                <span>Woody & Resins</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="family-filter" value="Floral" />
+                <span>Luminous Floral</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="family-filter" value="Oriental" />
+                <span>Oriental & Oud</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="family-filter" value="Amber" />
+                <span>Velvet Amber</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="family-filter" value="Fresh" />
+                <span>Fresh & Oceanic</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="family-filter" value="Citrus" />
+                <span>Sparkling Citrus</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="family-filter" value="Gourmand" />
+                <span>Sweet Gourmand</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="family-filter" value="Musky" />
+                <span>Skin Musk</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Concentration Filter -->
+          <div class="filter-group">
+            <h4 class="filter-title">Concentration</h4>
+            <div class="filter-options">
+              <label class="filter-checkbox-label">
+                <input type="radio" name="concentration-filter" value="all" checked />
+                <span>All Strengths</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="concentration-filter" value="Extrait de Parfum" />
+                <span>Extrait de Parfum (30%+)</span>
+              </label>
+              <label class="filter-checkbox-label">
+                <input type="radio" name="concentration-filter" value="Eau de Parfum" />
+                <span>Eau de Parfum (20–25%)</span>
+              </label>
+            </div>
           </div>
 
           <!-- Price Range Slider -->
           <div class="filter-group">
-            <h4 class="filter-title">Price Range</h4>
-            <input type="range" id="price-range-slider" min="20" max="300" step="5" value="300" class="price-range-slider" />
-            <div class="price-range-inputs">
-              <span style="font-size: 0.85rem; color: var(--text-muted);">$20</span>
-              <span style="font-size: 0.88rem; font-weight: 600; margin-left: auto;" id="price-max-display">$300</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h4 class="filter-title" style="margin-bottom: 0;">Max Price</h4>
+              <span id="price-range-val" style="font-size: 0.9rem; font-weight: 600; color: var(--accent-primary);">$400</span>
             </div>
+            <input type="range" id="price-range-slider" min="50" max="400" step="10" value="400" style="width: 100%; accent-color: var(--accent-primary);" />
           </div>
 
-          <!-- Rating Filter -->
+          <!-- In-Stock Filter -->
           <div class="filter-group">
-            <h4 class="filter-title">Customer Rating</h4>
-            <ul class="filter-list">
-              <li>
-                <label class="filter-checkbox-label">
-                  <input type="radio" name="shop-rating" value="" checked />
-                  <span>All Ratings</span>
-                </label>
-              </li>
-              <li>
-                <label class="filter-checkbox-label">
-                  <input type="radio" name="shop-rating" value="4.8" />
-                  <span>4.8 & Above ★</span>
-                </label>
-              </li>
-              <li>
-                <label class="filter-checkbox-label">
-                  <input type="radio" name="shop-rating" value="4.5" />
-                  <span>4.5 & Above ★</span>
-                </label>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Stock Status -->
-          <div class="filter-group">
-            <h4 class="filter-title">Availability</h4>
             <label class="filter-checkbox-label">
-              <input type="checkbox" id="in-stock-filter" />
+              <input type="checkbox" id="in-stock-only" />
               <span>In Stock Only</span>
             </label>
           </div>
         </aside>
 
-        <!-- Product Grid & Toolbar Area -->
-        <div class="shop-main-content">
-          
-          <!-- Toolbar -->
-          <div class="shop-toolbar">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-              <button type="button" class="btn btn-outline btn-sm mobile-filter-btn" id="mobile-filter-trigger">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                </svg>
-                Filters
-              </button>
-              <span id="shop-product-count" style="font-size: 0.9rem; color: var(--text-muted); font-weight: 500;">
-                Loading catalog...
-              </span>
-            </div>
-
-            <div class="shop-toolbar-right">
-              <div style="position: relative;">
-                <input 
-                  type="text" 
-                  id="shop-search-input" 
-                  placeholder="Search in catalog..." 
-                  class="form-input" 
-                  style="padding: 0.45rem 0.8rem; font-size: 0.88rem; width: 200px;" 
-                />
-              </div>
-
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <label for="shop-sort-select" style="font-size: 0.88rem; color: var(--text-muted); white-space: nowrap;">Sort by:</label>
-                <select id="shop-sort-select" class="sort-select">
-                  <option value="featured">Featured Curations</option>
-                  <option value="newest">Newest Arrivals</option>
-                  <option value="bestselling">Bestselling</option>
-                  <option value="price-asc">Price: Low to High</option>
-                  <option value="price-desc">Price: High to Low</option>
-                  <option value="rating-desc">Highest Rated</option>
-                  <option value="name-asc">Alphabetical (A-Z)</option>
-                </select>
-              </div>
-            </div>
+        <!-- Product Cards Grid -->
+        <div>
+          <div class="product-grid-3" id="shop-products-grid">
+            <!-- Populated by app.js -->
           </div>
-
-          <!-- Product Grid -->
-          <div class="product-grid" id="shop-products-grid">
-            <!-- Rendered by app.js -->
-          </div>
-
-          <!-- Pagination -->
-          <div class="pagination" id="shop-pagination">
-            <!-- Rendered by app.js -->
-          </div>
-
         </div>
 
       </div>
@@ -231,54 +259,49 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
-          <p class="footer-desc">
-            Thoughtfully crafted living objects made to ground the senses and bring enduring calm into modern spaces.
-          </p>
-        </div>
-
-        <div>
-          <h4 class="footer-title">Collections</h4>
-          <ul class="footer-links">
-            <li><a href="shop.html?category=rest-wellness">Rest & Wellness</a></li>
-            <li><a href="shop.html?category=artisan-drinkware">Artisan Drinkware</a></li>
-            <li><a href="shop.html?category=ambient-lighting">Ambient Lighting</a></li>
-            <li><a href="shop.html?category=home-living">Home & Living</a></li>
-            <li><a href="shop.html?category=studio-workspace">Studio & Workspace</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="footer-title">Company</h4>
-          <ul class="footer-links">
-            <li><a href="about.html">Our Philosophy</a></li>
-            <li><a href="faq.html">Help & FAQ</a></li>
-            <li><a href="contact.html">Contact Studio</a></li>
-            <li><a href="account.html">Customer Account</a></li>
-            <li><a href="admin/index.html">Admin Command Suite</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="footer-title">Customer Care</h4>
-          <ul class="footer-links">
-            <li><a href="faq.html#shipping">Shipping & Delivery</a></li>
-            <li><a href="faq.html#returns">30-Day Returns</a></li>
-            <li><a href="faq.html#warranty">Product Warranty</a></li>
-            <li><a href="orders.html">Track My Order</a></li>
-          </ul>
-        </div>
+    <div class="container footer-grid">
+      <div>
+        <a href="index.html" class="brand-logo" style="margin-bottom: 1rem;">DEEP<span>FEEL</span></a>
+        <p class="footer-desc">
+          Haute parfumerie crafted with wild botanicals, aged ambers, and sustainable agarwoods. Scent that leaves a memory.
+        </p>
       </div>
 
+      <div>
+        <h4 class="footer-col-title">Fragrance Vault</h4>
+        <ul class="footer-links">
+          <li><a href="shop.html">All Extraits</a></li>
+          <li><a href="shop.html?category=signature-collection">Signature Collection</a></li>
+          <li><a href="shop.html?category=oud-collection">The Oud Collection</a></li>
+          <li><a href="shop.html?gender=men">For Him</a></li>
+          <li><a href="shop.html?gender=women">For Her</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Maison</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">Atelier Story</a></li>
+          <li><a href="faq.html">Sillage & Care FAQs</a></li>
+          <li><a href="contact.html">Concierge & Trade</a></li>
+          <li><a href="admin/login.html">Atelier Portal</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Concierge Atelier</h4>
+        <p class="footer-desc" style="font-size: 0.9rem; margin-bottom: 0.8rem;">
+          Maison DeepFeel<br>
+          1024 Hawthorne Blvd, Suite 400<br>
+          Portland, OR 97214
+        </p>
+        <span style="font-size: 0.88rem; color: var(--accent-primary); font-weight: 600;">concierge@deepfeel.com</span>
+      </div>
+    </div>
+
+    <div class="container">
       <div class="footer-bottom">
-        <p>&copy; 2026 DeepFeel Living Co. All rights reserved.</p>
-        <div class="footer-legal-links">
-          <a href="faq.html">Privacy Policy</a>
-          <a href="faq.html">Terms of Service</a>
-        </div>
+        <p>&copy; 2026 Maison DeepFeel Co. All rights reserved.</p>
       </div>
     </div>
   </footer>

@@ -1,29 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DeepFeel — Designed to Feel Different | Premium Living Essentials</title>
-  <meta name="description"
-    content="Discover thoughtfully selected lifestyle goods, ergonomic textiles, artisan drinkware, and calm ambient lighting made to bring comfort and character to everyday life." />
+  <title>DeepFeel — Haute Parfumerie & Extrait de Parfum</title>
+  <meta name="description" content="Discover refined, long-lasting extraits de parfum crafted with rare Grasse botanicals, Assam agarwood, and aged ambers." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
-
 <body>
 
-  <!-- Announcement Bar -->
-  <aside class="announcement-bar" role="region" aria-label="Store Announcement">
-    <div class="container text-center">
-      <span class="announcement-bar-text">Complimentary worldwide shipping on orders over $100 — Consciously
-        Crafted</span>
-      <a href="shop.html">Shop Catalog &rarr;</a>
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="container announcement-content">
+      <span>Complimentary 5 x 10ml Discovery Coffret Voucher on orders over $150 — Scent that leaves a memory</span>
+      <a href="shop.html" class="announcement-link">Explore Fragrances &rarr;</a>
     </div>
-  </aside>
+  </div>
 
-  <!-- Sticky Navigation Header -->
-  <header class="site-header" role="banner">
+  <!-- Main Navigation Header -->
+  <header class="site-header">
     <div class="container header-container">
       <button type="button" class="mobile-menu-toggle" aria-label="Toggle navigation menu">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -33,43 +29,40 @@
         </svg>
       </button>
 
-      <a href="index.html" class="brand-logo" aria-label="DeepFeel Home">
-        DEEP<span>FEEL</span>
-      </a>
+      <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
 
-      <nav class="desktop-nav" aria-label="Primary Navigation">
+      <nav class="desktop-nav">
         <a href="index.html" class="nav-link active">Home</a>
-        <a href="shop.html" class="nav-link">Shop</a>
-        <a href="categories.html" class="nav-link">Categories</a>
-        <a href="about.html" class="nav-link">About</a>
-        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="shop.html" class="nav-link">Fragrances</a>
+        <a href="categories.html" class="nav-link">Collections</a>
+        <a href="shop.html?category=oud-collection" class="nav-link">The Oud Vault</a>
+        <a href="about.html" class="nav-link">Maison Story</a>
+        <a href="contact.html" class="nav-link">Concierge</a>
       </nav>
 
       <div class="header-utilities">
-        <button type="button" class="header-icon-btn nav-search-trigger" aria-label="Search catalog" title="Search">
+        <button type="button" class="header-icon-btn nav-search-trigger" aria-label="Search catalog">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
         </button>
 
-        <a href="wishlist.html" class="header-icon-btn" aria-label="Saved items" title="Wishlist">
+        <a href="wishlist.html" class="header-icon-btn" aria-label="Wishlist">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path
-              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-            </path>
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
           </svg>
           <span class="badge-count wishlist-count-badge" style="display: none;">0</span>
         </a>
 
-        <a href="login.html" class="header-icon-btn header-account-link" aria-label="Customer account" title="Account">
+        <a href="login.html" class="header-icon-btn header-account-link" aria-label="Account">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
         </a>
 
-        <a href="cart.html" class="header-icon-btn" aria-label="Shopping bag" title="Shopping Bag">
+        <a href="cart.html" class="header-icon-btn" aria-label="Shopping Bag">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
             <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -81,7 +74,7 @@
     </div>
   </header>
 
-  <!-- Mobile Off-Canvas Navigation Drawer -->
+  <!-- Mobile Drawer -->
   <div class="mobile-nav-drawer" id="mobile-nav-drawer">
     <div class="mobile-drawer-overlay"></div>
     <div class="mobile-drawer-panel">
@@ -91,358 +84,279 @@
       </div>
       <div class="mobile-drawer-links">
         <a href="index.html" class="mobile-nav-link">Home</a>
-        <a href="shop.html" class="mobile-nav-link">Shop All Catalog</a>
-        <a href="categories.html" class="mobile-nav-link">Categories</a>
-        <a href="wishlist.html" class="mobile-nav-link">Saved Items (<span class="wishlist-count-badge">0</span>)</a>
+        <a href="shop.html" class="mobile-nav-link">All Fragrances</a>
+        <a href="categories.html" class="mobile-nav-link">Fragrance Collections</a>
+        <a href="shop.html?category=oud-collection" class="mobile-nav-link">The Oud Vault</a>
+        <a href="wishlist.html" class="mobile-nav-link">Saved Scent Vault (<span class="wishlist-count-badge">0</span>)</a>
         <a href="cart.html" class="mobile-nav-link">Shopping Bag (<span class="cart-count-badge">0</span>)</a>
-        <a href="about.html" class="mobile-nav-link">Our Philosophy</a>
-        <a href="faq.html" class="mobile-nav-link">Help & FAQs</a>
-        <a href="contact.html" class="mobile-nav-link">Contact Studio</a>
-      </div>
-      <div class="mobile-drawer-footer">
-        <a href="account.html" class="btn btn-outline btn-full">Customer Account</a>
-        <a href="admin/index.html" class="btn btn-ghost btn-full" style="font-size: 0.85rem; margin-top: 0.4rem;">Admin
-          Portal &rarr;</a>
+        <a href="about.html" class="mobile-nav-link">Maison Philosophy</a>
+        <a href="faq.html" class="mobile-nav-link">Care & Sillage FAQs</a>
+        <a href="contact.html" class="mobile-nav-link">Fragrance Concierge</a>
       </div>
     </div>
   </div>
 
-  <!-- Main Content -->
-  <main id="main-content">
-
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="hero-content">
-            <span class="hero-eyebrow">The Fall 2026 Collection</span>
-            <h1 class="hero-title">Designed to Feel Different.</h1>
-            <p class="hero-desc">
-              Discover thoughtfully selected products made to bring tactile quality, enduring comfort, and restorative
-              character into everyday life.
-            </p>
-            <div class="hero-cta-group">
-              <a href="shop.html" class="btn btn-primary btn-lg">Shop Collection &rarr;</a>
-              <a href="shop.html?sort=newest" class="btn btn-outline btn-lg">Explore New Arrivals</a>
-            </div>
-          </div>
-
-          <div class="hero-image-wrap">
-            <img src="https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=1200&q=85"
-              alt="Merino wool weighted blanket on luxury minimalist bedding" class="hero-image" />
-            <div class="hero-badge-overlay">
-              <span class="badge-label">Featured Material</span>
-              <span class="badge-text">100% Certified Organic Merino Wool</span>
-            </div>
-          </div>
+  <main>
+    <!-- 1. Luxury Fragrance Hero -->
+    <section class="hero-section" style="background: linear-gradient(rgba(20, 20, 22, 0.45), rgba(20, 20, 22, 0.65)), url('https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1800&q=85') center/cover no-repeat; min-height: 82vh; display: flex; align-items: center; color: #FFFFFF;">
+      <div class="container hero-container" style="max-width: 900px; padding: 4rem 1.5rem;">
+        <span class="hero-tagline" style="color: var(--accent-primary); letter-spacing: 0.2em; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; display: block; margin-bottom: 1rem;">
+          MAISON DE HAUTE PARFUMERIE
+        </span>
+        <h1 class="hero-title font-serif" style="font-size: clamp(2.6rem, 6vw, 4.5rem); line-height: 1.1; font-weight: 500; margin-bottom: 1.4rem; text-shadow: 0 2px 12px rgba(0,0,0,0.5);">
+          SCENT THAT<br>LEAVES A MEMORY.
+        </h1>
+        <p class="hero-description" style="font-size: 1.15rem; line-height: 1.7; color: rgba(255, 255, 255, 0.9); max-width: 600px; margin-bottom: 2.5rem;">
+          Discover refined extraits de parfum formulated with rare botanical essences and aged agarwoods—crafted to become an indelible part of your personal signature.
+        </p>
+        <div class="hero-cta-group" style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
+          <a href="shop.html" class="btn btn-primary btn-lg" style="background: var(--accent-primary); border-color: var(--accent-primary); color: #FFFFFF; font-weight: 600; letter-spacing: 0.05em;">
+            SHOP FRAGRANCES &rarr;
+          </a>
+          <a href="categories.html" class="btn btn-outline btn-lg" style="color: #FFFFFF; border-color: rgba(255,255,255,0.7); background: rgba(0,0,0,0.25);">
+            EXPLORE COLLECTIONS
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- Value Highlights Bar -->
-    <section class="value-props-bar" aria-label="Brand Guarantees">
-      <div class="container">
-        <div class="props-grid">
-          <div class="prop-item">
-            <div class="prop-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              </svg>
-            </div>
-            <div class="prop-text">
-              <h4>Conscious Craftsmanship</h4>
-              <p>Hand-finished natural materials sourced ethically from certified artisan mills.</p>
-            </div>
-          </div>
-
-          <div class="prop-item">
-            <div class="prop-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="1" y="3" width="15" height="13"></rect>
-                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                <circle cx="18.5" cy="18.5" r="2.5"></circle>
-              </svg>
-            </div>
-            <div class="prop-text">
-              <h4>Complimentary Shipping</h4>
-              <p>Carbon-neutral doorstep delivery on all qualified orders over $100.</p>
-            </div>
-          </div>
-
-          <div class="prop-item">
-            <div class="prop-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="23 4 23 10 17 10"></polyline>
-                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-              </svg>
-            </div>
-            <div class="prop-text">
-              <h4>30-Day Restful Trial</h4>
-              <p>Experience our pieces in your space. Hassle-free exchanges and returns.</p>
-            </div>
-          </div>
-
-          <div class="prop-item">
-            <div class="prop-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-              </svg>
-            </div>
-            <div class="prop-text">
-              <h4>Dedicated Care</h4>
-              <p>Human support from our studio specialists available 7 days a week.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Featured Categories -->
-    <section class="section">
-      <div class="container">
-        <div class="section-header text-center">
-          <span class="section-subtitle">Curated Atmospheres</span>
-          <h2 class="section-title">Explore by Living Space</h2>
-          <p class="section-desc">Each object is chosen for its acoustic balance, tactile warmth, and functional
-            longevity.</p>
-        </div>
-
-        <div class="categories-grid" id="featured-categories-grid">
-          <!-- Populated by app.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Curated Featured Products -->
-    <section class="section"
-      style="background-color: var(--bg-surface-subtle); border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light);">
-      <div class="container">
-        <div class="section-header"
-          style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <!-- 2. Value Badges -->
+    <section class="trust-bar section-sm" style="background-color: var(--bg-secondary); border-bottom: 1px solid var(--border-light);">
+      <div class="container trust-grid">
+        <div class="trust-item">
+          <div class="trust-icon">🌿</div>
           <div>
-            <span class="section-subtitle">Handpicked Essentials</span>
-            <h2 class="section-title">The Foundation Pieces</h2>
+            <h3 class="trust-title">High Concentration Extraits</h3>
+            <p class="trust-desc">22% to 33% pure perfume oils for 12–16 hour longevity.</p>
           </div>
-          <a href="shop.html" class="btn btn-outline">View Complete Catalog &rarr;</a>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🏛️</div>
+          <div>
+            <h3 class="trust-title">Grasse & Portland Atelier</h3>
+            <p class="trust-desc">Small batch extraction with 90-day cold cellar maceration.</p>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">📦</div>
+          <div>
+            <h3 class="trust-title">Complimentary Global Delivery</h3>
+            <p class="trust-desc">Signature wax-sealed packaging on all orders over $100.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Featured Fragrance Collection -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-subtitle">Private Vault</span>
+          <h2 class="section-title font-serif" style="font-size: 2.4rem;">The Signature Collection</h2>
+          <p class="section-desc">Our most distinctive extrait de parfum creations, formulated without compromise.</p>
         </div>
 
-        <div class="product-grid" id="featured-products-grid">
+        <div class="product-grid-4" id="featured-products-grid">
           <!-- Populated by app.js -->
         </div>
       </div>
     </section>
 
-    <!-- Editorial Promo Banner -->
-    <section class="section">
-      <div class="container">
-        <div class="promo-editorial-section">
-          <div class="promo-grid">
-            <div class="promo-content">
-              <span class="promo-tag">Studio Spotlight</span>
-              <h2 class="promo-title">The Komorebi Ceramic Ritual.</h2>
-              <p class="promo-desc">
-                Hand-thrown in Kyoto from coarse sandstone clay, our pour-over set optimizes water flow rate while
-                celebrating tactile organic wabi-sabi imperfections.
-              </p>
-              <a href="product.html?id=df_002" class="btn btn-accent btn-lg">Discover the Brew Set &rarr;</a>
-            </div>
-            <div>
-              <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1000&q=80"
-                alt="Artisan ceramic coffee pour over set on marble counter" class="promo-image" loading="lazy" />
-            </div>
-          </div>
+    <!-- 4. Fragrance Discovery Quiz Engine -->
+    <section class="scent-discovery-section">
+      <div class="container text-center">
+        <span class="section-subtitle">Olfactory Matchmaker</span>
+        <h2 class="section-title font-serif" style="font-size: 2.6rem;">FIND YOUR SIGNATURE SCENT</h2>
+        <p class="section-desc" style="max-width: 620px; margin: 0 auto 1.5rem;">
+          What mood or aroma calls to you today? Select an olfactory profile below and our atelier will recommend your ideal composition.
+        </p>
+
+        <div class="scent-quiz-nav">
+          <button type="button" class="scent-quiz-btn active" data-scent-profile="Woody">Woody & Warm</button>
+          <button type="button" class="scent-quiz-btn" data-scent-profile="Fresh">Fresh & Oceanic</button>
+          <button type="button" class="scent-quiz-btn" data-scent-profile="Floral">Romantic Floral</button>
+          <button type="button" class="scent-quiz-btn" data-scent-profile="Sweet">Sweet Gourmand</button>
+          <button type="button" class="scent-quiz-btn" data-scent-profile="Spicy">Exotic Spicy</button>
+          <button type="button" class="scent-quiz-btn" data-scent-profile="Deep & Smoky">Deep & Smoky Oud</button>
+        </div>
+
+        <div class="product-grid-4" id="discovery-results-grid" style="text-align: left;">
+          <!-- Populated dynamically by app.js -->
         </div>
       </div>
     </section>
 
-    <!-- New Arrivals & Bestsellers Split Showcase -->
-    <section class="section-sm">
+    <!-- 5. Best Sellers -->
+    <section class="section">
       <div class="container">
-        <div class="section-header text-center">
-          <span class="section-subtitle">Freshly Crafted</span>
-          <h2 class="section-title">New Arrivals to the Studio</h2>
-          <p class="section-desc">The latest additions to our ongoing study in comfort and spatial calm.</p>
+        <div class="section-header">
+          <div>
+            <span class="section-subtitle">Patron Favorites</span>
+            <h2 class="section-title font-serif" style="font-size: 2.4rem;">Most Coveted Flacons</h2>
+          </div>
+          <a href="shop.html" class="btn btn-outline btn-sm">View Full Catalog &rarr;</a>
         </div>
 
-        <div class="product-grid" id="new-arrivals-grid">
+        <div class="product-grid-4" id="bestsellers-products-grid">
           <!-- Populated by app.js -->
         </div>
       </div>
     </section>
 
-    <!-- Brand Story Section -->
-    <section class="section brand-story-section">
+    <!-- 6. Scent Spotlight: DeepFeel Noir -->
+    <section class="spotlight-section" style="background-color: var(--bg-secondary); padding: 5rem 0;">
       <div class="container">
-        <div class="story-grid">
-          <div class="story-image-grid">
-            <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=700&q=80"
-              alt="Artisan weaving organic linen fibers" class="story-img-1" loading="lazy" />
-            <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=700&q=80"
-              alt="Warm ambient lamp on minimal wood sideboard" class="story-img-2" loading="lazy" />
+        <div class="spotlight-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+          <div class="spotlight-media" style="border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-xl);">
+            <img 
+              src="https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1000&q=80" 
+              alt="DeepFeel Oud Royale Extrait" 
+              style="width: 100%; height: 500px; object-fit: cover;" 
+            />
           </div>
-
-          <div class="story-content">
-            <span class="section-subtitle">Our Philosophy</span>
-            <h2 class="section-title">Objects that quiet the room and ground the senses.</h2>
-            <p style="margin-bottom: 1.2rem;">
-              DeepFeel was founded on a simple observation: modern life is filled with synthetic surfaces and visual
-              clutter. We believe our everyday environments should provide sanctuary.
+          <div class="spotlight-content">
+            <span class="section-subtitle">Crowning Masterpiece</span>
+            <h2 class="font-serif" style="font-size: 2.6rem; line-height: 1.2; margin-bottom: 1rem;">DeepFeel Oud Royale</h2>
+            <p style="font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem;">
+              Distilled from thirty-year-old wild Assam agarwood and crowned with rare Taif rose and black honey. Free of medicinal synthetic notes, Oud Royale unfolds with aristocratic creaminess and 16-hour sillage.
             </p>
-            <p style="margin-bottom: 2rem;">
-              Every blanket, lamp, vessel, and workspace piece we produce is crafted from honest organic
-              substances—virgin merino wool, unglazed stoneware, European flax, and natural timber—designed to age with
-              grace.
-            </p>
-            <a href="about.html" class="btn btn-outline">Read Our Craft Story &rarr;</a>
+            <div style="display: flex; gap: 2rem; margin-bottom: 2rem; border-top: 1px solid var(--border-medium); border-bottom: 1px solid var(--border-medium); padding: 1.2rem 0;">
+              <div>
+                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); display: block;">Longevity</span>
+                <strong>14–16 Hours</strong>
+              </div>
+              <div>
+                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); display: block;">Concentration</span>
+                <strong>32% Pure Parfum</strong>
+              </div>
+              <div>
+                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); display: block;">Origin</span>
+                <strong>Assam & Grasse</strong>
+              </div>
+            </div>
+            <a href="product.html?id=df_oud_royale" class="btn btn-primary btn-lg">Experience Oud Royale ($245) &rarr;</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Customer Testimonials -->
+    <!-- 7. The Oud Collection Showcase -->
     <section class="section">
       <div class="container">
         <div class="section-header text-center">
-          <span class="section-subtitle">Real Experiences</span>
-          <h2 class="section-title">Loved by Thoughtful Homes</h2>
-          <p class="section-desc">Read unfiltered impressions from our community across the country.</p>
+          <span class="section-subtitle">Sacred Resins</span>
+          <h2 class="section-title font-serif" style="font-size: 2.4rem;">The Oud Collection</h2>
+          <p class="section-desc">Deep, mysterious, and unforgettable compositions celebrating ethical wild agarwoods.</p>
         </div>
 
-        <div class="testimonials-grid">
-          <article class="testimonial-card">
-            <div class="testimonial-stars">
-              <span class="rating-stars">★★★★★</span>
-            </div>
-            <p class="testimonial-quote">
-              "The Merino Wool Weighted Throw is unlike anything I've ever owned. The chunky open knit prevents
-              overheating while providing a deeply calming weight."
-            </p>
-            <div class="testimonial-author">
-              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
-                alt="Claire Dupont" class="author-avatar" />
-              <div>
-                <div class="author-name">Claire Dupont</div>
-                <div class="author-badge">✓ Verified Collector</div>
-              </div>
-            </div>
-          </article>
-
-          <article class="testimonial-card">
-            <div class="testimonial-stars">
-              <span class="rating-stars">★★★★★</span>
-            </div>
-            <p class="testimonial-quote">
-              "The Aura Lamp has transformed my evening desk sessions. The capacitive brass dimmer feels so tactile, and
-              the 2700K amber glow is completely glare-free."
-            </p>
-            <div class="testimonial-author">
-              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
-                alt="Liam O'Connor" class="author-avatar" />
-              <div>
-                <div class="author-name">Liam O'Connor</div>
-                <div class="author-badge">✓ Verified Collector</div>
-              </div>
-            </div>
-          </article>
-
-          <article class="testimonial-card">
-            <div class="testimonial-stars">
-              <span class="rating-stars">★★★★★</span>
-            </div>
-            <p class="testimonial-quote">
-              "Every detail down to the recycled unboxing materials speaks of uncompromising consideration. DeepFeel
-              products are truly built to last decades."
-            </p>
-            <div class="testimonial-author">
-              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80"
-                alt="Maya Lin" class="author-avatar" />
-              <div>
-                <div class="author-name">Maya Lin</div>
-                <div class="author-badge">✓ Verified Collector</div>
-              </div>
-            </div>
-          </article>
+        <div class="product-grid-3" id="oud-products-grid">
+          <!-- Populated by app.js -->
         </div>
       </div>
     </section>
 
-    <!-- Newsletter Section -->
-    <section class="newsletter-section">
+    <!-- 8. Testimonials -->
+    <section class="section" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-light);">
       <div class="container">
-        <div class="newsletter-card">
-          <span class="section-subtitle">Stay in the Know</span>
-          <h2 class="section-title">DeepFeel Chronicles</h2>
-          <p class="section-desc">
-            Receive intimate dispatches on spatial design, seasonal artisan releases, and subscriber-only previews.
-            Never spam.
-          </p>
+        <div class="section-header text-center">
+          <span class="section-subtitle">Patron Reflections</span>
+          <h2 class="section-title font-serif" style="font-size: 2.4rem;">The Sillage of Memory</h2>
+        </div>
 
-          <form class="newsletter-form" id="newsletter-form">
-            <input type="email" placeholder="Enter your email address..." required aria-label="Email address" />
-            <button type="submit" class="btn btn-primary">Subscribe</button>
-          </form>
+        <div class="product-grid-3">
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 2rem;">
+            <div style="color: var(--accent-primary); margin-bottom: 0.8rem;">★★★★★</div>
+            <p class="font-serif" style="font-style: italic; font-size: 1.15rem; line-height: 1.7; margin-bottom: 1.2rem;">
+              "DeepFeel Noir is the only fragrance where strangers consistently stop me in lobbies to ask for its name. The leather and rose dry-down is pure intoxication."
+            </p>
+            <strong>Genevieve R.</strong>
+            <span class="text-muted" style="font-size: 0.8rem; display: block;">New York, NY</span>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 2rem;">
+            <div style="color: var(--accent-primary); margin-bottom: 0.8rem;">★★★★★</div>
+            <p class="font-serif" style="font-style: italic; font-size: 1.15rem; line-height: 1.7; margin-bottom: 1.2rem;">
+              "Having collected niche Middle Eastern and French extraits for 15 years, Oud Royale stands with the greatest. Extraordinary buttery woodiness."
+            </p>
+            <strong>Tariq K.</strong>
+            <span class="text-muted" style="font-size: 0.8rem; display: block;">London, UK</span>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 2rem;">
+            <div style="color: var(--accent-primary); margin-bottom: 0.8rem;">★★★★★</div>
+            <p class="font-serif" style="font-style: italic; font-size: 1.15rem; line-height: 1.7; margin-bottom: 1.2rem;">
+              "The Discovery Set arrived beautifully wrapped in silk paper with a wax seal. The included voucher made choosing my full bottle effortless."
+            </p>
+            <strong>Julian T.</strong>
+            <span class="text-muted" style="font-size: 0.8rem; display: block;">Seattle, WA</span>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- 9. Newsletter -->
+    <section class="section" style="background-color: var(--bg-secondary);">
+      <div class="container text-center" style="max-width: 600px;">
+        <span class="section-subtitle">Private Atelier Dispatch</span>
+        <h2 class="font-serif" style="font-size: 2.2rem; margin-bottom: 0.8rem;">Join the Scent Circle</h2>
+        <p class="text-secondary" style="margin-bottom: 2rem;">
+          Receive private preview access to limited seasonal extraits, rare harvest harvests, and complimentary discovery samples.
+        </p>
+
+        <form class="newsletter-form" onsubmit="event.preventDefault(); UI.showToast('Welcome to the Maison DeepFeel circle.', 'success'); this.reset();">
+          <input type="email" placeholder="Enter your email address..." class="form-input" required />
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+      </div>
+    </section>
   </main>
 
-  <!-- Site Footer -->
-  <footer class="site-footer" role="contentinfo">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
-          <p class="footer-desc">
-            Thoughtfully crafted living objects made to ground the senses and bring enduring calm into modern spaces.
-          </p>
-          <p style="font-size: 0.85rem; color: #71717A;">Portland Studio: 1024 Hawthorne Blvd, Portland, OR</p>
-        </div>
-
-        <div>
-          <h4 class="footer-title">Collections</h4>
-          <ul class="footer-links">
-            <li><a href="shop.html?category=rest-wellness">Rest & Wellness</a></li>
-            <li><a href="shop.html?category=artisan-drinkware">Artisan Drinkware</a></li>
-            <li><a href="shop.html?category=ambient-lighting">Ambient Lighting</a></li>
-            <li><a href="shop.html?category=home-living">Home & Living</a></li>
-            <li><a href="shop.html?category=studio-workspace">Studio & Workspace</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="footer-title">Company</h4>
-          <ul class="footer-links">
-            <li><a href="about.html">Our Philosophy</a></li>
-            <li><a href="faq.html">Help & FAQ</a></li>
-            <li><a href="contact.html">Contact Studio</a></li>
-            <li><a href="account.html">Customer Account</a></li>
-            <li><a href="admin/index.html">Admin Command Suite</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="footer-title">Customer Care</h4>
-          <ul class="footer-links">
-            <li><a href="faq.html#shipping">Shipping & Delivery</a></li>
-            <li><a href="faq.html#returns">30-Day Returns</a></li>
-            <li><a href="faq.html#warranty">Product Warranty</a></li>
-            <li><a href="orders.html">Track My Order</a></li>
-            <li><a href="contact.html">Trade & Hospitality</a></li>
-          </ul>
-        </div>
+  <!-- Luxury Footer -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a href="index.html" class="brand-logo" style="margin-bottom: 1rem;">DEEP<span>FEEL</span></a>
+        <p class="footer-desc">
+          Haute parfumerie crafted with wild botanicals, aged ambers, and sustainable agarwoods. Scent that leaves a memory.
+        </p>
       </div>
 
+      <div>
+        <h4 class="footer-col-title">Fragrance Vault</h4>
+        <ul class="footer-links">
+          <li><a href="shop.html">All Extraits</a></li>
+          <li><a href="shop.html?category=signature-collection">Signature Collection</a></li>
+          <li><a href="shop.html?category=oud-collection">The Oud Collection</a></li>
+          <li><a href="shop.html?gender=men">For Him</a></li>
+          <li><a href="shop.html?gender=women">For Her</a></li>
+          <li><a href="shop.html?category=gift-sets">Gift & Discovery Sets</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Maison</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">Atelier Story</a></li>
+          <li><a href="faq.html">Sillage & Care FAQs</a></li>
+          <li><a href="contact.html">Concierge & Trade</a></li>
+          <li><a href="admin/login.html">Atelier Portal</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Concierge Atelier</h4>
+        <p class="footer-desc" style="font-size: 0.9rem; margin-bottom: 0.8rem;">
+          Maison DeepFeel<br>
+          1024 Hawthorne Blvd, Suite 400<br>
+          Portland, OR 97214
+        </p>
+        <span style="font-size: 0.88rem; color: var(--accent-primary); font-weight: 600;">concierge@deepfeel.com</span>
+      </div>
+    </div>
+
+    <div class="container">
       <div class="footer-bottom">
-        <p>&copy; 2026 DeepFeel Living Co. All rights reserved. Designed to Feel Different.</p>
-        <div class="footer-legal-links">
-          <a href="faq.html">Privacy Policy</a>
-          <a href="faq.html">Terms of Service</a>
-          <a href="faq.html">Accessibility</a>
-        </div>
+        <p>&copy; 2026 Maison DeepFeel Co. All rights reserved. Formulated in Grasse & Portland.</p>
       </div>
     </div>
   </footer>
@@ -456,5 +370,4 @@
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
 </body>
-
 </html>

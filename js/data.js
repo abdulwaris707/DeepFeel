@@ -1,854 +1,1080 @@
 /**
- * DeepFeel - Initial Seed Data Layer
- * Contains realistic premium lifestyle products, categories, coupons, and demo accounts.
+ * DeepFeel - Luxury Fragrance House Seed Data Layer
+ * Contains 25+ meticulously crafted luxury perfumes, olfactory families, notes, and demo accounts.
  */
 
 const SEED_CATEGORIES = [
   {
-    id: "cat_living",
-    name: "Home & Living",
-    slug: "home-living",
-    description: "Thoughtfully crafted homeware, textiles, and comforting essentials.",
-    image: "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=800&q=80",
+    id: "cat_signature",
+    name: "Signature Collection",
+    slug: "signature-collection",
+    description: "Our most distinctive extrait de parfum creations, crafted to become an unforgettable personal aura.",
+    image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80",
     featured: true
   },
   {
-    id: "cat_comfort",
-    name: "Rest & Wellness",
-    slug: "rest-wellness",
-    description: "Ergonomic sleep systems, organic blankets, and mindful recovery goods.",
-    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80",
+    id: "cat_oud",
+    name: "The Oud Collection",
+    slug: "oud-collection",
+    description: "Deep, resinous, and intoxicating blends celebrating wild Assamese and Cambodian agarwood.",
+    image: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80",
     featured: true
   },
   {
-    id: "cat_drinkware",
-    name: "Artisan Drinkware",
-    slug: "artisan-drinkware",
-    description: "Ceramic pour-overs, stoneware mugs, and thermal carafes.",
-    image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80",
+    id: "cat_men",
+    name: "For Him",
+    slug: "men",
+    description: "Sophisticated woody, spicy, and smoky fragrances designed with refined modern masculinity.",
+    image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=900&q=80",
     featured: true
   },
   {
-    id: "cat_lighting",
-    name: "Ambient Lighting",
-    slug: "ambient-lighting",
-    description: "Sculptural luminaires and warm accent lamps engineered for calm spaces.",
-    image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
+    id: "cat_women",
+    name: "For Her",
+    slug: "women",
+    description: "Luminous florals, velvety ambers, and sensual gourmand elixirs of timeless elegance.",
+    image: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=900&q=80",
     featured: true
   },
   {
-    id: "cat_workspace",
-    name: "Studio & Workspace",
-    slug: "studio-workspace",
-    description: "Minimal desk organizers, tactile leather goods, and timeless accessories.",
-    image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80",
+    id: "cat_unisex",
+    name: "Unisex Elixirs",
+    slug: "unisex",
+    description: "Gender-neutral olfactory masterpieces celebrating rare woods, raw incense, and sparkling citrus.",
+    image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80",
+    featured: false
+  },
+  {
+    id: "cat_gifts",
+    name: "Gift & Discovery Sets",
+    slug: "gift-sets",
+    description: "Exquisite presentation coffrets and travel discovery atomizers for the connoisseur.",
+    image: "https://images.unsplash.com/photo-1615655406736-b37c4fabf923?auto=format&fit=crop&w=900&q=80",
     featured: false
   }
 ];
 
 const SEED_PRODUCTS = [
   {
-    id: "df_001",
-    sku: "DF-LIV-01",
-    name: "Merino Wool Weighted Throw",
-    category: "Rest & Wellness",
-    categorySlug: "rest-wellness",
-    price: 185.00,
-    originalPrice: 220.00,
-    discountPrice: 185.00,
-    stock: 28,
-    lowStockThreshold: 10,
+    id: "df_noir",
+    sku: "DF-PRF-01",
+    name: "DeepFeel Noir Extrait",
+    category: "Signature Collection",
+    categorySlug: "signature-collection",
+    gender: "Unisex",
+    fragranceFamily: "Woody Amber",
+    concentration: "Extrait de Parfum",
+    price: 195.00,
+    originalPrice: 230.00,
+    discountPrice: 195.00,
+    stock: 35,
+    lowStockThreshold: 8,
     rating: 4.9,
-    reviewCount: 64,
+    reviewCount: 128,
     status: "active",
     featured: true,
     bestseller: true,
     isNew: false,
-    shortDescription: "Ultra-fine New Zealand merino wool hand-knit blanket providing gentle, evenly distributed pressure for restorative sleep.",
-    description: "Experience deep relaxation with our handcrafted Merino Wool Weighted Throw. Designed with 100% natural, breathable fibers, this piece offers therapeutic gentle pressure without trapping excess heat. The chunky open-loop weave ensures consistent airflow while providing a comforting cocoon for reading, lounging, or sleeping.",
-    specs: {
-      "Material": "100% Certified Organic Merino Wool",
-      "Dimensions": "50\" x 70\" (127cm x 178cm)",
-      "Weight": "12 lbs (5.4 kg)",
-      "Origin": "Ethically crafted in Portugal",
-      "Care": "Dry clean or spot clean with cold water"
+    exclusive: true,
+    sizes: ["30ml", "50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "30ml": 140.00, "50ml": 195.00, "100ml": 285.00 },
+    longevity: "10–14 Hours",
+    sillage: "Enveloping & Powerful",
+    season: "Fall / Winter / Evening",
+    occasion: "Black Tie, Intimate Soirées & Midnight Encounters",
+    shortDescription: "An intoxicating blend of smoky birch tar, blackened leather, Damascus rose, and rare vintage ambergris.",
+    description: "DeepFeel Noir is our crowning signature statement—a tribute to nocturnal mystery and enigmatic confidence. Opening with a flash of spiced saffron and bergamot peel, it descends into a velvety heart of midnight Turkish rose and smoked guaiac wood. The dry-down lingers indefinitely on silk and skin with dark leather and warm Golden Amber.",
+    story: "Conceived during an autumn midnight walk through the ancient stone alleyways of Grasse. Noir captures the intoxicating transition when twilight gives way to pure darkness and embers crackle in the crisp air.",
+    notes: {
+      top: ["Italian Bergamot", "Black Saffron", "Pink Peppercorn"],
+      heart: ["Turkish Rose Absolute", "Smoked Guaiacwood", "Cashmere Wood"],
+      base: ["Aged Ambergris", "Tuscan Leather", "Bourbon Vanilla", "Patchouli Coeur"]
     },
+    specs: {
+      "Concentration": "Extrait de Parfum (30% Oil Concentration)",
+      "Nose / Creator": "Maison DeepFeel Grasse Studio",
+      "Origin": "Formulated in Grasse, France — Hand-bottled in Portland",
+      "Vessel": "Heavyweight European flacon with magnetic obsidian cap"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum), Benzyl Benzoate, Limonene, Linalool, Coumarin, Eugenol, Evernia Prunastri (Oakmoss) Extract, Alpha-Isomethyl Ionone, Citral.",
     images: [
-      "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=900&q=80"
     ],
-    tags: ["blanket", "merino", "wellness", "sleep", "throw"],
-    variants: {
-      colors: ["Oatmeal Heather", "Charcoal Slate", "Sage Mist"],
-      sizes: ["Standard (50x70)", "Large (60x80)"]
-    }
+    tags: ["leather", "amber", "rose", "night", "luxury", "unisex", "noir", "deep & smoky"]
   },
   {
-    id: "df_002",
-    sku: "DF-CER-02",
-    name: "Komorebi Ceramic Pour-Over Set",
-    category: "Artisan Drinkware",
-    categorySlug: "artisan-drinkware",
-    price: 68.00,
-    originalPrice: 85.00,
-    discountPrice: 68.00,
+    id: "df_oud_royale",
+    sku: "DF-OUD-02",
+    name: "DeepFeel Oud Royale",
+    category: "The Oud Collection",
+    categorySlug: "oud-collection",
+    gender: "Unisex",
+    fragranceFamily: "Oriental",
+    concentration: "Extrait de Parfum",
+    price: 245.00,
+    originalPrice: 280.00,
+    discountPrice: 245.00,
+    stock: 22,
+    lowStockThreshold: 5,
+    rating: 5.0,
+    reviewCount: 94,
+    status: "active",
+    featured: true,
+    bestseller: true,
+    isNew: false,
+    exclusive: true,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 245.00, "100ml": 360.00 },
+    longevity: "12–16 Hours",
+    sillage: "Majestic & Unmistakable",
+    season: "Autumn / Winter",
+    occasion: "Formal Galas, Executive Presence & Special Occasions",
+    shortDescription: "Naturally aged wild Assam agarwood crowned with Taif rose, cardamom pod, and dark honeyed resins.",
+    description: "An aristocratic masterpiece built around authentic, sustainably aged Assam agarwood (Oud). Unlike synthetic approximations, Oud Royale unfolds with smooth, creamy woodiness, devoid of harsh medicinal edges. Enriched with golden frankincense, myrrh, and rare tonka bean.",
+    story: "Crafted from wild agarwood trees aged over thirty years. Each flacon of Oud Royale matures in dark temperature-controlled cellars for six months before release.",
+    notes: {
+      top: ["Wild Cardamom", "Golden Honey", "Coriander Seed"],
+      heart: ["Taif Rose", "Aged Cambodian Agarwood", "Nutmeg"],
+      base: ["Assam Oud", "Frankincense", "Sandalwood", "Labdanum"]
+    },
+    specs: {
+      "Concentration": "Extrait de Parfum (32% Pure Parfum)",
+      "Agarwood Source": "Certified Ethical Assam & Trat Wild Orchards",
+      "Vessel": "Gold-leaf silk-screened amber glass flacon"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum / Aquilaria Agallocha Oil), Citronellol, Geraniol, Cinnamal, Benzyl Alcohol, Farnesol.",
+    images: [
+      "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["oud", "agarwood", "frankincense", "oriental", "honey", "rare", "deep & smoky", "woody"]
+  },
+  {
+    id: "df_elan",
+    sku: "DF-FEM-03",
+    name: "DeepFeel Élan L'Absolu",
+    category: "For Her",
+    categorySlug: "women",
+    gender: "Women",
+    fragranceFamily: "Floral",
+    concentration: "Eau de Parfum",
+    price: 165.00,
+    originalPrice: 190.00,
+    discountPrice: 165.00,
     stock: 45,
-    lowStockThreshold: 12,
+    lowStockThreshold: 10,
+    rating: 4.9,
+    reviewCount: 112,
+    status: "active",
+    featured: true,
+    bestseller: true,
+    isNew: false,
+    exclusive: false,
+    sizes: ["30ml", "50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "30ml": 115.00, "50ml": 165.00, "100ml": 240.00 },
+    longevity: "8–10 Hours",
+    sillage: "Graceful & Radiant",
+    season: "All Seasons / Signature Daily",
+    occasion: "Daytime Elegance, High Tea & Romantic Dinners",
+    shortDescription: "Grasse Jasmine Grandiflorum and Orange Blossom infused with sparkling pear and velvety white musk.",
+    description: "Élan is the personification of fluid grace and radiant sensuality. Crisp champagne pear and neroli petals open into an opulent bouquet of dawn-harvested Grasse jasmine. Settles into a skin-caressing blanket of silky Madagascar vanilla and white cedar.",
+    story: "Inspired by the effortless French art de vivre—the quiet power of a woman who enters a room without demanding attention, yet owns it entirely.",
+    notes: {
+      top: ["White Pear", "Italian Neroli", "Mandarin Zest"],
+      heart: ["Grasse Jasmine Grandiflorum", "Orange Blossom", "May Rose"],
+      base: ["Bourbon Vanilla Orchid", "White Cedarwood", "Silk Musk"]
+    },
+    specs: {
+      "Concentration": "Eau de Parfum (22% Concentration)",
+      "Harvest": "First-Dawn Handpicked Grasse Jasmine",
+      "Vessel": "Faceted crystalline bottle with brushed champagne gold collar"
+    },
+    ingredients: "Alcohol Denat., Parfum (Fragrance), Aqua, Benzyl Salicylate, Hydroxycitronellal, Limonene, Linalool, Geraniol, Citronellol.",
+    images: [
+      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["jasmine", "floral", "vanilla", "pear", "grace", "women", "sweet", "fresh"]
+  },
+  {
+    id: "df_santal_reserve",
+    sku: "DF-HOM-04",
+    name: "DeepFeel Santal Reserve",
+    category: "For Him",
+    categorySlug: "men",
+    gender: "Men",
+    fragranceFamily: "Woody",
+    concentration: "Eau de Parfum",
+    price: 175.00,
+    originalPrice: 175.00,
+    discountPrice: 175.00,
+    stock: 40,
+    lowStockThreshold: 10,
     rating: 4.8,
-    reviewCount: 42,
+    reviewCount: 86,
     status: "active",
     featured: true,
     bestseller: false,
     isNew: true,
-    shortDescription: "Hand-thrown stoneware dripper with matching heat-resistant glass carafe and walnut collar.",
-    description: "Elevate your morning coffee ritual with the Komorebi Pour-Over Set. Individually hand-glazed by master ceramicists in Kyoto, the internal spiral grooves are engineered to optimize extraction rate and brew clarity. Paired with hand-carved American walnut accents.",
-    specs: {
-      "Material": "Natural Sandstone Ceramic & Borosilicate Glass",
-      "Capacity": "600ml (2-4 Cups)",
-      "Filter Compatibility": "Standard #02 Cone Filters",
-      "Dishwasher Safe": "Ceramic dripper and glass only (Remove wooden collar)"
+    exclusive: false,
+    sizes: ["30ml", "50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "30ml": 120.00, "50ml": 175.00, "100ml": 255.00 },
+    longevity: "9–11 Hours",
+    sillage: "Magnetic & Refined",
+    season: "Fall / Spring / All-Year",
+    occasion: "Executive Boardrooms, Smart Casual & Travel",
+    shortDescription: "Creamy Australian Mysore sandalwood, cracked cardamom, Florentine iris, and smoky cedar embers.",
+    description: "Santal Reserve delivers the quintessential modern masculine profile—warm, cerebral, and grounded. It leads with crushed violet leaf and cardamom before unleashing a rich, buttery heart of aged sandalwood and iris root. Dry cedar and papyrus give it a crisp tailored finish.",
+    story: "Crafted for the modern gentleman whose presence is defined by calm composure rather than volume. A scent tailored like a bespoke cashmere jacket.",
+    notes: {
+      top: ["Green Cardamom", "Violet Leaf", "Australian Cypress"],
+      heart: ["Florentine Iris (Orris)", "Papyrus", "Cedarwood"],
+      base: ["Mysore Sandalwood", "Ambroxan", "Warm Amber", "Leather Accord"]
     },
+    specs: {
+      "Concentration": "Eau de Parfum (24% Concentration)",
+      "Wood Origin": "Sustainably Farmed Australian Sandalwood",
+      "Vessel": "Heavy smoke-tinted glass with hand-turned walnut collar"
+    },
+    ingredients: "Alcohol Denat., Parfum (Fragrance), Aqua, Limonene, Alpha-Isomethyl Ionone, Isoeugenol, Farnesol.",
     images: [
-      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80"
     ],
-    tags: ["coffee", "ceramic", "drinkware", "pour-over", "kitchen"],
-    variants: {
-      colors: ["Raw Sandstone", "Matte Charcoal", "Speckled Moss"]
-    }
+    tags: ["sandalwood", "iris", "cardamom", "cedar", "men", "woody", "spicy"]
   },
   {
-    id: "df_003",
-    sku: "DF-LGT-03",
-    name: "Aura Tactile Dimmable Desk Lamp",
-    category: "Ambient Lighting",
-    categorySlug: "ambient-lighting",
-    price: 145.00,
-    originalPrice: 145.00,
-    discountPrice: 145.00,
-    stock: 19,
-    lowStockThreshold: 8,
+    id: "df_velvet_amber",
+    sku: "DF-UNI-05",
+    name: "DeepFeel Velvet Amber",
+    category: "Signature Collection",
+    categorySlug: "signature-collection",
+    gender: "Unisex",
+    fragranceFamily: "Amber",
+    concentration: "Eau de Parfum",
+    price: 180.00,
+    originalPrice: 210.00,
+    discountPrice: 180.00,
+    stock: 28,
+    lowStockThreshold: 6,
     rating: 4.9,
-    reviewCount: 51,
+    reviewCount: 97,
     status: "active",
     featured: true,
     bestseller: true,
     isNew: false,
-    shortDescription: "Machined solid aluminum table lamp with capacitive brass touch dimmer and 2700K warm LED glow.",
-    description: "The Aura Lamp delivers a soothing, glare-free downward cascade of light designed to calm the senses during focused work or evening unwind sessions. Tap or hold the knurled brass dial to step smoothly between intimate candle warmth and crisp daylight task illumination.",
-    specs: {
-      "Dimensions": "13.5\" H x 7.5\" W",
-      "Color Temp": "2200K - 3000K Stepless Dimming",
-      "Bulb": "Integrated CRI 95+ Warm LED (50,000 Hours life)",
-      "Power": "USB-C Recharging / Continuous AC Cord Included"
+    exclusive: true,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 180.00, "100ml": 265.00 },
+    longevity: "10–12 Hours",
+    sillage: "Warm & Cozy",
+    season: "Autumn / Winter",
+    occasion: "Intimate Evenings, Fireside Conversations & Luxury Lounging",
+    shortDescription: "Golden Baltic amber crystals melted with creamy tonka bean, Madagascar vanilla, and benzoin tears.",
+    description: "Like wrapping yourself in pure cashmere beside a glowing hearth. Velvet Amber is decadent without being cloying. Sweet resins of labdanum and benzoin create a luscious balsamic aura that deepens as body heat activates the perfume oils.",
+    story: "Inspired by the amber light of the golden hour reflected across silk velvet drapery.",
+    notes: {
+      top: ["Spanish Labdanum", "Bitter Almond", "Bergamot"],
+      heart: ["Benzoin Siam", "Cinnamon Bark", "Tonka Bean"],
+      base: ["Baltic Amber", "Madagascar Vanilla Bean", "Indonesian Patchouli"]
     },
+    specs: {
+      "Concentration": "Eau de Parfum (25% Concentration)",
+      "Resin Source": "Hand-tapped Siam Benzoin and wild Spanish Cistus",
+      "Vessel": "Amber-tinted flacon with gilded atomizer"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum), Coumarin, Cinnamyl Alcohol, Linalool, Eugenol, Benzyl Cinnamate.",
     images: [
-      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=900&q=80"
     ],
-    tags: ["lighting", "lamp", "desk", "minimalist", "brass"],
-    variants: {
-      colors: ["Anodized Bronze", "Brushed Brass", "Matte Obsidian"]
-    }
+    tags: ["amber", "vanilla", "tonka", "warm", "unisex", "velvet", "sweet"]
   },
   {
-    id: "df_004",
-    sku: "DF-WKS-04",
-    name: "Full-Grain Saddle Leather Desk Mat",
-    category: "Studio & Workspace",
-    categorySlug: "studio-workspace",
-    price: 92.00,
-    originalPrice: 110.00,
-    discountPrice: 92.00,
-    stock: 35,
+    id: "df_vetiver_imperiale",
+    sku: "DF-HOM-06",
+    name: "DeepFeel Vétiver Impériale",
+    category: "For Him",
+    categorySlug: "men",
+    gender: "Men",
+    fragranceFamily: "Fresh",
+    concentration: "Eau de Parfum",
+    price: 155.00,
+    originalPrice: 155.00,
+    discountPrice: 155.00,
+    stock: 50,
+    lowStockThreshold: 12,
+    rating: 4.8,
+    reviewCount: 65,
+    status: "active",
+    featured: false,
+    bestseller: false,
+    isNew: true,
+    exclusive: false,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 155.00, "100ml": 225.00 },
+    longevity: "8–10 Hours",
+    sillage: "Crisp & Clean",
+    season: "Spring / Summer / Daytime",
+    occasion: "Office, Daily Sartorial & Summer Escapes",
+    shortDescription: "Earthy Haitian vetiver root sharpened with sparkling grapefruit, pink peppercorn, and mineral cedar.",
+    description: "An invigorating study in green, earthy contrast. Vétiver Impériale pairs the mineral crispness of bitter pink grapefruit with the aristocratic depth of organic Haitian vetiver. Fresh, ultra-clean, and commanding.",
+    story: "Distilled from deep root fibers harvested from the volcanic mountain soils of Les Cayes, Haiti.",
+    notes: {
+      top: ["Ruby Red Grapefruit", "Calabrian Bergamot", "Pink Peppercorn"],
+      heart: ["Geranium Leaf", "Vetiver Heart", "Nutmeg"],
+      base: ["Haitian Vetiver Roots", "Atlas Cedarwood", "Clean Ambergris"]
+    },
+    specs: {
+      "Concentration": "Eau de Parfum (20% Concentration)",
+      "Distillation": "Molecularly fractionalized pure vetiverol",
+      "Vessel": "Emerald-clear flacon with polished silver accents"
+    },
+    ingredients: "Alcohol Denat., Parfum (Fragrance), Limonene, Citronellol, Hydroxycitronellal, Citral.",
+    images: [
+      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["vetiver", "fresh", "grapefruit", "citrus", "men", "clean", "spicy"]
+  },
+  {
+    id: "df_bloom_absolu",
+    sku: "DF-FEM-07",
+    name: "DeepFeel Bloom Absolu",
+    category: "For Her",
+    categorySlug: "women",
+    gender: "Women",
+    fragranceFamily: "Floral",
+    concentration: "Eau de Parfum",
+    price: 160.00,
+    originalPrice: 185.00,
+    discountPrice: 160.00,
+    stock: 38,
     lowStockThreshold: 10,
-    rating: 4.7,
-    reviewCount: 38,
+    rating: 4.9,
+    reviewCount: 78,
     status: "active",
     featured: false,
     bestseller: true,
     isNew: false,
-    shortDescription: "Vegetable-tanned Tuscan leather pad that develops a rich, individual patina with everyday use.",
-    description: "Crafted from heavy 3.5mm full-grain bridle leather, this workspace mat anchors your keyboard and mouse in tactile luxury. Treated with natural beeswax and oils, the water-resistant surface cushions wrists and protects fine wood desktops.",
-    specs: {
-      "Dimensions": "32\" x 16\" (81cm x 40cm)",
-      "Thickness": "3.5mm Full-Grain Leather + Suede Backing",
-      "Tannery": "Ponte a Egola, Tuscany, Italy",
-      "Edge": "Hand-burnished with organic beeswax"
+    exclusive: false,
+    sizes: ["30ml", "50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "30ml": 110.00, "50ml": 160.00, "100ml": 235.00 },
+    longevity: "8–9 Hours",
+    sillage: "Beguiling & Romantic",
+    season: "Spring / Summer",
+    occasion: "Weddings, Garden Galas & Sunset Dates",
+    shortDescription: "Tuberose petals bathed in morning dew, Sambac jasmine, peony, and creamy white peach.",
+    description: "An explosion of freshly unfurled white blossoms. Bloom Absolu captures tuberose at its most ethereal and creamy—devoid of indolic heaviness. Supported by velvet peony, white peach skin, and soft cedar.",
+    story: "A fragrant love letter to midnight blooming gardenias and tuberoses along the French Riviera.",
+    notes: {
+      top: ["White Peach Nectar", "Morning Dew Accord", "Green Mandarin"],
+      heart: ["Indian Tuberose Absolute", "Sambac Jasmine", "Pink Peony"],
+      base: ["Creamy Sandalwood", "White Musk", "Solar Cedar"]
     },
+    specs: {
+      "Concentration": "Eau de Parfum (22% Concentration)",
+      "Floral Absolute": "100% Solvent-extracted Indian Tuberose",
+      "Vessel": "Blush-tinted glass with magnetic pearl cap"
+    },
+    ingredients: "Alcohol Denat., Parfum (Fragrance), Benzyl Salicylate, Hexyl Cinnamal, Linalool, Hydroxycitronellal.",
     images: [
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1615655406736-b37c4fabf923?auto=format&fit=crop&w=900&q=80"
     ],
-    tags: ["leather", "desk", "workspace", "organizer"],
-    variants: {
-      colors: ["Chestnut Cognac", "Espresso Black", "Natural Raw"]
-    }
+    tags: ["tuberose", "floral", "peony", "peach", "women", "romantic", "sweet"]
   },
   {
-    id: "df_005",
-    sku: "DF-LIV-05",
-    name: "Acoustic Ceramic Ultrasonic Diffuser",
-    category: "Home & Living",
-    categorySlug: "home-living",
-    price: 88.00,
-    originalPrice: 88.00,
-    discountPrice: 88.00,
-    stock: 50,
-    lowStockThreshold: 15,
+    id: "df_midnight_tabac",
+    sku: "DF-UNI-08",
+    name: "DeepFeel Midnight Tabac",
+    category: "Signature Collection",
+    categorySlug: "signature-collection",
+    gender: "Unisex",
+    fragranceFamily: "Gourmand",
+    concentration: "Extrait de Parfum",
+    price: 210.00,
+    originalPrice: 245.00,
+    discountPrice: 210.00,
+    stock: 24,
+    lowStockThreshold: 6,
+    rating: 5.0,
+    reviewCount: 89,
+    status: "active",
+    featured: true,
+    bestseller: true,
+    isNew: false,
+    exclusive: true,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 210.00, "100ml": 310.00 },
+    longevity: "12–15 Hours",
+    sillage: "Intense & Addictive",
+    season: "Late Autumn / Winter",
+    occasion: "Speakeasies, Winter Galas & Late Night Conversations",
+    shortDescription: "Sweet cured Cuban tobacco leaf infused with dark molasses rum, roasted cacao, and smoked plum.",
+    description: "Dark, sultry, and unapologetically decadent. Midnight Tabac opens with rich spiced rum and dried black plum before unfolding into dry, honey-cured tobacco leaf and roasted Venezuelan cacao. A masterpiece of warmth and seduction.",
+    story: "Crafted to embody the ambiance of private gentleman's libraries in London: worn leather chesterfields, crystal decanters of aged cognac, and fine cigar leaves.",
+    notes: {
+      top: ["Aged Dark Rum", "Spiced Plum", "Coriander"],
+      heart: ["Cuban Tobacco Leaf", "Roasted Cacao", "Smoked Tonka"],
+      base: ["Bourbon Vanilla", "Leather", "Oakwood", "Dark Honey"]
+    },
+    specs: {
+      "Concentration": "Extrait de Parfum (28% Concentration)",
+      "Tobacco Extract": "Natural Nicotiana Tabacum leaf extraction",
+      "Vessel": "Matte midnight black flacon with gold hot-stamping"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum), Coumarin, Eugenol, Linalool, Cinnamal, Benzyl Benzoate.",
+    images: [
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["tobacco", "rum", "cacao", "vanilla", "gourmand", "unisex", "deep & smoky", "sweet"]
+  },
+  {
+    id: "df_citrus_solaris",
+    sku: "DF-UNI-09",
+    name: "DeepFeel Citrus Solaris",
+    category: "Unisex Elixirs",
+    categorySlug: "unisex",
+    gender: "Unisex",
+    fragranceFamily: "Citrus",
+    concentration: "Eau de Parfum",
+    price: 145.00,
+    originalPrice: 170.00,
+    discountPrice: 145.00,
+    stock: 42,
+    lowStockThreshold: 10,
+    rating: 4.8,
+    reviewCount: 52,
+    status: "active",
+    featured: false,
+    bestseller: false,
+    isNew: true,
+    exclusive: false,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 145.00, "100ml": 215.00 },
+    longevity: "7–8 Hours",
+    sillage: "Effervescent & Uplifting",
+    season: "Spring / Summer",
+    occasion: "Weekend Brunch, Coastal Travel & Sunny Mornings",
+    shortDescription: "Sun-drenched Amalfi lemon, blood orange, sea salt mist, and coastal Mediterranean cypress.",
+    description: "Sunlight captured inside a bottle. Citrus Solaris sparkles with cold-pressed Italian citrus oils, bitter orange petitgrain, and a crisp oceanic breeze accord that feels like stepping onto a terrace overlooking the Tyrrhenian Sea.",
+    story: "Created to bottle the exact sensation of sea salt on sun-warmed skin beneath fragrant lemon groves.",
+    notes: {
+      top: ["Amalfi Lemon", "Sicilian Blood Orange", "Sea Salt Mist"],
+      heart: ["Neroli Petals", "Petitgrain", "Crushed Mint"],
+      base: ["Coastal Cypress", "White Amber", "Solar Driftwood"]
+    },
+    specs: {
+      "Concentration": "Eau de Parfum (18% Concentration)",
+      "Citrus Oils": "First cold-pressing Calabrian harvest",
+      "Vessel": "Solar yellow crystal flacon"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum), Limonene, Linalool, Citral, Geraniol.",
+    images: [
+      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["citrus", "lemon", "summer", "fresh", "unisex", "neroli"]
+  },
+  {
+    id: "df_oud_fumee",
+    sku: "DF-OUD-10",
+    name: "DeepFeel Oud Fumée",
+    category: "The Oud Collection",
+    categorySlug: "oud-collection",
+    gender: "Unisex",
+    fragranceFamily: "Woody",
+    concentration: "Extrait de Parfum",
+    price: 235.00,
+    originalPrice: 270.00,
+    discountPrice: 235.00,
+    stock: 18,
+    lowStockThreshold: 5,
     rating: 4.9,
-    reviewCount: 79,
+    reviewCount: 71,
+    status: "active",
+    featured: false,
+    bestseller: true,
+    isNew: false,
+    exclusive: true,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 235.00, "100ml": 340.00 },
+    longevity: "12–16 Hours",
+    sillage: "Mysterious & Heavy",
+    season: "Winter / Evening",
+    occasion: "Exclusive Events & Avant-Garde Statements",
+    shortDescription: "Incense smoke curling through dark oud chips, Cade wood, black birch, and aged labdanum.",
+    description: "Deep, dry, and primal. Oud Fumée celebrates ancient incense rituals. Burning wood resins mingle with dry Himalayan birch tar and deep smoked Cambodian oud to create an ethereal scent cloud that commands reverence.",
+    story: "Inspired by ancient Kōdō Japanese incense burning rituals blended with Arabian bakhoor traditions.",
+    notes: {
+      top: ["Silver Frankincense", "Black Birch Smoke", "Juniper Berry"],
+      heart: ["Smoked Cambodian Oud", "Cade Wood", "Papyrus"],
+      base: ["Dark Labdanum", "Smoky Vetiver", "Castoreum Accord"]
+    },
+    specs: {
+      "Concentration": "Extrait de Parfum (30% Concentration)",
+      "Smoked Resins": "High-altitude Omani Hojari Frankincense",
+      "Vessel": "Blackened basalt flacon with hand-engraved badge"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum), Evernia Furfuracea Extract, Benzyl Benzoate, Linalool.",
+    images: [
+      "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["oud", "smoke", "incense", "dark", "mysterious", "wood", "deep & smoky"]
+  },
+  {
+    id: "df_musc_imperiale",
+    sku: "DF-UNI-11",
+    name: "DeepFeel Musc Impériale",
+    category: "Unisex Elixirs",
+    categorySlug: "unisex",
+    gender: "Unisex",
+    fragranceFamily: "Musky",
+    concentration: "Eau de Parfum",
+    price: 165.00,
+    originalPrice: 165.00,
+    discountPrice: 165.00,
+    stock: 36,
+    lowStockThreshold: 8,
+    rating: 4.8,
+    reviewCount: 63,
+    status: "active",
+    featured: false,
+    bestseller: false,
+    isNew: false,
+    exclusive: false,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 165.00, "100ml": 245.00 },
+    longevity: "9–11 Hours",
+    sillage: "Second-Skin Intimate",
+    season: "All Seasons / Everyday Signature",
+    occasion: "Everyday Intimacy, Clean Tailoring & Modern Romance",
+    shortDescription: "An alluring second-skin musk laced with white iris, ambrette seed, clean aldehydes, and blond cedar.",
+    description: "The ultimate skin scent. Musc Impériale smells clean, sensual, and intoxicatingly personal. It adapts to the wearer's body chemistry, creating a unique magnetic aura that draws people closer.",
+    story: "Formulated to recreate the scent of freshly laundered Egyptian cotton warmed by morning sunlight on bare skin.",
+    notes: {
+      top: ["Clean Aldehydes", "Ambrette Seed", "White Freesia"],
+      heart: ["Florentine Iris", "Cotton Flower", "Heliotrope"],
+      base: ["Velvet White Musk", "Cashmeran", "Blond Cedar"]
+    },
+    specs: {
+      "Concentration": "Eau de Parfum (22% Concentration)",
+      "Musk Blend": "Hypoallergenic vegan macrocyclic musk suite",
+      "Vessel": "Frosted milk-glass flacon"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum), Alpha-Isomethyl Ionone, Hydroxycitronellal, Coumarin.",
+    images: [
+      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["musk", "clean", "iris", "skin", "sensual", "unisex", "fresh"]
+  },
+  {
+    id: "df_discovery_set",
+    sku: "DF-GFT-12",
+    name: "The Maison Discovery Set (5 x 10ml)",
+    category: "Gift & Discovery Sets",
+    categorySlug: "gift-sets",
+    gender: "Unisex",
+    fragranceFamily: "Oriental",
+    concentration: "Eau de Parfum / Extrait",
+    price: 95.00,
+    originalPrice: 120.00,
+    discountPrice: 95.00,
+    stock: 65,
+    lowStockThreshold: 15,
+    rating: 5.0,
+    reviewCount: 145,
     status: "active",
     featured: true,
     bestseller: true,
     isNew: true,
-    shortDescription: "Whisper-quiet ultrasonic mist diffuser housed inside a sculpted, matte porcelain shell.",
-    description: "Transform the atmosphere of your home within seconds. Emitting a fine cool mist vibrating at 2.4MHz, this ultrasonic diffuser disperses 100% pure botanical essential oils across rooms up to 500 sq ft while maintaining a calming, barely-audible hum under 20dB.",
-    specs: {
-      "Capacity": "280ml (Up to 12 Hours continuous mist)",
-      "Coverage": "500 sq ft (46 m²)",
-      "Auto Shut-off": "Yes, when water reservoir is depleted",
-      "Light": "Optional subtle ambient amber glow"
+    exclusive: false,
+    sizes: ["5 x 10ml"],
+    selectedSize: "5 x 10ml",
+    sizePricing: { "5 x 10ml": 95.00 },
+    longevity: "Varies by Fragrance (8–14h)",
+    sillage: "Moderate to Powerful",
+    season: "All Seasons",
+    occasion: "Gifting, Sampling & Travel",
+    shortDescription: "Five iconic 10ml atomizers: Noir, Oud Royale, Élan, Santal Reserve, and Velvet Amber. Includes $95 full-size voucher.",
+    description: "Explore the olfactory universe of DeepFeel. Presented in a rigid debossed presentation box with magnetic enclosure. Includes five travel-ready 10ml spray atomizers and a $95 voucher redeemable toward any full 50ml or 100ml flacon.",
+    story: "Designed for the curious nose to test how our complex extraits evolve across 12 hours of skin wear.",
+    notes: {
+      top: ["Noir (Woody Amber)", "Oud Royale (Oriental)"],
+      heart: ["Élan (Floral Grace)", "Santal Reserve (Creamy Wood)"],
+      base: ["Velvet Amber (Resinous Warmth)"]
     },
+    specs: {
+      "Set Includes": "5 x 10ml Refillable Glass Atomizers + $95 Gift Card",
+      "Packaging": "FSC-certified rigid linen coffret with gold ribbon",
+      "Travel Friendly": "100% TSA carry-on approved"
+    },
+    ingredients: "Refer to individual vial packaging for specific allergens.",
     images: [
-      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1602928321679-560bb453f190?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1615655406736-b37c4fabf923?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80"
     ],
-    tags: ["diffuser", "aromatherapy", "wellness", "ceramic", "living"],
-    variants: {
-      colors: ["Terracotta Clay", "Ivory Dune", "Charcoal Basalt"]
-    }
+    tags: ["gift", "discovery", "sampler", "travel", "set", "voucher"]
   },
   {
-    id: "df_006",
-    sku: "DF-COM-06",
-    name: "Cloud-Feel Mulberry Silk Pillowcase Pair",
-    category: "Rest & Wellness",
-    categorySlug: "rest-wellness",
-    price: 74.00,
-    originalPrice: 95.00,
-    discountPrice: 74.00,
-    stock: 40,
-    lowStockThreshold: 10,
+    id: "df_etoile_nocturne",
+    sku: "DF-FEM-13",
+    name: "DeepFeel Étoile Nocturne",
+    category: "For Her",
+    categorySlug: "women",
+    gender: "Women",
+    fragranceFamily: "Gourmand",
+    concentration: "Extrait de Parfum",
+    price: 205.00,
+    originalPrice: 235.00,
+    discountPrice: 205.00,
+    stock: 26,
+    lowStockThreshold: 7,
+    rating: 4.9,
+    reviewCount: 54,
+    status: "active",
+    featured: false,
+    bestseller: false,
+    isNew: true,
+    exclusive: true,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 205.00, "100ml": 295.00 },
+    longevity: "11–13 Hours",
+    sillage: "Hypnotic & Seductive",
+    season: "Fall / Winter / Evening",
+    occasion: "Black Tie Galas, Opera Nights & Champagne Dinners",
+    shortDescription: "Dark black cherry liqueur, velvety Turkish rose, roasted almond, and golden amber resins.",
+    description: "A dark, gourmand-floral temptation. Étoile Nocturne marries succulent dark cherry dripping in French cognac with midnight Damask roses, tonka bean, and molten Peru balsam. Decadent, glamorous, and unforgettable.",
+    story: "Inspired by a private box at the Palais Garnier during a winter opera premiere.",
+    notes: {
+      top: ["Black Cherry Liqueur", "Bitter Almond", "Cognac Accord"],
+      heart: ["Damascus Rose Absolute", "Night Plum", "Jasmine Sambac"],
+      base: ["Peru Balsam", "Tonka Bean", "Sandalwood", "Warm Ambergris"]
+    },
+    specs: {
+      "Concentration": "Extrait de Parfum (28% Concentration)",
+      "Origin": "Formulated in Grasse",
+      "Vessel": "Ruby-black gradient flacon with gold crest"
+    },
+    ingredients: "Alcohol Denat., Parfum (Fragrance), Coumarin, Anise Alcohol, Benzyl Cinnamate, Eugenol.",
+    images: [
+      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["cherry", "rose", "gourmand", "cognac", "women", "night", "sweet"]
+  },
+  {
+    id: "df_cuir_imperial",
+    sku: "DF-HOM-14",
+    name: "DeepFeel Cuir Impérial",
+    category: "For Him",
+    categorySlug: "men",
+    gender: "Men",
+    fragranceFamily: "Woody",
+    concentration: "Eau de Parfum",
+    price: 185.00,
+    originalPrice: 210.00,
+    discountPrice: 185.00,
+    stock: 30,
+    lowStockThreshold: 8,
+    rating: 4.8,
+    reviewCount: 68,
+    status: "active",
+    featured: false,
+    bestseller: true,
+    isNew: false,
+    exclusive: false,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 185.00, "100ml": 270.00 },
+    longevity: "10–12 Hours",
+    sillage: "Commanding & Rich",
+    season: "Autumn / Winter",
+    occasion: "Evening Soirées, Executive Gatherings & Autumn Drives",
+    shortDescription: "Tuscan saddle leather, crushed juniper berries, smoky birch, and golden saffron threads.",
+    description: "An authentic tribute to artisanal saddle leather. Opening with aromatic green juniper and golden saffron, Cuir Impérial settles into a deep, luxurious leather heart supported by dark vetiver and warm oakmoss.",
+    story: "Born in a heritage leather tannery in Tuscany, where the scent of aged hides and natural vegetable tannins perfumes the air.",
+    notes: {
+      top: ["Wild Juniper", "Saffron Threads", "Black Thyme"],
+      heart: ["Tuscan Leather", "Smoked Mate Tea", "Violet Leaf"],
+      base: ["Birch Tar", "Haitian Vetiver", "Oakmoss", "Amber"]
+    },
+    specs: {
+      "Concentration": "Eau de Parfum (24% Concentration)",
+      "Vessel": "Charcoal glass with saddle-stitched leather badge"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum), Limonene, Linalool, Evernia Prunastri Extract.",
+    images: [
+      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["leather", "juniper", "saffron", "men", "woody", "smoky", "deep & smoky"]
+  },
+  {
+    id: "df_oud_rose_prestige",
+    sku: "DF-OUD-15",
+    name: "DeepFeel Oud Rose Prestige",
+    category: "The Oud Collection",
+    categorySlug: "oud-collection",
+    gender: "Unisex",
+    fragranceFamily: "Floral",
+    concentration: "Extrait de Parfum",
+    price: 250.00,
+    originalPrice: 290.00,
+    discountPrice: 250.00,
+    stock: 19,
+    lowStockThreshold: 5,
+    rating: 5.0,
+    reviewCount: 76,
+    status: "active",
+    featured: true,
+    bestseller: false,
+    isNew: true,
+    exclusive: true,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 250.00, "100ml": 375.00 },
+    longevity: "14–18 Hours",
+    sillage: "Extravagant & Regal",
+    season: "All Seasons / Evening",
+    occasion: "Weddings, Gala Receptions & Royal Celebrations",
+    shortDescription: "Hundred-petal Centifolia rose blended with vintage Trat agarwood, raspberry nectar, and white musk.",
+    description: "The timeless union of Rose and Oud perfected. Our perfumers selected May Rose from Grasse and paired it with sweet Trat agarwood and wild raspberry notes to create a harmonious blend without sharp medicinal notes.",
+    story: "Inspired by royal Persian gardens where damask rose hedges wrap around ancient agarwood pavilions.",
+    notes: {
+      top: ["Wild Raspberry", "Spiced Cardamom", "Pink Pepper"],
+      heart: ["Grasse Centifolia Rose", "Damask Rose Absolute", "Saffron"],
+      base: ["Vintage Trat Oud", "White Amber", "Cashmere Musk", "Patchouli"]
+    },
+    specs: {
+      "Concentration": "Extrait de Parfum (33% Pure Perfume)",
+      "Rose Source": "Organically cultivated Grasse May Rose",
+      "Vessel": "Gilded flacon with engraved crest"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum), Citronellol, Geraniol, Eugenol, Benzyl Benzoate.",
+    images: [
+      "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["oud", "rose", "raspberry", "prestige", "royal", "unisex", "floral", "sweet"]
+  },
+  {
+    id: "df_iris_imperiale",
+    sku: "DF-UNI-16",
+    name: "DeepFeel Iris Impériale",
+    category: "Signature Collection",
+    categorySlug: "signature-collection",
+    gender: "Unisex",
+    fragranceFamily: "Floral",
+    concentration: "Extrait de Parfum",
+    price: 220.00,
+    originalPrice: 260.00,
+    discountPrice: 220.00,
+    stock: 20,
+    lowStockThreshold: 5,
+    rating: 4.9,
+    reviewCount: 43,
+    status: "active",
+    featured: false,
+    bestseller: false,
+    isNew: true,
+    exclusive: true,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 220.00, "100ml": 325.00 },
+    longevity: "10–12 Hours",
+    sillage: "Silken & Aristocratic",
+    season: "Spring / Autumn",
+    occasion: "Fine Art Galas, Private Dinners & Cultural Salons",
+    shortDescription: "Aged Florentine orris butter, violet blossom, soft suede, and white amber crystals.",
+    description: "Known in perfumery as 'blue gold', Florentine Iris takes six years of slow underground curing to produce its buttery, powdery richness. Balanced with tender violet petals and clean suede.",
+    story: "Celebrates the historical fragrance traditions of the Medici court in Florence.",
+    notes: {
+      top: ["Italian Bergamot", "Angelica Seed", "Carrot Seed"],
+      heart: ["Florentine Orris Butter", "Violet Flower", "Heliotrope"],
+      base: ["Suede Accord", "White Cedar", "Ambrette", "Benzoin"]
+    },
+    specs: {
+      "Concentration": "Extrait de Parfum (28% Concentration)",
+      "Orris Grade": "Aged 6-Year Iris Pallida Rhizome Butter",
+      "Vessel": "Violet-smoke flacon with magnetic closure"
+    },
+    ingredients: "Alcohol Denat., Parfum (Fragrance), Alpha-Isomethyl Ionone, Linalool, Benzyl Alcohol.",
+    images: [
+      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80"
+    ],
+    tags: ["iris", "orris", "violet", "suede", "luxury", "unisex", "floral"]
+  },
+  {
+    id: "df_vanille_noire",
+    sku: "DF-UNI-17",
+    name: "DeepFeel Vanille Noire",
+    category: "Signature Collection",
+    categorySlug: "signature-collection",
+    gender: "Unisex",
+    fragranceFamily: "Gourmand",
+    concentration: "Eau de Parfum",
+    price: 185.00,
+    originalPrice: 215.00,
+    discountPrice: 185.00,
+    stock: 32,
+    lowStockThreshold: 8,
     rating: 4.9,
     reviewCount: 88,
     status: "active",
     featured: false,
     bestseller: true,
     isNew: false,
-    shortDescription: "Grade 6A 22-Momme pure mulberry silk for frictionless skin hydration and hair protection.",
-    description: "Wake up refreshed with zero sleep creases or tangled hair. Our 22-Momme silk pillowcases are OEKO-TEX standard certified, naturally hypoallergenic, and temperature-regulating for a consistently cool sleep surface all night.",
-    specs: {
-      "Material": "100% Grade 6A Long Strand Mulberry Silk",
-      "Closure": "Hidden envelope zipper",
-      "Standard Size": "20\" x 26\" (50cm x 66cm)",
-      "King Size": "20\" x 36\" (50cm x 90cm)"
+    exclusive: false,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 185.00, "100ml": 270.00 },
+    longevity: "10–13 Hours",
+    sillage: "Decadent & Warm",
+    season: "Autumn / Winter",
+    occasion: "Evening Romance & Fireside Comfort",
+    shortDescription: "Smoky Madagascar vanilla pod infused with aged bourbon, charred oak, and dark brown sugar crystals.",
+    description: "Not your childhood sweet vanilla. Vanille Noire is dark, boozy, and resinous. Cured vanilla beans drenched in oak-aged bourbon with toasted almonds and dark patchouli.",
+    story: "Born in the spice ports of Madagascar, capturing the aroma of black vanilla pods drying under tropical heat.",
+    notes: {
+      top: ["Aged Bourbon", "Roasted Almond", "Cinnamon Bark"],
+      heart: ["Madagascar Vanilla Caviar", "Orchid Petals", "Cacao Pod"],
+      base: ["Charred Oakwood", "Dark Caramel", "Tonka Bean", "Amber"]
     },
+    specs: {
+      "Concentration": "Eau de Parfum (24% Concentration)",
+      "Vanilla": "100% Single-origin Planifolia vanilla extract",
+      "Vessel": "Obsidian flacon with gilded calligraphy"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum), Coumarin, Cinnamyl Alcohol, Eugenol, Benzyl Benzoate.",
     images: [
-      "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=900&q=80"
     ],
-    tags: ["silk", "pillowcase", "sleep", "wellness", "beauty"],
-    variants: {
-      colors: ["Champagne Pearl", "French Linen White", "Smoky Quartz"],
-      sizes: ["Queen (20x30)", "King (20x36)"]
-    }
+    tags: ["vanilla", "bourbon", "gourmand", "warm", "unisex", "sweet"]
   },
   {
-    id: "df_007",
-    sku: "DF-DRK-07",
-    name: "Soren Double-Wall Borosilicate Tumbler",
-    category: "Artisan Drinkware",
-    categorySlug: "artisan-drinkware",
-    price: 36.00,
-    originalPrice: 42.00,
-    discountPrice: 36.00,
-    stock: 60,
-    lowStockThreshold: 15,
-    rating: 4.6,
-    reviewCount: 29,
-    status: "active",
-    featured: false,
-    bestseller: false,
-    isNew: true,
-    shortDescription: "Thermal insulated lightweight glass tumbler with leakproof walnut lid and silicone gasket.",
-    description: "Keep cold brews chilled for 8 hours or hot matcha piping for 5 hours without exterior condensation. The Soren Tumbler is hand-blown from laboratory-grade borosilicate glass, ensuring purest beverage flavor without metallic aftertaste.",
-    specs: {
-      "Capacity": "450ml (15 oz)",
-      "Thermal Rating": "-20°C to 150°C shock resistant",
-      "Lid": "Natural oiled Walnut with food-grade silicone seal"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["tumbler", "glass", "drinkware", "tea", "travel"],
-    variants: {
-      colors: ["Smoke Grey", "Clear Amber", "Frosted Mist"]
-    }
-  },
-  {
-    id: "df_008",
-    sku: "DF-LGT-08",
-    name: "Vessel Travertine Sconce",
-    category: "Ambient Lighting",
-    categorySlug: "ambient-lighting",
-    price: 198.00,
-    originalPrice: 240.00,
-    discountPrice: 198.00,
-    stock: 14,
-    lowStockThreshold: 5,
-    rating: 5.0,
-    reviewCount: 19,
-    status: "active",
-    featured: true,
-    bestseller: false,
-    isNew: true,
-    shortDescription: "Solid carved Italian travertine stone wall sconce casting warm bi-directional indirect light.",
-    description: "Each Vessel Sconce is sculpted from a single slab of unfilled natural travertine, highlighting unique mineral veining and organic tactile pitting. When illuminated, it throws a dramatic crown of golden indirect light upwards and downwards.",
-    specs: {
-      "Material": "Solid Italian Roman Travertine & Solid Brass",
-      "Dimensions": "9.5\" H x 4.5\" W x 3.5\" D",
-      "Hardwired / Plug-in": "Hardwired kit included (Optional fabric cord adapter)",
-      "Certification": "UL Listed Dry Location"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["lighting", "sconce", "travertine", "stone", "architecture"],
-    variants: {
-      colors: ["Warm Beige Travertine", "Silver Gray Travertine"]
-    }
-  },
-  {
-    id: "df_009",
-    sku: "DF-LIV-09",
-    name: "Stonewashed Belgian Linen Duvet Set",
-    category: "Home & Living",
-    categorySlug: "home-living",
-    price: 240.00,
-    originalPrice: 280.00,
-    discountPrice: 240.00,
-    stock: 22,
-    lowStockThreshold: 8,
-    rating: 4.9,
-    reviewCount: 92,
-    status: "active",
-    featured: true,
-    bestseller: true,
-    isNew: false,
-    shortDescription: "Pre-washed 100% European flax linen that becomes softer with every wash cycle.",
-    description: "Woven in Flanders from sustainably harvested French and Belgian flax, our stonewashed duvet collection delivers relaxed luxury. Naturally thermo-regulating, moisture-wicking, and pre-softened with natural volcanic stone tumbling.",
-    specs: {
-      "Set Includes": "1 Duvet Cover + 2 Pillow Shams with coconut shell buttons",
-      "Flax Origin": "Normandy, France & Flanders, Belgium",
-      "Fabric Weight": "180 GSM Medium-Heavy Weight Linen"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["bedding", "linen", "duvet", "home", "comfort"],
-    variants: {
-      colors: ["Natural Oatmeal", "Washed Olive", "Desert Clay"],
-      sizes: ["Queen (90x90)", "King (106x90)"]
-    }
-  },
-  {
-    id: "df_010",
-    sku: "DF-WKS-10",
-    name: "Solid Oak Floating Monitor Stand",
-    category: "Studio & Workspace",
-    categorySlug: "studio-workspace",
-    price: 118.00,
-    originalPrice: 118.00,
-    discountPrice: 118.00,
-    stock: 31,
+    id: "df_neroli_blanc",
+    sku: "DF-UNI-18",
+    name: "DeepFeel Néroli Blanc",
+    category: "Unisex Elixirs",
+    categorySlug: "unisex",
+    gender: "Unisex",
+    fragranceFamily: "Citrus",
+    concentration: "Eau de Parfum",
+    price: 150.00,
+    originalPrice: 175.00,
+    discountPrice: 150.00,
+    stock: 44,
     lowStockThreshold: 10,
     rating: 4.8,
-    reviewCount: 47,
+    reviewCount: 49,
     status: "active",
     featured: false,
     bestseller: false,
     isNew: false,
-    shortDescription: "Ergonomic monitor riser crafted from sustainably sourced FSC-certified solid White Oak with cork pads.",
-    description: "Raise your display to ideal ergonomic eye level while reclaiming valuable desk territory underneath for your keyboard, notepad, and dock. Precision CNC milled and hand-sanded with zero VOC matte hardwax oil.",
-    specs: {
-      "Dimensions": "42\" L x 9\" W x 4.2\" H (Supports up to 2 monitors / 120 lbs)",
-      "Wood": "FSC-Certified Solid North American White Oak",
-      "Legs": "Precision laser-cut matte black steel with non-slip natural cork feet"
+    exclusive: false,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 150.00, "100ml": 220.00 },
+    longevity: "8–9 Hours",
+    sillage: "Crisp & Luminous",
+    season: "Spring / Summer",
+    occasion: "Morning Strolls, Linen Shirts & Mediterranean Escapes",
+    shortDescription: "Sparkling Tunisian orange blossom, bitter petitgrain, bergamot rind, and clean white cedar.",
+    description: "Pure, pristine white floral luminescence. Distilled from the delicate blossoms of bitter orange trees, Néroli Blanc feels like morning dew shining on white petals.",
+    story: "Inspired by the sunrise harvest of orange blossom orchards in Cap d'Antibes.",
+    notes: {
+      top: ["Tunisian Neroli", "Italian Bergamot", "Petitgrain"],
+      heart: ["Orange Blossom Absolute", "White Tea Leaf", "Lily of the Valley"],
+      base: ["White Cedarwood", "Clean Amber", "Silk Musks"]
     },
+    specs: {
+      "Concentration": "Eau de Parfum (20% Concentration)",
+      "Floral Source": "Steam-distilled Tunisian Citrus Aurantium",
+      "Vessel": "Clear crystalline flacon"
+    },
+    ingredients: "Alcohol Denat., Parfum (Fragrance), Limonene, Linalool, Geraniol, Citronellol, Citral.",
     images: [
-      "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=900&q=80"
     ],
-    tags: ["wood", "workspace", "stand", "oak", "ergonomic"],
-    variants: {
-      colors: ["Natural White Oak", "Smoked Walnut", "Ebonized Ash"]
-    }
+    tags: ["neroli", "orange blossom", "fresh", "summer", "citrus", "clean"]
   },
   {
-    id: "df_011",
-    sku: "DF-CER-11",
-    name: "Kanso Hand-Carved Matcha Bowl (Chawan)",
-    category: "Artisan Drinkware",
-    categorySlug: "artisan-drinkware",
-    price: 52.00,
-    originalPrice: 65.00,
-    discountPrice: 52.00,
-    stock: 18,
-    lowStockThreshold: 6,
-    rating: 4.9,
-    reviewCount: 33,
-    status: "active",
-    featured: false,
-    bestseller: false,
-    isNew: true,
-    shortDescription: "Wabi-sabi inspired coarse clay ceremonial matcha bowl with textured thumb rest and pouring spout.",
-    description: "The Kanso Chawan embraces Japanese wabi-sabi philosophy—celebrating tactile organic imperfections. The wide flat base allows bamboo whisks (chasen) to froth microfoam effortlessly without scratching.",
-    specs: {
-      "Dimensions": "4.7\" Diameter x 3.1\" Height",
-      "Capacity": "400ml",
-      "Finish": "Shino glaze with raw exposed iron-rich stoneware foot"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["matcha", "tea", "chawan", "ceramic", "japanese"],
-    variants: {
-      colors: ["Kuro Dark Ash", "Shino Pearl White"]
-    }
-  },
-  {
-    id: "df_012",
-    sku: "DF-LIV-12",
-    name: "Hinoki Wood Bath Caddy Tray",
-    category: "Home & Living",
-    categorySlug: "home-living",
-    price: 110.00,
-    originalPrice: 130.00,
-    discountPrice: 110.00,
-    stock: 16,
+    id: "df_encens_royal",
+    sku: "DF-UNI-19",
+    name: "DeepFeel Encens Royal",
+    category: "Signature Collection",
+    categorySlug: "signature-collection",
+    gender: "Unisex",
+    fragranceFamily: "Oriental",
+    concentration: "Extrait de Parfum",
+    price: 225.00,
+    originalPrice: 260.00,
+    discountPrice: 225.00,
+    stock: 21,
     lowStockThreshold: 5,
-    rating: 4.8,
-    reviewCount: 27,
-    status: "active",
-    featured: false,
-    bestseller: false,
-    isNew: false,
-    shortDescription: "Aromatic Japanese Hinoki cypress bath board naturally resistant to humidity with wine and tablet slots.",
-    description: "Bring the restorative serenity of an onsen spa into your bathroom. Hinoki wood emits a soothing pine-citrus aroma when warmed by steam and contains natural phytoncides that deter mold and moisture damage.",
-    specs: {
-      "Dimensions": "32\" L x 8.5\" W x 1.2\" Thick (Fits standard bathtubs)",
-      "Wood": "100% Old-Growth Fallen Japanese Hinoki Cypress",
-      "Features": "Recessed candle rest, tablet groove, drain channels"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1602928321679-560bb453f190?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["bath", "hinoki", "wood", "spa", "relaxation"],
-    variants: {
-      colors: ["Natural Cypress Grain"]
-    }
-  },
-  {
-    id: "df_013",
-    sku: "DF-COM-13",
-    name: "Ergonomic Memory Cloud Seat Cushion",
-    category: "Rest & Wellness",
-    categorySlug: "rest-wellness",
-    price: 65.00,
-    originalPrice: 79.00,
-    discountPrice: 65.00,
-    stock: 55,
-    lowStockThreshold: 15,
-    rating: 4.7,
-    reviewCount: 114,
-    status: "active",
-    featured: false,
-    bestseller: true,
-    isNew: false,
-    shortDescription: "Contoured coccyx pressure-relief cushion with breathable bamboo charcoal memory core.",
-    description: "Transform any standard desk chair or armchair into an orthopedic oasis. The U-shaped ergonomic cutout suspends the tailbone, relieving lower back disc compression during long workdays.",
-    specs: {
-      "Core": "High-Density Bamboo Charcoal Infused Memory Foam",
-      "Cover": "Removable 3D Air-Mesh washable cover",
-      "Dimensions": "18\" x 14\" x 3\""
-    },
-    images: [
-      "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["ergonomic", "cushion", "wellness", "chair", "comfort"],
-    variants: {
-      colors: ["Heather Charcoal", "Deep Navy", "Sandstone"]
-    }
-  },
-  {
-    id: "df_014",
-    sku: "DF-LGT-14",
-    name: "Lumen Concrete Wireless Rechargeable Lamp",
-    category: "Ambient Lighting",
-    categorySlug: "ambient-lighting",
-    price: 95.00,
-    originalPrice: 115.00,
-    discountPrice: 95.00,
-    stock: 25,
-    lowStockThreshold: 8,
-    rating: 4.8,
-    reviewCount: 36,
+    rating: 5.0,
+    reviewCount: 62,
     status: "active",
     featured: false,
     bestseller: false,
     isNew: true,
-    shortDescription: "Ultra-portable cordless lamp cast in lightweight micro-cement with magnetic inductive charging pad.",
-    description: "Take ambient lighting from the dining terrace to the bedside table. Lumen offers up to 24 hours of warm, flicker-free illumination on a single charge with IP44 water resistance for covered outdoor evenings.",
-    specs: {
-      "Battery Life": "8h at 100% / 24h at 30% brightness",
-      "Rating": "IP44 Water & Dust resistant",
-      "Charging": "Solid wood magnetic inductive pad included"
+    exclusive: true,
+    sizes: ["50ml", "100ml"],
+    selectedSize: "50ml",
+    sizePricing: { "50ml": 225.00, "100ml": 335.00 },
+    longevity: "12–15 Hours",
+    sillage: "Meditative & Mysterious",
+    season: "Autumn / Winter",
+    occasion: "Intimate Evenings, Intellectual Gatherings & Sacred Quiet",
+    shortDescription: "Sacred Omani green frankincense tears, myrrh tears, spiced elemi, and aged Atlas cedar.",
+    description: "An olfactory temple of raw spiritual majesty. Rare green Hojari frankincense burns over aged cedar charcoals, releasing cool citrus-tinged smoke before sinking into warm, resinous myrrh and labdanum.",
+    story: "Harvested by hand from the ancient Boswellia sacra trees clinging to the desert cliffs of Dhofar, Oman.",
+    notes: {
+      top: ["Omani Green Frankincense", "Spiced Elemi", "Black Cardamom"],
+      heart: ["Somalian Myrrh", "Labdanum", "Nutmeg"],
+      base: ["Atlas Cedar", "Smoked Benzoin", "Aged Ambergris", "Patchouli"]
     },
+    specs: {
+      "Concentration": "Extrait de Parfum (31% Concentration)",
+      "Resin Quality": "Grade 1 Royal Hojari Frankincense",
+      "Vessel": "Charcoal stone flacon with hand-polished copper crest"
+    },
+    ingredients: "Alcohol Denat., Fragrance (Parfum), Benzyl Benzoate, Limonene, Linalool, Eugenol.",
     images: [
-      "https://images.unsplash.com/photo-1540932239986-30128078f3c5?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80"
     ],
-    tags: ["lighting", "wireless", "concrete", "lamp", "patio"],
-    variants: {
-      colors: ["Pale Terrazzo", "Charcoal Concrete", "Warm Sand"]
-    }
+    tags: ["incense", "frankincense", "myrrh", "oriental", "deep & smoky", "unisex"]
   },
   {
-    id: "df_015",
-    sku: "DF-WKS-15",
-    name: "Tactile Anodized Aluminum Pen & Stand",
-    category: "Studio & Workspace",
-    categorySlug: "studio-workspace",
-    price: 48.00,
-    originalPrice: 48.00,
-    discountPrice: 48.00,
-    stock: 70,
-    lowStockThreshold: 20,
-    rating: 4.9,
+    id: "df_duo_set",
+    sku: "DF-GFT-20",
+    name: "The Signature Duo (2 x 50ml)",
+    category: "Gift & Discovery Sets",
+    categorySlug: "gift-sets",
+    gender: "Unisex",
+    fragranceFamily: "Woody Amber",
+    concentration: "Extrait de Parfum",
+    price: 340.00,
+    originalPrice: 390.00,
+    discountPrice: 340.00,
+    stock: 25,
+    lowStockThreshold: 6,
+    rating: 5.0,
     reviewCount: 58,
     status: "active",
     featured: false,
     bestseller: false,
     isNew: false,
-    shortDescription: "Precision-balanced rollerball pen with Schmidt refill and weighted magnetic anti-roll desktop dock.",
-    description: "Machined from a single block of aerospace-grade 6061 aluminum, the DeepFeel Pen features a perfectly calibrated center-of-gravity that glides over paper with zero hand fatigue.",
-    specs: {
-      "Weight": "38 grams (Balanced at 48% index point)",
-      "Refill": "Standard Schmidt P8126 Capless Rollerball (Black 0.6mm included)",
-      "Base": "Solid machined brass weighted dock with microfiber bottom"
+    exclusive: true,
+    sizes: ["2 x 50ml"],
+    selectedSize: "2 x 50ml",
+    sizePricing: { "2 x 50ml": 340.00 },
+    longevity: "12–16 Hours",
+    sillage: "Powerful & Sophisticated",
+    season: "All Seasons",
+    occasion: "Couples, Anniversary & Milestone Gifting",
+    shortDescription: "Our two most legendary extraits—DeepFeel Noir and Oud Royale—presented in a custom velvet coffret.",
+    description: "The definitive collector's pairing. DeepFeel Noir (50ml) and Oud Royale (50ml) nestled in bespoke emerald velvet lining with a brass wax seal certificate of authenticity.",
+    story: "Created for couples who celebrate complementary scent identities: dark leather rose paired with golden Assam agarwood.",
+    notes: {
+      top: ["Noir: Black Saffron, Bergamot", "Oud Royale: Wild Cardamom, Honey"],
+      heart: ["Noir: Turkish Rose, Guaiacwood", "Oud Royale: Taif Rose, Agarwood"],
+      base: ["Noir: Ambergris, Leather", "Oud Royale: Assam Oud, Frankincense"]
     },
-    images: [
-      "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["pen", "stationery", "aluminum", "workspace", "minimal"],
-    variants: {
-      colors: ["Space Gray", "Champagne Gold", "Matte Silver"]
-    }
-  },
-  {
-    id: "df_016",
-    sku: "DF-DRK-16",
-    name: "Aura Insulated French Press (1L)",
-    category: "Artisan Drinkware",
-    categorySlug: "artisan-drinkware",
-    price: 78.00,
-    originalPrice: 90.00,
-    discountPrice: 78.00,
-    stock: 33,
-    lowStockThreshold: 10,
-    rating: 4.8,
-    reviewCount: 44,
-    status: "active",
-    featured: false,
-    bestseller: true,
-    isNew: false,
-    shortDescription: "Vacuum-insulated 18/8 stainless steel French press with 4-level micro-mesh sediment filtration.",
-    description: "Say goodbye to lukewarm, silty coffee. Our double-walled stainless press locks heat in for 3 hours while the ultra-fine stainless spring filter traps 99.8% of grounds for a clean, full-bodied extraction.",
     specs: {
-      "Capacity": "1000ml (34 oz / 8 cups)",
-      "Material": "Food-grade 304 Stainless Steel + Cool-Touch Walnut Handle",
-      "Thermal Insulation": "Keeps hot 3 hours / Cold 9 hours"
+      "Coffret Includes": "1 x Noir Extrait (50ml) + 1 x Oud Royale (50ml)",
+      "Presentation": "Handcrafted lacquered wooden box with velvet lining",
+      "Certificate": "Individually numbered master perfumer seal"
     },
+    ingredients: "Refer to individual bottles for full formulation ingredients.",
     images: [
-      "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=80"
+      "https://images.unsplash.com/photo-1615655406736-b37c4fabf923?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80"
     ],
-    tags: ["coffee", "french-press", "stainless", "drinkware", "breakfast"],
-    variants: {
-      colors: ["Matte Black", "Brushed Copper", "Stainless Steel"]
-    }
-  },
-  {
-    id: "df_017",
-    sku: "DF-LIV-17",
-    name: "Botanical Soy Wax Scented Candle (Set of 3)",
-    category: "Home & Living",
-    categorySlug: "home-living",
-    price: 56.00,
-    originalPrice: 65.00,
-    discountPrice: 56.00,
-    stock: 42,
-    lowStockThreshold: 12,
-    rating: 4.9,
-    reviewCount: 67,
-    status: "active",
-    featured: false,
-    bestseller: false,
-    isNew: true,
-    shortDescription: "Hand-poured coconut-soy wax candles infused with wild amber, cedarwood, and hinoki needles.",
-    description: "Clean-burning, non-toxic, and crackling with natural wooden wicks. Formulated with therapeutic essential oils and phthalate-free perfumes to set an inviting, grounding ambiance.",
-    specs: {
-      "Burn Time": "50 Hours per candle (150 Hours total)",
-      "Wax": "100% US-Grown Coconut & Soy Wax blend",
-      "Wick": "FSC-certified crackling wooden wick",
-      "Vessel": "Reusable matte stoneware pot"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["candle", "aromatherapy", "soy-wax", "home", "scent"],
-    variants: {
-      colors: ["Trio Set: Cedar / Amber / Bergamot"]
-    }
-  },
-  {
-    id: "df_018",
-    sku: "DF-COM-18",
-    name: "Acupressure Reflexology Foot Mat",
-    category: "Rest & Wellness",
-    categorySlug: "rest-wellness",
-    price: 42.00,
-    originalPrice: 42.00,
-    discountPrice: 42.00,
-    stock: 29,
-    lowStockThreshold: 10,
-    rating: 4.7,
-    reviewCount: 39,
-    status: "active",
-    featured: false,
-    bestseller: false,
-    isNew: false,
-    shortDescription: "Natural polished river stone reflexology mat to stimulate blood circulation and ease foot fatigue.",
-    description: "Designed according to ancient reflexology principles. Standing or stepping across the hand-laid smooth river cobblestones for 5 minutes daily boosts micro-circulation, massages plantar fascia, and relieves arch tension.",
-    specs: {
-      "Dimensions": "16\" x 48\" (40cm x 120cm)",
-      "Materials": "100% Natural River Stones on Non-Slip Organic Canvas",
-      "Rollable": "Easily rolls up for compact travel storage"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["reflexology", "massage", "wellness", "feet", "health"],
-    variants: {
-      colors: ["Earth Pebbles", "Midnight Basalt"]
-    }
-  },
-  {
-    id: "df_019",
-    sku: "DF-WKS-19",
-    name: "Handcrafted Canvas & Leather Courier Tote",
-    category: "Studio & Workspace",
-    categorySlug: "studio-workspace",
-    price: 165.00,
-    originalPrice: 195.00,
-    discountPrice: 165.00,
-    stock: 20,
-    lowStockThreshold: 6,
-    rating: 4.9,
-    reviewCount: 52,
-    status: "active",
-    featured: true,
-    bestseller: false,
-    isNew: false,
-    shortDescription: "Heavy 18oz waxed cotton canvas bag with full-grain leather straps and padded 16\" laptop sleeve.",
-    description: "Built for a lifetime of daily commutes and weekend wanderings. Water-repellent waxed Martexin canvas pairs with solid antique brass hardware and reinforced copper rivets at all stress points.",
-    specs: {
-      "Capacity": "22 Liters",
-      "Laptop Sleeve": "Padded fleece compartment fits up to 16\" MacBook Pro",
-      "Straps": "Heavy English Bridle Leather with 11\" shoulder drop",
-      "Pockets": "4 Internal organizers + 2 quick-access exterior slip pockets"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["tote", "bag", "canvas", "leather", "laptop"],
-    variants: {
-      colors: ["Field Tan / Cognac", "Navy / Dark Brown", "Olive Drab / Black"]
-    }
-  },
-  {
-    id: "df_020",
-    sku: "DF-LGT-20",
-    name: "Nami Ribbed Amber Glass Pendant Lamp",
-    category: "Ambient Lighting",
-    categorySlug: "ambient-lighting",
-    price: 135.00,
-    originalPrice: 160.00,
-    discountPrice: 135.00,
-    stock: 15,
-    lowStockThreshold: 5,
-    rating: 4.8,
-    reviewCount: 31,
-    status: "active",
-    featured: false,
-    bestseller: false,
-    isNew: true,
-    shortDescription: "Hand-blown fluted amber glass ceiling pendant with spun brass canopy and braided twisted cord.",
-    description: "The optical fluting in the Nami Pendant bends light into gentle water-like ripples across dining tables and kitchen islands. Looks equally striking as a solo focal point or installed in clusters of three.",
-    specs: {
-      "Diameter": "9.8\" (25cm) x 8.6\" (22cm) Height",
-      "Cord Length": "6 ft (180cm) Adjustable braided textile cord",
-      "Socket": "Standard E26/E27 Base (Dimmable Edison LED bulb included)"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["pendant", "glass", "amber", "lighting", "ceiling"],
-    variants: {
-      colors: ["Smoked Amber", "Opal Frosted", "Bottle Green"]
-    }
-  },
-  {
-    id: "df_021",
-    sku: "DF-CER-21",
-    name: "Sumi Stoneware Serving Platter & Dip Bowls",
-    category: "Artisan Drinkware",
-    categorySlug: "artisan-drinkware",
-    price: 72.00,
-    originalPrice: 72.00,
-    discountPrice: 72.00,
-    stock: 24,
-    lowStockThreshold: 8,
-    rating: 4.7,
-    reviewCount: 22,
-    status: "active",
-    featured: false,
-    bestseller: false,
-    isNew: false,
-    shortDescription: "Matte textured serving board with three nesting dipping ramekins for entertaining.",
-    description: "Crafted from durable iron-rich stoneware fired at 1280°C. Perfect for presenting charcuterie, artisan breads, and savory sauces with minimalist elegance.",
-    specs: {
-      "Board Size": "16\" x 9.5\"",
-      "Bowls": "3 Nesting 3.5\" ramekins included",
-      "Dishwasher & Microwave": "100% Safe"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["stoneware", "serving", "kitchen", "entertaining"],
-    variants: {
-      colors: ["Basalt Black", "Chalk White"]
-    }
-  },
-  {
-    id: "df_022",
-    sku: "DF-COM-22",
-    name: "Organic French Terry Lounge Kimono",
-    category: "Rest & Wellness",
-    categorySlug: "rest-wellness",
-    price: 128.00,
-    originalPrice: 150.00,
-    discountPrice: 128.00,
-    stock: 30,
-    lowStockThreshold: 10,
-    rating: 4.9,
-    reviewCount: 48,
-    status: "active",
-    featured: true,
-    bestseller: true,
-    isNew: true,
-    shortDescription: "Heavyweight 380 GSM organic cotton robe with deep pockets and relaxed drop-shoulder cut.",
-    description: "The ultimate lounge layer. Made from GOTS-certified combed organic French terry cotton, this kimono-inspired robe offers plush towel-like comfort after a bath or on lazy weekend mornings.",
-    specs: {
-      "Material": "100% GOTS Certified Organic Turkish Cotton",
-      "Weight": "380 GSM Heavyweight Terry",
-      "Features": "Wide kimono sleeves, detachable belt, side pockets"
-    },
-    images: [
-      "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=900&q=80",
-      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=900&q=80"
-    ],
-    tags: ["robe", "loungewear", "cotton", "wellness", "kimono"],
-    variants: {
-      colors: ["Raw Ecru", "Washed Slate", "Dune Taupe"],
-      sizes: ["S/M (Relaxed)", "L/XL (Oversized)"]
-    }
+    tags: ["duo", "gift", "oud", "noir", "luxury", "collector"]
   }
 ];
 
 const SEED_COUPONS = [
   {
-    id: "cp_01",
+    id: "cp_perfume10",
     code: "WELCOME10",
     discountType: "percentage",
     discountValue: 10,
-    minOrder: 50,
-    usageLimit: 500,
-    usedCount: 142,
+    minOrder: 100,
+    usageLimit: 1000,
+    usedCount: 312,
     expiryDate: "2027-12-31",
     active: true,
-    description: "10% off on your first order over $50"
+    description: "10% off your initial signature fragrance discovery"
   },
   {
-    id: "cp_02",
+    id: "cp_perfume20",
     code: "DEEPFEEL20",
     discountType: "percentage",
     discountValue: 20,
-    minOrder: 150,
-    usageLimit: 200,
-    usedCount: 88,
-    expiryDate: "2027-12-31",
-    active: true,
-    description: "20% VIP discount on orders over $150"
-  },
-  {
-    id: "cp_03",
-    code: "COMFORT15",
-    discountType: "fixed",
-    discountValue: 15,
-    minOrder: 80,
+    minOrder: 200,
     usageLimit: 300,
-    usedCount: 65,
+    usedCount: 144,
     expiryDate: "2027-12-31",
     active: true,
-    description: "$15 off on comfort essentials over $80"
+    description: "20% VIP Private Client saving on orders over $200"
   },
   {
-    id: "cp_04",
+    id: "cp_oud_gift",
+    code: "MAISON25",
+    discountType: "fixed",
+    discountValue: 25,
+    minOrder: 150,
+    usageLimit: 500,
+    usedCount: 89,
+    expiryDate: "2027-12-31",
+    active: true,
+    description: "$25 off on Oud and Signature Collections"
+  },
+  {
+    id: "cp_freeship",
     code: "FREESHIP",
     discountType: "fixed",
-    discountValue: 10,
-    minOrder: 40,
-    usageLimit: 1000,
-    usedCount: 231,
+    discountValue: 15,
+    minOrder: 75,
+    usageLimit: 2000,
+    usedCount: 520,
     expiryDate: "2027-12-31",
     active: true,
-    description: "Free shipping equivalent ($10 off)"
+    description: "Complimentary priority shipping equivalent credit"
   }
 ];
 
 const SEED_USERS = [
   {
     id: "usr_admin",
-    name: "DeepFeel Store Admin",
+    name: "DeepFeel Maison Director",
     email: "admin@deepfeel.com",
-    password: "admin123", // For demo purposes
+    password: "admin123",
     role: "admin",
     createdAt: "2025-01-10T09:00:00.000Z"
   },
@@ -866,8 +1092,8 @@ const SEED_USERS = [
       zip: "97201",
       country: "United States"
     },
-    ordersCount: 4,
-    totalSpent: 642.00,
+    ordersCount: 3,
+    totalSpent: 590.00,
     createdAt: "2025-02-14T14:20:00.000Z"
   },
   {
@@ -885,32 +1111,14 @@ const SEED_USERS = [
       country: "United States"
     },
     ordersCount: 2,
-    totalSpent: 308.00,
+    totalSpent: 420.00,
     createdAt: "2025-03-01T11:15:00.000Z"
-  },
-  {
-    id: "usr_customer_3",
-    name: "Maya Lin",
-    email: "maya.lin@example.com",
-    password: "password123",
-    role: "customer",
-    phone: "+1 (555) 459-7812",
-    address: {
-      street: "88 Market St, Suite 500",
-      city: "San Francisco",
-      state: "California",
-      zip: "94105",
-      country: "United States"
-    },
-    ordersCount: 1,
-    totalSpent: 185.00,
-    createdAt: "2025-04-12T16:40:00.000Z"
   }
 ];
 
 const SEED_ORDERS = [
   {
-    id: "DF-84920",
+    id: "DF-94810",
     userId: "usr_customer_1",
     customer: {
       name: "Elena Vance",
@@ -920,42 +1128,45 @@ const SEED_ORDERS = [
     },
     items: [
       {
-        productId: "df_001",
-        name: "Merino Wool Weighted Throw",
-        price: 185.00,
+        productId: "df_noir",
+        name: "DeepFeel Noir Extrait",
+        price: 195.00,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=900&q=80",
-        variant: "Oatmeal Heather"
+        image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80",
+        variant: "50ml Flacon",
+        size: "50ml"
       },
       {
-        productId: "df_005",
-        name: "Acoustic Ceramic Ultrasonic Diffuser",
-        price: 88.00,
+        productId: "df_discovery_set",
+        name: "The Maison Discovery Set",
+        price: 95.00,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=900&q=80",
-        variant: "Terracotta Clay"
+        image: "https://images.unsplash.com/photo-1615655406736-b37c4fabf923?auto=format&fit=crop&w=900&q=80",
+        variant: "5 x 10ml Atomizers",
+        size: "5 x 10ml"
       }
     ],
-    subtotal: 273.00,
-    discount: 27.30,
+    giftPackaging: true,
+    giftPackagingFee: 8.00,
+    subtotal: 290.00,
+    discount: 29.00,
     couponCode: "WELCOME10",
     shipping: 0.00,
-    tax: 19.66,
-    total: 265.36,
+    tax: 21.52,
+    total: 290.52,
     status: "Delivered",
     paymentMethod: "Credit Card (Visa ending in 4242)",
     paymentStatus: "Paid",
-    createdAt: "2026-08-18T10:30:00.000Z",
+    createdAt: "2026-08-19T10:30:00.000Z",
     timeline: [
-      { status: "Order Placed", date: "2026-08-18 10:30 AM", completed: true },
-      { status: "Payment Confirmed", date: "2026-08-18 10:31 AM", completed: true },
-      { status: "Processing & Quality Check", date: "2026-08-19 09:15 AM", completed: true },
-      { status: "Dispatched via FedEx (Tracking #94001289)", date: "2026-08-20 02:00 PM", completed: true },
-      { status: "Delivered to Front Door", date: "2026-08-23 11:45 AM", completed: true }
+      { status: "Order Received & Perfume Maceration Verified", date: "2026-08-19 10:30 AM", completed: true },
+      { status: "Hand-wrapped in Signature Silk & Wax Seal", date: "2026-08-20 09:15 AM", completed: true },
+      { status: "Dispatched via FedEx Priority (Tracking #DF99210)", date: "2026-08-21 02:00 PM", completed: true },
+      { status: "Delivered to Residence Doorstep", date: "2026-08-24 11:45 AM", completed: true }
     ]
   },
   {
-    id: "DF-84921",
+    id: "DF-94811",
     userId: "usr_customer_2",
     customer: {
       name: "Julian Thorne",
@@ -965,176 +1176,89 @@ const SEED_ORDERS = [
     },
     items: [
       {
-        productId: "df_003",
-        name: "Aura Tactile Dimmable Desk Lamp",
-        price: 145.00,
+        productId: "df_oud_royale",
+        name: "DeepFeel Oud Royale",
+        price: 245.00,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=80",
-        variant: "Anodized Bronze"
-      },
-      {
-        productId: "df_004",
-        name: "Full-Grain Saddle Leather Desk Mat",
-        price: 92.00,
-        quantity: 1,
-        image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=900&q=80",
-        variant: "Chestnut Cognac"
+        image: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80",
+        variant: "50ml Flacon",
+        size: "50ml"
       }
     ],
-    subtotal: 237.00,
-    discount: 47.40,
-    couponCode: "DEEPFEEL20",
+    giftPackaging: false,
+    giftPackagingFee: 0.00,
+    subtotal: 245.00,
+    discount: 25.00,
+    couponCode: "MAISON25",
     shipping: 0.00,
-    tax: 15.17,
-    total: 204.77,
+    tax: 17.60,
+    total: 237.60,
     status: "Shipped",
     paymentMethod: "Credit Card (Mastercard ending in 8912)",
     paymentStatus: "Paid",
-    createdAt: "2026-08-27T14:15:00.000Z",
+    createdAt: "2026-08-28T14:15:00.000Z",
     timeline: [
-      { status: "Order Placed", date: "2026-08-27 02:15 PM", completed: true },
-      { status: "Payment Confirmed", date: "2026-08-27 02:16 PM", completed: true },
-      { status: "Processing in Portland Studio", date: "2026-08-28 08:00 AM", completed: true },
-      { status: "In Transit via UPS Express (#1Z99999)", date: "2026-08-29 03:30 PM", completed: true },
-      { status: "Out for Delivery", date: "2026-09-01 (Estimated)", completed: false }
-    ]
-  },
-  {
-    id: "DF-84922",
-    userId: "usr_customer_3",
-    customer: {
-      name: "Maya Lin",
-      email: "maya.lin@example.com",
-      phone: "+1 (555) 459-7812",
-      address: "88 Market St, Suite 500, San Francisco, California, 94105, United States"
-    },
-    items: [
-      {
-        productId: "df_002",
-        name: "Komorebi Ceramic Pour-Over Set",
-        price: 68.00,
-        quantity: 1,
-        image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=80",
-        variant: "Raw Sandstone"
-      },
-      {
-        productId: "df_007",
-        name: "Soren Double-Wall Borosilicate Tumbler",
-        price: 36.00,
-        quantity: 2,
-        image: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=900&q=80",
-        variant: "Smoke Grey"
-      }
-    ],
-    subtotal: 140.00,
-    discount: 10.00,
-    couponCode: "FREESHIP",
-    shipping: 0.00,
-    tax: 10.40,
-    total: 140.40,
-    status: "Processing",
-    paymentMethod: "Apple Pay / Credit Card",
-    paymentStatus: "Paid",
-    createdAt: "2026-08-30T09:45:00.000Z",
-    timeline: [
-      { status: "Order Placed", date: "2026-08-30 09:45 AM", completed: true },
-      { status: "Payment Confirmed", date: "2026-08-30 09:46 AM", completed: true },
-      { status: "Order Sent to Packing Station", date: "2026-08-31 08:30 AM", completed: true },
-      { status: "Handed over to Courier", date: "Pending", completed: false },
-      { status: "Delivered", date: "Pending", completed: false }
-    ]
-  },
-  {
-    id: "DF-84923",
-    userId: "usr_customer_1",
-    customer: {
-      name: "Elena Vance",
-      email: "elena.vance@example.com",
-      phone: "+1 (555) 234-8901",
-      address: "742 Evergreen Terrace, Portland, Oregon, 97201, United States"
-    },
-    items: [
-      {
-        productId: "df_022",
-        name: "Organic French Terry Lounge Kimono",
-        price: 128.00,
-        quantity: 1,
-        image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=900&q=80",
-        variant: "Raw Ecru / S/M"
-      }
-    ],
-    subtotal: 128.00,
-    discount: 0.00,
-    couponCode: "",
-    shipping: 0.00,
-    tax: 10.24,
-    total: 138.24,
-    status: "Pending",
-    paymentMethod: "Cash on Delivery",
-    paymentStatus: "Pending on Delivery",
-    createdAt: "2026-08-31T18:20:00.000Z",
-    timeline: [
-      { status: "Order Placed via Cash on Delivery", date: "2026-08-31 06:20 PM", completed: true },
-      { status: "Awaiting Verification", date: "2026-08-31 06:20 PM", completed: false },
-      { status: "Processing", date: "Pending", completed: false },
-      { status: "Dispatched", date: "Pending", completed: false },
-      { status: "Delivered", date: "Pending", completed: false }
+      { status: "Order Confirmed", date: "2026-08-28 02:15 PM", completed: true },
+      { status: "Formulation Batch Tested", date: "2026-08-29 08:00 AM", completed: true },
+      { status: "In Transit via Express Courier", date: "2026-08-30 03:30 PM", completed: true },
+      { status: "Out for Delivery", date: "2026-09-02 (Estimated)", completed: false }
     ]
   }
 ];
 
 const SEED_SETTINGS = {
   storeName: "DeepFeel",
-  storeTagline: "Designed to Feel Different.",
-  storeEmail: "support@deepfeel.com",
-  storePhone: "+1 (800) 555-3337",
-  storeAddress: "1024 Hawthorne Blvd, Suite 400, Portland, OR 97214",
+  storeTagline: "Scent that leaves a memory.",
+  storeEmail: "concierge@deepfeel.com",
+  storePhone: "+1 (800) 555-8833",
+  storeAddress: "Maison DeepFeel, 1024 Hawthorne Blvd, Suite 400, Portland, OR 97214",
   currency: "USD",
   currencySymbol: "$",
-  taxRate: 8.0, // 8%
+  taxRate: 8.0,
   freeShippingThreshold: 100.00,
-  flatShippingRate: 10.00,
+  flatShippingRate: 12.00,
   expressShippingRate: 25.00,
-  announcementText: "Complimentary worldwide shipping on all orders over $100 — Consciously Crafted",
+  giftPackagingFee: 8.00,
+  announcementText: "Complimentary 5 x 10ml Discovery Coffret Voucher with orders over $150 — Maison DeepFeel",
   enableReviews: true,
   enableWishlist: true
 };
 
 const SEED_REVIEWS = [
   {
-    productId: "df_001",
-    author: "Claire D.",
+    productId: "df_noir",
+    author: "Genevieve R.",
+    rating: 5,
+    date: "August 22, 2026",
+    title: "Unquestionably the finest leather-amber extrait I own",
+    content: "The sillage is intoxicating without screaming. It lingers on my cashmere scarf for days. The Turkish rose softens the smoky leather into pure sensual gold. A true signature scent.",
+    verified: true
+  },
+  {
+    productId: "df_noir",
+    author: "Dr. Alistair M.",
+    rating: 5,
+    date: "July 30, 2026",
+    title: "A masterclass in restraint and deep sillage",
+    content: "I receive compliments every single time I wear Noir. The ambergris dry-down smells expensive, tactile, and deeply sophisticated. Worth every dollar.",
+    verified: true
+  },
+  {
+    productId: "df_oud_royale",
+    author: "Tariq K.",
     rating: 5,
     date: "August 14, 2026",
-    title: "The best purchase I have made for my bedroom",
-    content: "The weight distribution is astonishingly even. No hot spots or clumps. The merino wool is so soft to the touch and the oatmeal color matches my minimalist bedroom aesthetic flawlessly.",
+    title: "Authentic, buttery Assam agarwood. No synthetic harshness.",
+    content: "Having collected niche Middle Eastern and French ouds for 15 years, DeepFeel Oud Royale stands with the greatest. Smooth, balsamic honeyed woods with extraordinary longevity.",
     verified: true
   },
   {
-    productId: "df_001",
-    author: "Marcus K.",
-    rating: 5,
-    date: "July 28, 2026",
-    title: "Helped immensely with anxiety and restless sleep",
-    content: "I was skeptical about weighted blankets until I tried this. The chunky knit lets air flow freely while keeping you grounded. Truly feels like a luxury hotel piece.",
-    verified: true
-  },
-  {
-    productId: "df_002",
-    author: "Siddharth N.",
-    rating: 5,
-    date: "August 02, 2026",
-    title: "A work of art that makes delicious pour-overs",
-    content: "The texture of the raw sandstone ceramic dripper feels divine in the hand. Flow rate is dialed in perfectly for single-origin beans. The walnut collar completes the ritual.",
-    verified: true
-  },
-  {
-    productId: "df_003",
-    author: "Liam O.",
+    productId: "df_elan",
+    author: "Seraphina L.",
     rating: 5,
     date: "August 19, 2026",
-    title: "Subtle, stunning, and perfectly dimmable",
-    content: "The stepless capacitive brass dimmer is so satisfying to touch. Casts a warm, amber downward pool of light that makes late night working a peaceful joy.",
+    title: "The purest Grasse Jasmine I have ever experienced",
+    content: "Radiant, feminine, and luminous. It is neither powdery nor old-fashioned—it feels like stepping into a sun-drenched flower market at 6 AM in the South of France.",
     verified: true
   }
 ];

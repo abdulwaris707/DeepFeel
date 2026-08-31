@@ -1,9 +1,10 @@
 /**
  * DeepFeel - LocalStorage Data Access Layer (Store)
- * Handles state persistence, CRUD operations, relationships, and demo data reset.
+ * Handles perfume state persistence, fragrance CRUD, olfactory filtering, and demo data reset.
  */
 
 const STORAGE_KEYS = {
+  VERSION: "deepfeel_fragrance_v2",
   PRODUCTS: "deepfeel_products",
   CATEGORIES: "deepfeel_categories",
   COUPONS: "deepfeel_coupons",
@@ -18,14 +19,16 @@ const STORAGE_KEYS = {
 };
 
 const Store = {
-  // Initialize storage if missing
+  // Initialize storage if missing or if upgrading from previous version
   init() {
-    if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
+    const isPerfumeVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
+    if (!isPerfumeVersion || !localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
       this.resetDemoData();
+      localStorage.setItem(STORAGE_KEYS.VERSION, "2.0_perfume");
     }
   },
 
-  // Reset to original seed dataset
+  // Reset to original luxury perfume dataset
   resetDemoData() {
     localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(SEED_PRODUCTS));
     localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(SEED_CATEGORIES));
@@ -34,6 +37,7 @@ const Store = {
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(SEED_USERS));
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(SEED_SETTINGS));
     localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(SEED_REVIEWS));
+    localStorage.setItem(STORAGE_KEYS.VERSION, "2.0_perfume");
     
     // Set default demo customer as logged in if no user
     if (!localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) {
@@ -42,7 +46,7 @@ const Store = {
   },
 
   // ----------------------------------------------------
-  // PRODUCTS CRUD
+  // PRODUCTS & FRAGRANCE CRUD
   // ----------------------------------------------------
   getProducts(filters = {}) {
     let products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS) || "[]");
@@ -50,6 +54,31 @@ const Store = {
     // Filter by Category
     if (filters.category && filters.category !== "all") {
       products = products.filter(p => p.categorySlug === filters.category || p.category === filters.category);
+    }
+
+    // Filter by Gender (Men, Women, Unisex)
+    if (filters.gender && filters.gender !== "all") {
+      products = products.filter(p => p.gender && p.gender.toLowerCase() === filters.gender.toLowerCase());
+    }
+
+    // Filter by Fragrance Family (Woody, Floral, Fresh, Oriental, Amber, Citrus, Musky, Gourmand)
+    if (filters.fragranceFamily && filters.fragranceFamily !== "all") {
+      products = products.filter(p => p.fragranceFamily && p.fragranceFamily.toLowerCase().includes(filters.fragranceFamily.toLowerCase()));
+    }
+
+    // Filter by Concentration (Extrait de Parfum, Eau de Parfum, Eau de Toilette)
+    if (filters.concentration && filters.concentration !== "all") {
+      products = products.filter(p => p.concentration && p.concentration.toLowerCase().includes(filters.concentration.toLowerCase()));
+    }
+
+    // Filter by Occasion (Everyday, Office, Evening, Special Occasion)
+    if (filters.occasion && filters.occasion !== "all") {
+      products = products.filter(p => p.occasion && p.occasion.toLowerCase().includes(filters.occasion.toLowerCase()));
+    }
+
+    // Filter by Season (Spring, Summer, Fall, Winter)
+    if (filters.season && filters.season !== "all") {
+      products = products.filter(p => p.season && p.season.toLowerCase().includes(filters.season.toLowerCase()));
     }
 
     // Filter by Status
@@ -75,19 +104,28 @@ const Store = {
       products = products.filter(p => p.stock > 0);
     }
 
-    // Search query
+    // Search query (names, notes, tags, descriptions, families)
     if (filters.search && filters.search.trim()) {
       const q = filters.search.trim().toLowerCase();
-      products = products.filter(p => 
-        p.name.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        (p.shortDescription && p.shortDescription.toLowerCase().includes(q)) ||
-        (p.tags && p.tags.some(tag => tag.toLowerCase().includes(q))) ||
-        (p.sku && p.sku.toLowerCase().includes(q))
-      );
+      products = products.filter(p => {
+        const matchName = p.name && p.name.toLowerCase().includes(q);
+        const matchCategory = p.category && p.category.toLowerCase().includes(q);
+        const matchFamily = p.fragranceFamily && p.fragranceFamily.toLowerCase().includes(q);
+        const matchDesc = p.shortDescription && p.shortDescription.toLowerCase().includes(q);
+        const matchSku = p.sku && p.sku.toLowerCase().includes(q);
+        const matchTags = p.tags && p.tags.some(tag => tag.toLowerCase().includes(q));
+        
+        let matchNotes = false;
+        if (p.notes) {
+          const allNotes = [...(p.notes.top || []), ...(p.notes.heart || []), ...(p.notes.base || [])];
+          matchNotes = allNotes.some(n => n.toLowerCase().includes(q));
+        }
+
+        return matchName || matchCategory || matchFamily || matchDesc || matchSku || matchTags || matchNotes;
+      });
     }
 
-    // Featured / Bestseller / New
+    // Featured / Bestseller / New / Exclusive
     if (filters.featured) {
       products = products.filter(p => p.featured);
     }
@@ -97,31 +135,32 @@ const Store = {
     if (filters.isNew) {
       products = products.filter(p => p.isNew);
     }
+    if (filters.exclusive) {
+      products = products.filter(p => p.exclusive);
+    }
 
-    // Sort
+    // Sorting
     if (filters.sortBy) {
       switch (filters.sortBy) {
-        case "price-asc":
+        case "price_asc":
           products.sort((a, b) => a.price - b.price);
           break;
-        case "price-desc":
+        case "price_desc":
           products.sort((a, b) => b.price - a.price);
           break;
-        case "rating-desc":
+        case "rating":
           products.sort((a, b) => b.rating - a.rating);
           break;
         case "newest":
           products.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
           break;
-        case "bestselling":
+        case "bestseller":
           products.sort((a, b) => (b.bestseller ? 1 : 0) - (a.bestseller ? 1 : 0));
           break;
-        case "name-asc":
+        case "name_asc":
           products.sort((a, b) => a.name.localeCompare(b.name));
           break;
         default:
-          // Featured default
-          products.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
           break;
       }
     }
@@ -130,155 +169,189 @@ const Store = {
   },
 
   getProductById(id) {
-    const products = this.getProducts();
+    const products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS) || "[]");
     return products.find(p => p.id === id) || null;
   },
 
-  saveProduct(productData) {
-    let products = this.getProducts();
-    if (productData.id) {
-      const idx = products.findIndex(p => p.id === productData.id);
-      if (idx !== -1) {
-        products[idx] = { ...products[idx], ...productData };
-      } else {
-        products.unshift(productData);
+  getProductBySize(id, size) {
+    const p = this.getProductById(id);
+    if (!p) return null;
+    const price = (p.sizePricing && p.sizePricing[size]) ? p.sizePricing[size] : p.price;
+    return { ...p, selectedSize: size, price };
+  },
+
+  // Fragrance Discovery Recommender
+  recommendPerfumesByPreference(profile) {
+    const products = this.getProducts({ status: "active" });
+    const p = (profile || "").toLowerCase();
+    
+    return products.filter(item => {
+      if (p === "fresh") {
+        return item.fragranceFamily === "Fresh" || item.fragranceFamily === "Citrus" || (item.tags && item.tags.includes("fresh"));
       }
+      if (p === "sweet") {
+        return item.fragranceFamily === "Gourmand" || (item.tags && item.tags.includes("sweet")) || (item.tags && item.tags.includes("vanilla"));
+      }
+      if (p === "woody") {
+        return item.fragranceFamily === "Woody" || (item.tags && item.tags.includes("woody")) || (item.tags && item.tags.includes("sandalwood"));
+      }
+      if (p === "spicy") {
+        return (item.tags && item.tags.includes("spicy")) || (item.tags && item.tags.includes("cardamom")) || (item.tags && item.tags.includes("saffron"));
+      }
+      if (p === "floral") {
+        return item.fragranceFamily === "Floral" || (item.tags && item.tags.includes("rose")) || (item.tags && item.tags.includes("jasmine"));
+      }
+      if (p === "deep & smoky" || p === "smoky" || p === "oud") {
+        return item.categorySlug === "oud-collection" || (item.tags && item.tags.includes("deep & smoky")) || (item.tags && item.tags.includes("incense"));
+      }
+      return item.featured;
+    }).slice(0, 4);
+  },
+
+  saveProduct(productData) {
+    const products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS) || "[]");
+    const existingIndex = products.findIndex(p => p.id === productData.id);
+
+    if (existingIndex >= 0) {
+      products[existingIndex] = { ...products[existingIndex], ...productData };
     } else {
-      productData.id = "df_" + Math.random().toString(36).substr(2, 6);
-      productData.createdAt = new Date().toISOString();
-      products.unshift(productData);
+      const newProduct = {
+        id: productData.id || "df_" + Date.now().toString(36),
+        status: "active",
+        rating: 5.0,
+        reviewCount: 1,
+        sizes: productData.sizes || ["50ml", "100ml"],
+        selectedSize: productData.selectedSize || "50ml",
+        sizePricing: productData.sizePricing || { "50ml": productData.price, "100ml": productData.price * 1.45 },
+        ...productData
+      };
+      products.unshift(newProduct);
     }
+
     localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-    return productData;
+    return true;
   },
 
   deleteProduct(id) {
-    let products = this.getProducts();
+    let products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS) || "[]");
     products = products.filter(p => p.id !== id);
     localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
     return true;
   },
 
-  updateStock(productId, newStock) {
-    const product = this.getProductById(productId);
-    if (product) {
-      product.stock = Math.max(0, parseInt(newStock, 10));
-      this.saveProduct(product);
-      return product;
+  updateStock(id, newStock) {
+    const products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS) || "[]");
+    const p = products.find(prod => prod.id === id);
+    if (p) {
+      p.stock = Math.max(0, parseInt(newStock, 10) || 0);
+      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+      return true;
     }
-    return null;
+    return false;
+  },
+
+  deductStockForOrder(orderItems) {
+    const products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS) || "[]");
+    orderItems.forEach(item => {
+      const p = products.find(prod => prod.id === item.productId);
+      if (p) {
+        p.stock = Math.max(0, p.stock - (item.quantity || 1));
+      }
+    });
+    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
   },
 
   // ----------------------------------------------------
-  // CATEGORIES CRUD
+  // CATEGORIES
   // ----------------------------------------------------
   getCategories() {
-    const cats = JSON.parse(localStorage.getItem(STORAGE_KEYS.CATEGORIES) || "[]");
-    const products = this.getProducts();
-    // Dynamically calculate product count
-    return cats.map(c => ({
-      ...c,
-      productCount: products.filter(p => p.categorySlug === c.slug || p.category === c.name).length
-    }));
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.CATEGORIES) || "[]");
   },
 
-  getCategoryById(id) {
+  getCategoryBySlug(slug) {
     const cats = this.getCategories();
-    return cats.find(c => c.id === id || c.slug === id) || null;
+    return cats.find(c => c.slug === slug) || null;
   },
 
   saveCategory(catData) {
-    let cats = JSON.parse(localStorage.getItem(STORAGE_KEYS.CATEGORIES) || "[]");
-    if (catData.id) {
-      const idx = cats.findIndex(c => c.id === catData.id);
-      if (idx !== -1) {
-        cats[idx] = { ...cats[idx], ...catData };
-      } else {
-        cats.push(catData);
-      }
+    const cats = this.getCategories();
+    const idx = cats.findIndex(c => c.id === catData.id);
+    if (idx >= 0) {
+      cats[idx] = { ...cats[idx], ...catData };
     } else {
-      catData.id = "cat_" + Math.random().toString(36).substr(2, 6);
-      if (!catData.slug) {
-        catData.slug = catData.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-      }
-      cats.push(catData);
+      cats.push({
+        id: "cat_" + Date.now().toString(36),
+        ...catData
+      });
     }
     localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(cats));
-    return catData;
+    return true;
   },
 
   deleteCategory(id) {
-    let cats = JSON.parse(localStorage.getItem(STORAGE_KEYS.CATEGORIES) || "[]");
+    let cats = this.getCategories();
     cats = cats.filter(c => c.id !== id);
     localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(cats));
     return true;
   },
 
   // ----------------------------------------------------
-  // COUPONS CRUD & VALIDATION
+  // COUPONS
   // ----------------------------------------------------
   getCoupons() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.COUPONS) || "[]");
   },
 
-  getCouponByCode(code) {
-    if (!code) return null;
-    const coupons = this.getCoupons();
-    return coupons.find(c => c.code.toUpperCase() === code.trim().toUpperCase()) || null;
-  },
-
   validateCoupon(code, subtotal) {
-    const coupon = this.getCouponByCode(code);
+    if (!code) return { valid: false, message: "Please enter a promotion code." };
+    const coupons = this.getCoupons();
+    const coupon = coupons.find(c => c.code.toUpperCase() === code.trim().toUpperCase() && c.active);
+
     if (!coupon) {
-      return { valid: false, message: "Coupon code is invalid." };
+      return { valid: false, message: "Invalid or expired coupon code." };
     }
-    if (!coupon.active) {
-      return { valid: false, message: "This coupon is no longer active." };
-    }
-    if (coupon.expiryDate && new Date(coupon.expiryDate) < new Date()) {
-      return { valid: false, message: "This coupon has expired." };
-    }
-    if (coupon.usageLimit && coupon.usedCount >= coupon.usageLimit) {
-      return { valid: false, message: "Coupon usage limit has been reached." };
-    }
+
     if (coupon.minOrder && subtotal < coupon.minOrder) {
       return { 
         valid: false, 
-        message: `Minimum order amount of $${coupon.minOrder.toFixed(2)} required for this coupon.` 
+        message: `This coupon requires a minimum subtotal of $${coupon.minOrder.toFixed(2)}.` 
       };
     }
 
-    let discount = 0;
+    if (coupon.expiryDate && new Date(coupon.expiryDate) < new Date()) {
+      return { valid: false, message: "This promotional code has expired." };
+    }
+
+    let discountAmount = 0;
     if (coupon.discountType === "percentage") {
-      discount = (subtotal * coupon.discountValue) / 100;
+      discountAmount = (subtotal * coupon.discountValue) / 100;
     } else {
-      discount = Math.min(coupon.discountValue, subtotal);
+      discountAmount = Math.min(subtotal, coupon.discountValue);
     }
 
     return {
       valid: true,
       coupon,
-      discount: Math.round(discount * 100) / 100,
-      message: `Coupon "${coupon.code}" applied successfully!`
+      discountAmount: Number(discountAmount.toFixed(2)),
+      message: `Coupon applied: ${coupon.description || coupon.code}`
     };
   },
 
   saveCoupon(couponData) {
-    let coupons = this.getCoupons();
-    if (couponData.id) {
-      const idx = coupons.findIndex(c => c.id === couponData.id);
-      if (idx !== -1) {
-        coupons[idx] = { ...coupons[idx], ...couponData };
-      } else {
-        coupons.push(couponData);
-      }
+    const coupons = this.getCoupons();
+    const idx = coupons.findIndex(c => c.id === couponData.id);
+    if (idx >= 0) {
+      coupons[idx] = { ...coupons[idx], ...couponData };
     } else {
-      couponData.id = "cp_" + Math.random().toString(36).substr(2, 6);
-      couponData.usedCount = 0;
-      coupons.push(couponData);
+      coupons.unshift({
+        id: "cp_" + Date.now().toString(36),
+        usedCount: 0,
+        active: true,
+        ...couponData
+      });
     }
     localStorage.setItem(STORAGE_KEYS.COUPONS, JSON.stringify(coupons));
-    return couponData;
+    return true;
   },
 
   deleteCoupon(id) {
@@ -289,28 +362,10 @@ const Store = {
   },
 
   // ----------------------------------------------------
-  // ORDERS CRUD
+  // ORDERS
   // ----------------------------------------------------
-  getOrders(filters = {}) {
-    let orders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS) || "[]");
-    
-    if (filters.userId) {
-      orders = orders.filter(o => o.userId === filters.userId);
-    }
-    if (filters.status && filters.status !== "all") {
-      orders = orders.filter(o => o.status.toLowerCase() === filters.status.toLowerCase());
-    }
-    if (filters.search) {
-      const q = filters.search.toLowerCase();
-      orders = orders.filter(o => 
-        o.id.toLowerCase().includes(q) ||
-        o.customer.name.toLowerCase().includes(q) ||
-        o.customer.email.toLowerCase().includes(q)
-      );
-    }
-
-    orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    return orders;
+  getOrders() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS) || "[]");
   },
 
   getOrderById(id) {
@@ -318,83 +373,57 @@ const Store = {
     return orders.find(o => o.id === id) || null;
   },
 
+  getOrdersByUser(userId) {
+    const orders = this.getOrders();
+    return orders.filter(o => o.userId === userId);
+  },
+
   createOrder(orderData) {
-    let orders = this.getOrders();
-    const orderNumber = "DF-" + Math.floor(10000 + Math.random() * 90000);
-    
+    const orders = this.getOrders();
+    const newId = "DF-" + Math.floor(10000 + Math.random() * 90000);
     const newOrder = {
-      id: orderNumber,
-      userId: orderData.userId || "usr_guest",
-      customer: orderData.customer,
-      items: orderData.items,
-      subtotal: orderData.subtotal,
-      discount: orderData.discount || 0,
-      couponCode: orderData.couponCode || "",
-      shipping: orderData.shipping || 0,
-      tax: orderData.tax || 0,
-      total: orderData.total,
-      status: "Pending",
-      paymentMethod: orderData.paymentMethod || "Credit Card",
-      paymentStatus: orderData.paymentMethod === "Cash on Delivery" ? "Pending on Delivery" : "Paid",
+      id: newId,
       createdAt: new Date().toISOString(),
+      status: "Pending",
+      paymentStatus: "Paid",
       timeline: [
-        { status: "Order Placed", date: new Date().toLocaleString(), completed: true },
-        { status: "Payment Confirmed", date: orderData.paymentMethod === "Cash on Delivery" ? "Awaiting Delivery" : new Date().toLocaleString(), completed: orderData.paymentMethod !== "Cash on Delivery" },
-        { status: "Processing in Portland Studio", date: "Pending", completed: false },
-        { status: "Dispatched with Tracking", date: "Pending", completed: false },
-        { status: "Delivered", date: "Pending", completed: false }
-      ]
+        { status: "Order Received & Perfume Maceration Verified", date: new Date().toLocaleString(), completed: true },
+        { status: "Hand-wrapped in Silk Paper & Wax Seal", date: "Pending", completed: false },
+        { status: "Dispatched via Priority Courier", date: "Pending", completed: false },
+        { status: "Delivered to Doorstep", date: "Pending", completed: false }
+      ],
+      ...orderData
     };
 
     orders.unshift(newOrder);
     localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
 
-    // Deduct stock from products
-    orderData.items.forEach(item => {
-      const product = this.getProductById(item.productId);
-      if (product) {
-        product.stock = Math.max(0, product.stock - item.quantity);
-        this.saveProduct(product);
-      }
-    });
-
-    // Increment coupon usage count if applied
-    if (orderData.couponCode) {
-      const coupon = this.getCouponByCode(orderData.couponCode);
-      if (coupon) {
-        coupon.usedCount = (coupon.usedCount || 0) + 1;
-        this.saveCoupon(coupon);
-      }
+    // Deduct stock
+    if (newOrder.items && newOrder.items.length > 0) {
+      this.deductStockForOrder(newOrder.items);
     }
 
     return newOrder;
   },
 
-  updateOrderStatus(orderId, newStatus, note = "") {
-    let orders = this.getOrders();
+  updateOrderStatus(orderId, newStatus) {
+    const orders = this.getOrders();
     const order = orders.find(o => o.id === orderId);
     if (order) {
       order.status = newStatus;
-      if (newStatus === "Delivered") {
-        order.paymentStatus = "Paid";
-      }
-      
-      const nowStr = new Date().toLocaleString();
-      // Add or update timeline step
       order.timeline.push({
-        status: `Status changed to ${newStatus}${note ? ` (${note})` : ''}`,
-        date: nowStr,
+        status: `Status updated to: ${newStatus}`,
+        date: new Date().toLocaleString(),
         completed: true
       });
-
       localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
-      return order;
+      return true;
     }
-    return null;
+    return false;
   },
 
   // ----------------------------------------------------
-  // CUSTOMERS / USERS
+  // USERS & CUSTOMERS
   // ----------------------------------------------------
   getUsers() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS) || "[]");
@@ -407,82 +436,74 @@ const Store = {
 
   getUserByEmail(email) {
     const users = this.getUsers();
-    return users.find(u => u.email.toLowerCase() === email.trim().toLowerCase()) || null;
+    return users.find(u => u.email.toLowerCase() === email.toLowerCase()) || null;
   },
 
   saveUser(userData) {
-    let users = this.getUsers();
-    if (userData.id) {
-      const idx = users.findIndex(u => u.id === userData.id);
-      if (idx !== -1) {
-        users[idx] = { ...users[idx], ...userData };
-      } else {
-        users.push(userData);
-      }
+    const users = this.getUsers();
+    const idx = users.findIndex(u => u.id === userData.id);
+    if (idx >= 0) {
+      users[idx] = { ...users[idx], ...userData };
     } else {
-      userData.id = "usr_" + Math.random().toString(36).substr(2, 8);
-      userData.createdAt = new Date().toISOString();
-      userData.ordersCount = 0;
-      userData.totalSpent = 0;
-      users.push(userData);
+      users.push({
+        id: "usr_" + Date.now().toString(36),
+        role: "customer",
+        createdAt: new Date().toISOString(),
+        ordersCount: 0,
+        totalSpent: 0,
+        ...userData
+      });
     }
     localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
-    return userData;
-  },
-
-  getCustomers() {
-    const users = this.getUsers().filter(u => u.role !== "admin");
-    const orders = this.getOrders();
-
-    return users.map(user => {
-      const userOrders = orders.filter(o => o.userId === user.id || (o.customer && o.customer.email === user.email));
-      const totalSpent = userOrders.reduce((sum, o) => sum + (o.total || 0), 0);
-      return {
-        ...user,
-        ordersCount: userOrders.length,
-        totalSpent: Math.round(totalSpent * 100) / 100,
-        recentOrders: userOrders.slice(0, 3)
-      };
-    });
+    return true;
   },
 
   // ----------------------------------------------------
   // REVIEWS
   // ----------------------------------------------------
-  getReviews(productId) {
+  getReviews(productId = null) {
     const reviews = JSON.parse(localStorage.getItem(STORAGE_KEYS.REVIEWS) || "[]");
-    return reviews.filter(r => r.productId === productId);
+    if (productId) {
+      return reviews.filter(r => r.productId === productId);
+    }
+    return reviews;
   },
 
   addReview(reviewData) {
-    let reviews = JSON.parse(localStorage.getItem(STORAGE_KEYS.REVIEWS) || "[]");
-    reviewData.id = "rev_" + Math.random().toString(36).substr(2, 6);
-    reviewData.date = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-    reviews.unshift(reviewData);
+    const reviews = this.getReviews();
+    const newRev = {
+      id: "rev_" + Date.now().toString(36),
+      date: new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+      verified: true,
+      ...reviewData
+    };
+    reviews.unshift(newRev);
     localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews));
 
-    // Update product average rating & review count
-    const product = this.getProductById(reviewData.productId);
-    if (product) {
-      const prodReviews = reviews.filter(r => r.productId === product.id);
-      const avg = prodReviews.reduce((sum, r) => sum + r.rating, 0) / prodReviews.length;
-      product.rating = Math.round(avg * 10) / 10;
-      product.reviewCount = prodReviews.length;
-      this.saveProduct(product);
+    // Recalculate product rating
+    const prodReviews = reviews.filter(r => r.productId === reviewData.productId);
+    const avg = prodReviews.reduce((acc, r) => acc + Number(r.rating), 0) / prodReviews.length;
+    const products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS) || "[]");
+    const prod = products.find(p => p.id === reviewData.productId);
+    if (prod) {
+      prod.rating = Number(avg.toFixed(1));
+      prod.reviewCount = prodReviews.length;
+      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
     }
 
-    return reviewData;
+    return newRev;
   },
 
   // ----------------------------------------------------
-  // STORE SETTINGS
+  // SETTINGS
   // ----------------------------------------------------
   getSettings() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS) || JSON.stringify(SEED_SETTINGS));
   },
 
   saveSettings(newSettings) {
-    const merged = { ...this.getSettings(), ...newSettings };
+    const current = this.getSettings();
+    const merged = { ...current, ...newSettings };
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(merged));
     return merged;
   },
@@ -490,41 +511,20 @@ const Store = {
   // ----------------------------------------------------
   // RECENTLY VIEWED
   // ----------------------------------------------------
-  getRecentlyViewed() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.RECENTLY_VIEWED) || "[]");
-  },
-
   addRecentlyViewed(productId) {
-    let list = this.getRecentlyViewed();
-    list = list.filter(id => id !== productId);
-    list.unshift(productId);
-    if (list.length > 8) list.pop();
-    localStorage.setItem(STORAGE_KEYS.RECENTLY_VIEWED, JSON.stringify(list));
+    let recent = JSON.parse(localStorage.getItem(STORAGE_KEYS.RECENTLY_VIEWED) || "[]");
+    recent = recent.filter(id => id !== productId);
+    recent.unshift(productId);
+    if (recent.length > 8) recent.pop();
+    localStorage.setItem(STORAGE_KEYS.RECENTLY_VIEWED, JSON.stringify(recent));
   },
 
-  // ----------------------------------------------------
-  // FORMATTING HELPERS
-  // ----------------------------------------------------
-  formatCurrency(amount) {
-    const settings = this.getSettings();
-    const symbol = settings.currencySymbol || "$";
-    return `${symbol}${Number(amount || 0).toFixed(2)}`;
-  },
-
-  formatDate(isoString) {
-    if (!isoString) return "";
-    try {
-      const d = new Date(isoString);
-      return d.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric"
-      });
-    } catch (e) {
-      return isoString;
-    }
+  getRecentlyViewed() {
+    const ids = JSON.parse(localStorage.getItem(STORAGE_KEYS.RECENTLY_VIEWED) || "[]");
+    const products = this.getProducts();
+    return ids.map(id => products.find(p => p.id === id)).filter(Boolean);
   }
 };
 
-// Auto-initialize on script load
+// Automatically initialize store on script load
 Store.init();

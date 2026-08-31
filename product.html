@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Product Details — DeepFeel</title>
-  <meta name="description" content="Explore meticulous product specifications, hand-selected materials, customer reviews, and craft details." />
+  <title>Fragrance Details — DeepFeel Haute Parfumerie</title>
+  <meta name="description" content="Immerse in the olfactory architecture, rare notes, and craftsmanship of DeepFeel luxury extraits." />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body>
 
   <!-- Announcement Bar -->
-  <aside class="announcement-bar">
-    <div class="container text-center">
-      <span class="announcement-bar-text">Complimentary worldwide shipping on orders over $100 — Consciously Crafted</span>
+  <div class="announcement-bar">
+    <div class="container announcement-content">
+      <span>Complimentary worldwide priority delivery on all flacon orders over $100</span>
+      <a href="shop.html" class="announcement-link">Explore Fragrances &rarr;</a>
     </div>
-  </aside>
+  </div>
 
-  <!-- Navigation Header -->
+  <!-- Header -->
   <header class="site-header">
     <div class="container header-container">
       <button type="button" class="mobile-menu-toggle" aria-label="Toggle navigation menu">
@@ -32,10 +33,11 @@
 
       <nav class="desktop-nav">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="shop.html" class="nav-link active">Shop</a>
-        <a href="categories.html" class="nav-link">Categories</a>
-        <a href="about.html" class="nav-link">About</a>
-        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="shop.html" class="nav-link active">Fragrances</a>
+        <a href="categories.html" class="nav-link">Collections</a>
+        <a href="shop.html?category=oud-collection" class="nav-link">The Oud Vault</a>
+        <a href="about.html" class="nav-link">Maison Story</a>
+        <a href="contact.html" class="nav-link">Concierge</a>
       </nav>
 
       <div class="header-utilities">
@@ -72,126 +74,117 @@
     </div>
   </header>
 
-  <!-- Mobile Drawer -->
-  <div class="mobile-nav-drawer" id="mobile-nav-drawer">
-    <div class="mobile-drawer-overlay"></div>
-    <div class="mobile-drawer-panel">
-      <div class="mobile-drawer-header">
-        <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
-        <button type="button" class="mobile-drawer-close" aria-label="Close navigation">&times;</button>
-      </div>
-      <div class="mobile-drawer-links">
-        <a href="index.html" class="mobile-nav-link">Home</a>
-        <a href="shop.html" class="mobile-nav-link">Shop All Catalog</a>
-        <a href="categories.html" class="mobile-nav-link">Categories</a>
-        <a href="wishlist.html" class="mobile-nav-link">Saved Items (<span class="wishlist-count-badge">0</span>)</a>
-        <a href="cart.html" class="mobile-nav-link">Shopping Bag (<span class="cart-count-badge">0</span>)</a>
-        <a href="about.html" class="mobile-nav-link">Our Philosophy</a>
-        <a href="faq.html" class="mobile-nav-link">Help & FAQs</a>
-        <a href="contact.html" class="mobile-nav-link">Contact Studio</a>
-      </div>
+  <!-- Breadcrumbs -->
+  <div class="breadcrumb-bar" style="background: var(--bg-surface-subtle); border-bottom: 1px solid var(--border-light); padding: 0.8rem 0;">
+    <div class="container" style="font-size: 0.85rem; color: var(--text-muted);">
+      <a href="index.html">Home</a> &nbsp;/&nbsp; 
+      <a href="shop.html">Fragrances</a> &nbsp;/&nbsp; 
+      <span id="pdp-product-category" style="color: var(--text-primary);">Signature Collection</span>
     </div>
   </div>
 
-  <!-- Product Detail Content -->
-  <main class="section">
-    <div class="container" id="pdp-container">
+  <main class="section" style="padding-top: 2.5rem;">
+    <div class="container">
       
-      <!-- Breadcrumbs -->
-      <nav style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2rem;" aria-label="Breadcrumb">
-        <a href="index.html">Home</a>
-        <span>/</span>
-        <a href="shop.html" id="breadcrumb-category">Shop</a>
-        <span>/</span>
-        <span id="breadcrumb-product" style="color: var(--text-primary); font-weight: 500;">Product</span>
-      </nav>
-
-      <!-- Main Product Presentation -->
-      <div class="product-detail-grid">
+      <!-- Primary PDP 2-Column Grid -->
+      <div class="pdp-grid">
         
-        <!-- Left: Image Gallery with Hover Zoom -->
-        <div class="pdp-gallery-area">
-          <div class="pdp-gallery-main" id="pdp-gallery-main">
-            <img src="" alt="" id="pdp-main-img" class="pdp-main-image" />
+        <!-- Left Column: Perfume Gallery & Zoom -->
+        <div class="pdp-gallery-wrap">
+          <div class="pdp-main-image-box" id="pdp-zoom-container" style="overflow: hidden; border-radius: var(--radius-md); background: #fff; border: 1px solid var(--border-light);">
+            <img 
+              id="pdp-main-image" 
+              src="" 
+              alt="DeepFeel Fragrance Flacon" 
+              class="pdp-zoom-img"
+              style="width: 100%; height: 560px; object-fit: cover; transition: transform 0.15s ease-out;" 
+            />
           </div>
-          <div class="pdp-gallery-thumbs" id="pdp-thumbs-container">
-            <!-- Thumbs populated by app.js -->
+          <div class="pdp-thumbs-row" id="pdp-thumbs-container" style="display: flex; gap: 0.8rem; margin-top: 1rem;">
+            <!-- Thumbnails inserted by app.js -->
           </div>
         </div>
 
-        <!-- Right: Product Purchase Controls -->
-        <div class="pdp-info-area">
-          <div class="pdp-meta-row">
-            <span class="product-card-category" id="pdp-category">Category</span>
-            <span class="stock-status-pill in-stock" id="pdp-stock-status">In Stock</span>
+        <!-- Right Column: Fragrance Info & Actions -->
+        <div class="pdp-details-wrap">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <span id="pdp-product-concentration" style="font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-primary);">
+              Extrait de Parfum
+            </span>
+            <span id="pdp-product-sku" class="text-muted" style="font-size: 0.82rem;">SKU: DF-00</span>
           </div>
 
-          <h1 class="pdp-title" id="pdp-title">Loading Product...</h1>
-          
-          <div class="product-card-rating" id="pdp-rating" style="margin-bottom: 1.2rem;">
-            <!-- Stars rendered by app.js -->
+          <h1 id="pdp-product-title" class="font-serif" style="font-size: 2.5rem; line-height: 1.15; margin-bottom: 0.5rem;">
+            Fragrance Title
+          </h1>
+
+          <div style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 0.8rem; font-style: italic;">
+            Olfactory Family: <strong id="pdp-product-family" style="color: var(--text-primary);">Woody Amber</strong>
           </div>
 
-          <div class="pdp-price-row">
-            <span class="price-current large" id="pdp-price">$0.00</span>
-            <span class="price-original" id="pdp-original-price" style="font-size: 1.15rem; display: none;">$0.00</span>
+          <!-- Rating -->
+          <div class="pdp-rating-row" style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.2rem;">
+            <div id="pdp-rating-stars"></div>
+            <span id="pdp-review-count" class="text-muted" style="font-size: 0.88rem;">(0 reviews)</span>
           </div>
 
-          <p class="pdp-short-desc" id="pdp-short-desc">Loading description...</p>
-
-          <!-- Variant Selectors -->
-          <div id="pdp-variants-container">
-            <!-- Rendered by app.js -->
+          <!-- Price Display -->
+          <div class="pdp-price-row" style="display: flex; align-items: baseline; gap: 1rem; margin-bottom: 1.5rem;">
+            <span id="pdp-product-price" style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">$0.00</span>
+            <span id="pdp-product-orig-price" class="price-original" style="font-size: 1.2rem; display: none;">$0.00</span>
           </div>
 
-          <!-- Quantity and Add to Bag Row -->
-          <div class="pdp-actions-row">
-            <div class="quantity-picker">
-              <button type="button" class="qty-btn" id="pdp-qty-minus" aria-label="Decrease quantity">-</button>
-              <input type="number" id="pdp-qty-input" value="1" min="1" readonly />
-              <button type="button" class="qty-btn" id="pdp-qty-plus" aria-label="Increase quantity">+</button>
+          <!-- Short Description -->
+          <p id="pdp-product-desc" style="font-size: 1rem; line-height: 1.7; color: var(--text-secondary); margin-bottom: 1.8rem;">
+            Fragrance description...
+          </p>
+
+          <!-- Stock Status -->
+          <div id="pdp-stock-status" style="font-size: 0.9rem; margin-bottom: 1.5rem;"></div>
+
+          <!-- Flacon Size Variant Selector -->
+          <div class="size-selector-wrap">
+            <label class="size-selector-label">
+              <span>Select Flacon Volume:</span>
+              <span class="text-muted" style="font-size: 0.8rem;">Concentrated pure extrait</span>
+            </label>
+            <div class="size-btn-group" id="pdp-size-selector">
+              <!-- Size pills rendered by app.js -->
+            </div>
+          </div>
+
+          <!-- Quantity Picker & CTAs -->
+          <div style="display: flex; gap: 1rem; margin-bottom: 1.2rem; flex-wrap: wrap;">
+            <div class="quantity-picker" style="height: 52px;">
+              <button type="button" class="qty-btn" id="pdp-qty-minus">-</button>
+              <input type="number" id="pdp-qty-input" value="1" min="1" class="qty-input" />
+              <button type="button" class="qty-btn" id="pdp-qty-plus">+</button>
             </div>
 
-            <button type="button" class="btn btn-primary btn-lg btn-add-bag" id="pdp-add-to-cart" style="flex: 1;">
-              Add to Shopping Bag
+            <button type="button" class="btn btn-primary btn-lg" id="pdp-add-to-bag-btn" style="flex: 1.4; height: 52px; font-size: 1rem;">
+              Add to Shopping Bag &rarr;
             </button>
 
-            <button type="button" class="btn btn-accent btn-lg" id="pdp-buy-now">
-              Buy Now
+            <button type="button" class="btn btn-outline btn-lg" id="pdp-buy-now-btn" style="flex: 1; height: 52px; font-size: 1rem;">
+              Instant Checkout
             </button>
 
-            <button type="button" class="btn btn-icon-outline" id="pdp-wishlist-toggle" aria-label="Save to Wishlist" style="width: 48px; height: 48px;">
+            <button type="button" class="btn btn-outline btn-icon-only" id="pdp-wishlist-toggle" style="width: 52px; height: 52px;" title="Save to Scent Vault">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
             </button>
           </div>
 
-          <!-- Trust Badges -->
-          <div class="pdp-trust-highlights">
-            <div class="trust-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="1" y="3" width="15" height="13"></rect>
-                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                <circle cx="18.5" cy="18.5" r="2.5"></circle>
-              </svg>
-              <span>Free Carbon-Neutral Shipping over $100</span>
+          <!-- Trust assurances -->
+          <div style="background: var(--bg-surface-subtle); border-radius: var(--radius-sm); border: 1px solid var(--border-light); padding: 1rem; font-size: 0.85rem; color: var(--text-secondary);">
+            <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem;">
+              <span>🎁</span>
+              <span><strong>Complimentary Discovery Sample:</strong> Includes 2ml test vial to try before unsealing the 50ml flacon.</span>
             </div>
-            <div class="trust-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              </svg>
-              <span>30-Day Restful At-Home Trial</span>
-            </div>
-            <div class="trust-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <span>Authentic Certified Materials</span>
-            </div>
-            <div class="trust-item">
-              <span id="pdp-sku" style="color: var(--text-muted); font-size: 0.8rem;">SKU: DF-001</span>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span>🛡️</span>
+              <span><strong>30-Day Restful Return:</strong> Return unopened flacon for a full refund if the 2ml sample doesn't suit your skin.</span>
             </div>
           </div>
 
@@ -199,163 +192,162 @@
 
       </div>
 
-      <!-- Information Tabs (Description, Specs, Shipping, Reviews) -->
-      <section class="product-tabs-section">
-        <div class="tab-nav">
-          <button type="button" class="tab-btn active" data-tab-target="tab-desc">Detailed Description</button>
-          <button type="button" class="tab-btn" data-tab-target="tab-specs">Technical Specifications</button>
-          <button type="button" class="tab-btn" data-tab-target="tab-shipping">Shipping & Return Policies</button>
-          <button type="button" class="tab-btn" data-tab-target="tab-reviews">Customer Reviews</button>
+      <!-- Performance Specs Grid (Longevity, Sillage, Season, Concentration) -->
+      <div id="pdp-scent-specs-wrap">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <!-- Olfactory Fragrance Pyramid -->
+      <div id="pdp-fragrance-pyramid-wrap">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <!-- The Story Behind The Scent Editorial Section -->
+      <div id="pdp-scent-story-wrap">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <!-- Fragrance Details & Ingredients Tabs -->
+      <div class="pdp-tabs-wrap" style="margin: 3.5rem 0;">
+        <div style="border-bottom: 1px solid var(--border-medium); margin-bottom: 2rem;">
+          <h3 class="font-serif" style="font-size: 1.8rem; margin-bottom: 0.8rem;">Maceration & Application Ritual</h3>
         </div>
 
-        <div class="tab-content active" id="tab-desc">
-          <div style="max-width: 780px;">
-            <p id="pdp-full-desc" style="font-size: 1.05rem; line-height: 1.8;"></p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;">
+          <div>
+            <h4 style="font-size: 1.1rem; margin-bottom: 0.6rem;">How to Wear & Layer</h4>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.2rem;">
+              Apply 2 to 3 sprays directly onto pulse points—the base of the neck, inner wrists, and behind the ears. Because of the high 22%–33% oil concentration, avoid rubbing wrists together as friction breaks down delicate top note molecules.
+            </p>
+            <h4 style="font-size: 1.1rem; margin-bottom: 0.6rem;">Storage & Longevity</h4>
+            <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8;">
+              Keep your flacon in a cool, dark environment away from direct sunlight or sudden humidity changes to preserve the natural botanical extracts for years.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-surface-subtle); padding: 1.8rem; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+            <h4 style="font-size: 1.1rem; margin-bottom: 0.6rem;">Formulation Ingredients</h4>
+            <p id="pdp-ingredients-text" style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; word-break: break-word;">
+              Loading ingredients...
+            </p>
           </div>
         </div>
+      </div>
 
-        <div class="tab-content" id="tab-specs">
-          <div style="max-width: 680px;">
-            <table class="specs-table" id="pdp-specs-table">
-              <!-- Rendered by app.js -->
-            </table>
-          </div>
-        </div>
-
-        <div class="tab-content" id="tab-shipping">
-          <div style="max-width: 780px; display: flex; flex-direction: column; gap: 1.5rem;">
-            <div>
-              <h4 style="margin-bottom: 0.4rem;">Complimentary Doorstep Delivery</h4>
-              <p>All orders over $100 qualify for free standard shipping. Standard continental US delivery takes 3–5 business days. Express 2-day delivery is available at checkout.</p>
+      <!-- Verified Patron Reviews Section -->
+      <div class="pdp-reviews-section" style="margin: 4rem 0; border-top: 1px solid var(--border-medium); padding-top: 3rem;">
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 4rem; align-items: flex-start;">
+          
+          <!-- Reviews List -->
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+              <h3 class="font-serif" style="font-size: 1.8rem;">Patron Reviews</h3>
             </div>
-            <div>
-              <h4 style="margin-bottom: 0.4rem;">30-Day Restful At-Home Guarantee</h4>
-              <p>We want you to feel the difference in your everyday sanctuary. If our piece does not fit your space or rest requirements, return it within 30 days of delivery in original condition for a full refund.</p>
-            </div>
-            <div>
-              <h4 style="margin-bottom: 0.4rem;">Sustainable Recycled Packaging</h4>
-              <p>Every order is dispatched in FSC-certified, 100% recyclable unbleached kraft boxes and sealed with plant-based water-activated tape.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-content" id="tab-reviews">
-          <div class="reviews-container">
-            
-            <!-- Overall Score & Form -->
-            <div class="reviews-summary-card">
-              <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Customer Rating</h3>
-              <div class="big-rating-number" id="pdp-reviews-avg-score">5.0</div>
-              <div class="rating-stars" style="font-size: 1.2rem; margin-bottom: 0.4rem;">★★★★★</div>
-              <p class="text-muted" id="pdp-reviews-total-count" style="margin-bottom: 2rem;">Based on reviews</p>
-
-              <!-- Write a Review Form -->
-              <h4 style="margin-bottom: 1rem; border-top: 1px solid var(--border-light); padding-top: 1.5rem;">Write a Review</h4>
-              <form id="write-review-form">
-                <div class="form-group">
-                  <label class="form-label" for="review-author">Your Name</label>
-                  <input type="text" id="review-author" class="form-input" placeholder="e.g. Alex Morgan" required />
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="review-rating">Rating</label>
-                  <select id="review-rating" class="form-select">
-                    <option value="5">★★★★★ (5 - Exceptional)</option>
-                    <option value="4">★★★★☆ (4 - Very Good)</option>
-                    <option value="3">★★★☆☆ (3 - Average)</option>
-                    <option value="2">★★☆☆☆ (2 - Below Expectations)</option>
-                    <option value="1">★☆☆☆☆ (1 - Poor)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="review-title">Review Headline</label>
-                  <input type="text" id="review-title" class="form-input" placeholder="e.g. Truly exceptional quality" required />
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="review-content">Your Experience</label>
-                  <textarea id="review-content" class="form-textarea" rows="3" placeholder="Describe the texture, weight, and feel..." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary btn-full">Submit Review</button>
-              </form>
-            </div>
-
-            <!-- Reviews List -->
             <div id="pdp-reviews-list">
               <!-- Rendered by app.js -->
             </div>
-
           </div>
-        </div>
 
-      </section>
+          <!-- Write Review Form -->
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 2rem; box-shadow: var(--shadow-sm);">
+            <h4 class="font-serif" style="font-size: 1.4rem; margin-bottom: 0.4rem;">Share Your Olfactory Impression</h4>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.4rem;">
+              How does this extrait evolve on your skin throughout the day?
+            </p>
 
-      <!-- Related Products -->
-      <section class="section-sm" style="margin-top: 3rem; border-top: 1px solid var(--border-light);">
-        <div class="section-header" style="display: flex; align-items: flex-end; justify-content: space-between;">
-          <div>
-            <span class="section-subtitle">Harmonious Pairings</span>
-            <h2 class="section-title">You May Also Appreciate</h2>
+            <form id="pdp-review-form">
+              <div class="form-group">
+                <label class="form-label" for="review-author">Your Name *</label>
+                <input type="text" id="review-author" class="form-input" placeholder="e.g. Alistair M." required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="review-rating">Rating *</label>
+                <select id="review-rating" class="form-select">
+                  <option value="5">★★★★★ — Exceptional Sillage & Longevity (5 Stars)</option>
+                  <option value="4">★★★★☆ — Very Good (4 Stars)</option>
+                  <option value="3">★★★☆☆ — Average (3 Stars)</option>
+                  <option value="2">★★☆☆☆ — Below Expectations (2 Stars)</option>
+                  <option value="1">★☆☆☆☆ — Poor (1 Star)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="review-title">Review Headline</label>
+                <input type="text" id="review-title" class="form-input" placeholder="e.g. Unbelievable 14-hour longevity" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="review-content">Your Scent Review *</label>
+                <textarea id="review-content" class="form-textarea" rows="4" placeholder="Describe the top, heart, and base dry-down notes..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-full">Publish Review</button>
+            </form>
           </div>
-          <a href="shop.html" class="btn btn-outline btn-sm">Explore Collection &rarr;</a>
-        </div>
 
-        <div class="product-grid" id="pdp-related-grid">
+        </div>
+      </div>
+
+      <!-- Related Fragrances -->
+      <div style="margin-top: 5rem; border-top: 1px solid var(--border-light); padding-top: 3rem;">
+        <div class="section-header text-center">
+          <span class="section-subtitle">Complementary Notes</span>
+          <h2 class="section-title font-serif" style="font-size: 2.2rem;">You May Also Savor</h2>
+        </div>
+        <div class="product-grid-4" id="pdp-related-products-grid">
           <!-- Rendered by app.js -->
         </div>
-      </section>
+      </div>
 
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
-          <p class="footer-desc">
-            Thoughtfully crafted living objects made to ground the senses and bring enduring calm into modern spaces.
-          </p>
-        </div>
-
-        <div>
-          <h4 class="footer-title">Collections</h4>
-          <ul class="footer-links">
-            <li><a href="shop.html?category=rest-wellness">Rest & Wellness</a></li>
-            <li><a href="shop.html?category=artisan-drinkware">Artisan Drinkware</a></li>
-            <li><a href="shop.html?category=ambient-lighting">Ambient Lighting</a></li>
-            <li><a href="shop.html?category=home-living">Home & Living</a></li>
-            <li><a href="shop.html?category=studio-workspace">Studio & Workspace</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="footer-title">Company</h4>
-          <ul class="footer-links">
-            <li><a href="about.html">Our Philosophy</a></li>
-            <li><a href="faq.html">Help & FAQ</a></li>
-            <li><a href="contact.html">Contact Studio</a></li>
-            <li><a href="account.html">Customer Account</a></li>
-            <li><a href="admin/index.html">Admin Command Suite</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <h4 class="footer-title">Customer Care</h4>
-          <ul class="footer-links">
-            <li><a href="faq.html#shipping">Shipping & Delivery</a></li>
-            <li><a href="faq.html#returns">30-Day Returns</a></li>
-            <li><a href="faq.html#warranty">Product Warranty</a></li>
-            <li><a href="orders.html">Track My Order</a></li>
-          </ul>
-        </div>
+    <div class="container footer-grid">
+      <div>
+        <a href="index.html" class="brand-logo" style="margin-bottom: 1rem;">DEEP<span>FEEL</span></a>
+        <p class="footer-desc">
+          Haute parfumerie crafted with wild botanicals, aged ambers, and sustainable agarwoods. Scent that leaves a memory.
+        </p>
       </div>
 
+      <div>
+        <h4 class="footer-col-title">Fragrance Vault</h4>
+        <ul class="footer-links">
+          <li><a href="shop.html">All Extraits</a></li>
+          <li><a href="shop.html?category=signature-collection">Signature Collection</a></li>
+          <li><a href="shop.html?category=oud-collection">The Oud Collection</a></li>
+          <li><a href="shop.html?gender=men">For Him</a></li>
+          <li><a href="shop.html?gender=women">For Her</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Maison</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">Atelier Story</a></li>
+          <li><a href="faq.html">Sillage & Care FAQs</a></li>
+          <li><a href="contact.html">Concierge & Trade</a></li>
+          <li><a href="admin/login.html">Atelier Portal</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Concierge Atelier</h4>
+        <p class="footer-desc" style="font-size: 0.9rem; margin-bottom: 0.8rem;">
+          Maison DeepFeel<br>
+          1024 Hawthorne Blvd, Suite 400<br>
+          Portland, OR 97214
+        </p>
+        <span style="font-size: 0.88rem; color: var(--accent-primary); font-weight: 600;">concierge@deepfeel.com</span>
+      </div>
+    </div>
+
+    <div class="container">
       <div class="footer-bottom">
-        <p>&copy; 2026 DeepFeel Living Co. All rights reserved.</p>
-        <div class="footer-legal-links">
-          <a href="faq.html">Privacy Policy</a>
-          <a href="faq.html">Terms of Service</a>
-        </div>
+        <p>&copy; 2026 Maison DeepFeel Co. All rights reserved.</p>
       </div>
     </div>
   </footer>

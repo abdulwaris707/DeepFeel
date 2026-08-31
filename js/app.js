@@ -1,857 +1,700 @@
 /**
- * DeepFeel - Storefront Application Controller
- * Handles page initialization, shop filtering/sorting, product detail view & zoom,
- * cart & checkout workflows, account dashboard, and reviews.
+ * DeepFeel - Master Storefront Page Controller
+ * Handles page initialization, fragrance filters, PDP pyramid & scent storytelling,
+ * interactive fragrance discovery quiz, and cart/checkout workflows.
  */
 
-document.addEventListener("DOMContentLoaded", () => {
-  App.init();
-});
-
 const App = {
+  // Determine current page and bootstrap
   init() {
-    this.initHeader();
-    this.initAnnouncement();
-
-    // Determine current page and initialize specific controllers
     const path = window.location.pathname.toLowerCase();
-    
-    if (path.endsWith("index.html") || path.endsWith("/") || path.endsWith("deepfeel") || path.endsWith("deepfeel/")) {
+
+    if (path.endsWith("index.html") || path === "/" || path.endsWith("/deepfeel/") || path.endsWith("/deepfeel")) {
       this.initHomePage();
-    } else if (path.includes("shop.html")) {
+    } else if (path.endsWith("shop.html")) {
       this.initShopPage();
-    } else if (path.includes("product.html")) {
+    } else if (path.endsWith("product.html")) {
       this.initProductDetailPage();
-    } else if (path.includes("categories.html")) {
-      this.initCategoriesPage();
-    } else if (path.includes("cart.html")) {
+    } else if (path.endsWith("cart.html")) {
       this.initCartPage();
-    } else if (path.includes("checkout.html")) {
+    } else if (path.endsWith("checkout.html")) {
       this.initCheckoutPage();
-    } else if (path.includes("order-confirmation.html")) {
+    } else if (path.endsWith("order-confirmation.html")) {
       this.initOrderConfirmationPage();
-    } else if (path.includes("wishlist.html")) {
+    } else if (path.endsWith("wishlist.html")) {
       this.initWishlistPage();
-    } else if (path.includes("account.html")) {
-      this.initAccountPage();
-    } else if (path.includes("orders.html")) {
-      this.initCustomerOrdersPage();
-    } else if (path.includes("faq.html")) {
-      this.initFAQPage();
-    } else if (path.includes("contact.html")) {
+    } else if (path.endsWith("categories.html")) {
+      this.initCategoriesPage();
+    } else if (path.endsWith("about.html")) {
+      this.initAboutPage();
+    } else if (path.endsWith("contact.html")) {
       this.initContactPage();
-    } else if (path.includes("login.html")) {
-      this.initLoginPage();
-    } else if (path.includes("register.html")) {
-      this.initRegisterPage();
+    } else if (path.endsWith("faq.html")) {
+      this.initFaqPage();
+    } else if (path.endsWith("account.html")) {
+      this.initAccountPage();
+    } else if (path.endsWith("orders.html")) {
+      this.initOrdersPage();
+    } else if (path.endsWith("login.html") || path.endsWith("register.html")) {
+      this.initAuthPages();
     }
+
+    this.initGlobalHeader();
   },
 
   // ----------------------------------------------------
-  // HEADER & ANNOUNCEMENT
+  // GLOBAL HEADER & NAVIGATION
   // ----------------------------------------------------
-  initAnnouncement() {
-    const bar = document.querySelector(".announcement-bar-text");
-    if (bar) {
-      const settings = Store.getSettings();
-      if (settings.announcementText) {
-        bar.textContent = settings.announcementText;
-      }
-    }
-  },
-
-  initHeader() {
-    const header = document.querySelector(".site-header");
-    if (header) {
-      window.addEventListener("scroll", () => {
-        if (window.scrollY > 20) {
-          header.classList.add("scrolled");
-        } else {
-          header.classList.remove("scrolled");
-        }
-      });
-    }
-
-    // Render user profile link or login in header
+  initGlobalHeader() {
     const user = Auth.getCurrentUser();
     const accountLinks = document.querySelectorAll(".header-account-link");
     accountLinks.forEach(link => {
       if (user) {
-        link.setAttribute("href", user.role === "admin" ? "admin/index.html" : "account.html");
-        link.setAttribute("title", `Signed in as ${user.name}`);
+        link.href = user.role === "admin" ? "admin/index.html" : "account.html";
+        link.title = `Signed in as ${user.name}`;
       } else {
-        link.setAttribute("href", "login.html");
-        link.setAttribute("title", "Sign In");
+        link.href = "login.html";
       }
     });
+
+    // Wishlist and Cart live badges
+    Wishlist.updateBadges();
+    Cart.updateBadges();
   },
 
   // ----------------------------------------------------
-  // HOME PAGE CONTROLLER
+  // 1. HOMEPAGE
   // ----------------------------------------------------
   initHomePage() {
-    // 1. Featured Categories
-    const catContainer = document.getElementById("featured-categories-grid");
-    if (catContainer) {
-      const categories = Store.getCategories();
-      catContainer.innerHTML = categories.map(cat => `
-        <a href="shop.html?category=${cat.slug}" class="category-card">
-          <img src="${cat.image}" alt="${cat.name}" class="category-card-image" loading="lazy" />
-          <div class="category-card-overlay">
-            <h3 class="category-card-title">${cat.name}</h3>
-            <span class="category-card-count">${cat.productCount} Items</span>
-          </div>
-        </a>
-      `).join("");
+    // 1. Featured Fragrances Grid
+    const featuredGrid = document.getElementById("featured-products-grid");
+    if (featuredGrid) {
+      const featuredProducts = Store.getProducts({ featured: true, status: "active" }).slice(0, 4);
+      featuredGrid.innerHTML = featuredProducts.map(p => UI.renderProductCard(p)).join("");
     }
 
-    // 2. Featured Products (Curated selection)
-    const featuredContainer = document.getElementById("featured-products-grid");
-    if (featuredContainer) {
-      const featuredProducts = Store.getProducts({ featured: true }).slice(0, 4);
-      featuredContainer.innerHTML = featuredProducts.map(p => UI.renderProductCard(p)).join("");
+    // 2. Bestsellers Grid
+    const bestsellersGrid = document.getElementById("bestsellers-products-grid");
+    if (bestsellersGrid) {
+      const bestsellers = Store.getProducts({ bestseller: true, status: "active" }).slice(0, 4);
+      bestsellersGrid.innerHTML = bestsellers.map(p => UI.renderProductCard(p)).join("");
     }
 
-    // 3. New Arrivals Grid
-    const newArrivalsContainer = document.getElementById("new-arrivals-grid");
-    if (newArrivalsContainer) {
-      const newProducts = Store.getProducts({ isNew: true }).slice(0, 4);
-      newArrivalsContainer.innerHTML = newProducts.map(p => UI.renderProductCard(p)).join("");
+    // 3. The Oud Collection Showcase Grid
+    const oudGrid = document.getElementById("oud-products-grid");
+    if (oudGrid) {
+      const oudProducts = Store.getProducts({ category: "The Oud Collection", status: "active" }).slice(0, 3);
+      oudGrid.innerHTML = oudProducts.map(p => UI.renderProductCard(p)).join("");
     }
 
-    // 4. Best Sellers Grid
-    const bestSellersContainer = document.getElementById("bestsellers-grid");
-    if (bestSellersContainer) {
-      const bestSellers = Store.getProducts({ bestseller: true }).slice(0, 4);
-      bestSellersContainer.innerHTML = bestSellers.map(p => UI.renderProductCard(p)).join("");
-    }
+    // 4. Fragrance Discovery Interactive Quiz
+    this.initFragranceDiscoveryTool();
+  },
 
-    // 5. Newsletter Form
-    const newsletterForm = document.getElementById("newsletter-form");
-    if (newsletterForm) {
-      newsletterForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = newsletterForm.querySelector("input[type='email']").value;
-        if (email) {
-          UI.showToast("Thank you for subscribing to DeepFeel Chronicles.", "success");
-          newsletterForm.reset();
-        }
+  initFragranceDiscoveryTool() {
+    const quizButtons = document.querySelectorAll(".scent-quiz-btn");
+    const resultsContainer = document.getElementById("discovery-results-grid");
+    if (!quizButtons.length || !resultsContainer) return;
+
+    const loadProfile = (profile) => {
+      const recommended = Store.recommendPerfumesByPreference(profile);
+      if (!recommended.length) {
+        resultsContainer.innerHTML = `<p style="text-align:center; grid-column:1/-1; color:rgba(255,255,255,0.7);">Select a note profile above to discover your signature scent.</p>`;
+        return;
+      }
+      resultsContainer.innerHTML = recommended.map(p => UI.renderProductCard(p)).join("");
+    };
+
+    // Default load: Woody
+    loadProfile("Woody");
+
+    quizButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        quizButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        loadProfile(btn.dataset.scentProfile || btn.textContent.trim());
       });
-    }
+    });
   },
 
   // ----------------------------------------------------
-  // SHOP PAGE CONTROLLER
+  // 2. SHOP CATALOG WITH PERFUME FILTERS
   // ----------------------------------------------------
   initShopPage() {
+    const grid = document.getElementById("shop-products-grid");
+    const countDisplay = document.getElementById("shop-results-count");
+    if (!grid) return;
+
     const urlParams = new URLSearchParams(window.location.search);
     const initialCategory = urlParams.get("category") || "all";
-    const initialSearch = urlParams.get("search") || "";
-    const initialSort = urlParams.get("sort") || "featured";
+    const initialGender = urlParams.get("gender") || "all";
+    const initialFamily = urlParams.get("family") || "all";
+    const initialSearch = urlParams.get("q") || "";
 
-    let state = {
-      category: initialCategory,
-      search: initialSearch,
-      sortBy: initialSort,
-      minPrice: null,
-      maxPrice: 300,
-      minRating: null,
-      inStockOnly: false,
-      currentPage: 1,
-      itemsPerPage: 9
-    };
-
-    const productGrid = document.getElementById("shop-products-grid");
-    const countDisplay = document.getElementById("shop-product-count");
-    const sortSelect = document.getElementById("shop-sort-select");
-    const searchInput = document.getElementById("shop-search-input");
+    // Elements
+    const genderFilters = document.querySelectorAll("input[name='gender-filter']");
+    const familyFilters = document.querySelectorAll("input[name='family-filter']");
+    const concentrationFilters = document.querySelectorAll("input[name='concentration-filter']");
+    const seasonFilters = document.querySelectorAll("input[name='season-filter']");
     const priceSlider = document.getElementById("price-range-slider");
-    const priceDisplay = document.getElementById("price-max-display");
-    const paginationContainer = document.getElementById("shop-pagination");
+    const priceDisplay = document.getElementById("price-range-val");
+    const inStockCheckbox = document.getElementById("in-stock-only");
+    const sortSelect = document.getElementById("shop-sort-select");
+    const resetFiltersBtn = document.getElementById("reset-filters-btn");
+    const searchInput = document.getElementById("shop-search-input");
 
-    // Populate category filter options in sidebar
-    const categoryFilterList = document.getElementById("category-filter-list");
-    if (categoryFilterList) {
-      const categories = Store.getCategories();
-      const allCount = Store.getProducts().length;
-
-      categoryFilterList.innerHTML = `
-        <li>
-          <label class="filter-checkbox-label">
-            <input type="radio" name="shop-category" value="all" ${state.category === "all" ? "checked" : ""}>
-            <span>All Collections</span>
-            <span class="filter-count">(${allCount})</span>
-          </label>
-        </li>
-        ${categories.map(c => `
-          <li>
-            <label class="filter-checkbox-label">
-              <input type="radio" name="shop-category" value="${c.slug}" ${state.category === c.slug ? "checked" : ""}>
-              <span>${c.name}</span>
-              <span class="filter-count">(${c.productCount})</span>
-            </label>
-          </li>
-        `).join("")}
-      `;
-
-      categoryFilterList.addEventListener("change", (e) => {
-        state.category = e.target.value;
-        state.currentPage = 1;
-        render();
-      });
+    // Populate category dropdown or radio filters if existing
+    const categorySelect = document.getElementById("shop-category-filter");
+    if (categorySelect) {
+      const cats = Store.getCategories();
+      categorySelect.innerHTML = `<option value="all">All Fragrance Collections</option>` +
+        cats.map(c => `<option value="${c.slug}" ${c.slug === initialCategory ? 'selected' : ''}>${c.name}</option>`).join("");
     }
 
-    // Rating filters
-    document.querySelectorAll("input[name='shop-rating']").forEach(radio => {
-      radio.addEventListener("change", (e) => {
-        state.minRating = e.target.value ? Number(e.target.value) : null;
-        state.currentPage = 1;
-        render();
-      });
-    });
-
-    // In stock filter
-    const inStockCheckbox = document.getElementById("in-stock-filter");
-    if (inStockCheckbox) {
-      inStockCheckbox.addEventListener("change", (e) => {
-        state.inStockOnly = e.target.checked;
-        state.currentPage = 1;
-        render();
-      });
-    }
-
-    // Sort select
-    if (sortSelect) {
-      sortSelect.value = state.sortBy;
-      sortSelect.addEventListener("change", (e) => {
-        state.sortBy = e.target.value;
-        render();
-      });
-    }
-
-    // Search input
-    if (searchInput) {
-      searchInput.value = state.search;
-      let debounce;
-      searchInput.addEventListener("input", (e) => {
-        clearTimeout(debounce);
-        debounce = setTimeout(() => {
-          state.search = e.target.value;
-          state.currentPage = 1;
-          render();
-        }, 250);
-      });
-    }
-
-    // Price slider
-    if (priceSlider) {
+    if (priceSlider && priceDisplay) {
       priceSlider.addEventListener("input", (e) => {
-        state.maxPrice = Number(e.target.value);
-        if (priceDisplay) priceDisplay.textContent = `$${state.maxPrice}`;
-        state.currentPage = 1;
-        render();
+        priceDisplay.textContent = `$${e.target.value}`;
+        renderFilteredShop();
       });
     }
 
-    // Mobile filter drawer toggle
-    const mobileFilterBtn = document.getElementById("mobile-filter-trigger");
-    const mobileFilterClose = document.getElementById("mobile-filter-close");
-    const sidebar = document.querySelector(".shop-sidebar");
-    
-    if (mobileFilterBtn && sidebar) {
-      mobileFilterBtn.addEventListener("click", () => {
-        sidebar.classList.toggle("mobile-open");
-      });
-    }
-    if (mobileFilterClose && sidebar) {
-      mobileFilterClose.addEventListener("click", () => {
-        sidebar.classList.remove("mobile-open");
-      });
-    }
+    const renderFilteredShop = () => {
+      // Gather active filters
+      let selectedGender = "all";
+      genderFilters.forEach(r => { if (r.checked) selectedGender = r.value; });
 
-    // Master render function
-    const render = () => {
-      const allFiltered = Store.getProducts({
-        category: state.category,
-        search: state.search,
-        sortBy: state.sortBy,
-        maxPrice: state.maxPrice,
-        minRating: state.minRating,
-        inStockOnly: state.inStockOnly
+      let selectedFamily = "all";
+      familyFilters.forEach(r => { if (r.checked) selectedFamily = r.value; });
+
+      let selectedConcentration = "all";
+      concentrationFilters.forEach(r => { if (r.checked) selectedConcentration = r.value; });
+
+      let selectedSeason = "all";
+      seasonFilters.forEach(r => { if (r.checked) selectedSeason = r.value; });
+
+      const maxPrice = priceSlider ? Number(priceSlider.value) : 500;
+      const inStockOnly = inStockCheckbox ? inStockCheckbox.checked : false;
+      const sortBy = sortSelect ? sortSelect.value : "featured";
+      const cat = categorySelect ? categorySelect.value : initialCategory;
+      const search = searchInput ? searchInput.value : initialSearch;
+
+      const products = Store.getProducts({
+        category: cat,
+        gender: selectedGender !== "all" ? selectedGender : undefined,
+        fragranceFamily: selectedFamily !== "all" ? selectedFamily : undefined,
+        concentration: selectedConcentration !== "all" ? selectedConcentration : undefined,
+        season: selectedSeason !== "all" ? selectedSeason : undefined,
+        maxPrice,
+        inStockOnly,
+        sortBy,
+        search,
+        status: "active"
       });
 
       if (countDisplay) {
-        countDisplay.textContent = `Showing ${allFiltered.length} products`;
+        countDisplay.textContent = `Showing ${products.length} refined fragrance${products.length === 1 ? '' : 's'}`;
       }
 
-      if (allFiltered.length === 0) {
-        productGrid.innerHTML = `
+      if (products.length === 0) {
+        grid.innerHTML = `
           <div class="empty-state" style="grid-column: 1 / -1;">
-            <div class="empty-state-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-            </div>
-            <h3 class="empty-state-title">No products match your criteria</h3>
-            <p class="empty-state-desc">Try resetting your price slider, adjusting rating filters, or searching for broader terms.</p>
-            <button type="button" class="btn btn-outline" id="reset-filters-btn">Clear All Filters</button>
+            <div class="empty-state-icon">🌸</div>
+            <h2 class="empty-state-title">No fragrances matched your selection</h2>
+            <p class="empty-state-desc">Try resetting your fragrance family or price filters to explore our full olfactive vault.</p>
+            <button type="button" class="btn btn-primary" id="empty-reset-btn">Reset All Filters</button>
           </div>
         `;
-        const resetBtn = document.getElementById("reset-filters-btn");
-        if (resetBtn) {
-          resetBtn.addEventListener("click", () => {
-            state.category = "all";
-            state.search = "";
-            state.minRating = null;
-            state.maxPrice = 300;
-            state.inStockOnly = false;
-            if (searchInput) searchInput.value = "";
-            if (priceSlider) priceSlider.value = 300;
-            if (priceDisplay) priceDisplay.textContent = "$300";
-            document.querySelectorAll("input[name='shop-category']")[0].checked = true;
-            document.querySelectorAll("input[name='shop-rating']")[0].checked = true;
-            if (inStockCheckbox) inStockCheckbox.checked = false;
-            render();
-          });
-        }
-        if (paginationContainer) paginationContainer.innerHTML = "";
+        const emptyReset = document.getElementById("empty-reset-btn");
+        if (emptyReset) emptyReset.addEventListener("click", resetAllFilters);
         return;
       }
 
-      // Pagination slice
-      const totalPages = Math.ceil(allFiltered.length / state.itemsPerPage);
-      const startIndex = (state.currentPage - 1) * state.itemsPerPage;
-      const paginated = allFiltered.slice(startIndex, startIndex + state.itemsPerPage);
-
-      productGrid.innerHTML = paginated.map(p => UI.renderProductCard(p)).join("");
-
-      // Render Pagination Buttons
-      if (paginationContainer) {
-        if (totalPages <= 1) {
-          paginationContainer.innerHTML = "";
-        } else {
-          let pagesHtml = "";
-          for (let i = 1; i <= totalPages; i++) {
-            pagesHtml += `
-              <button type="button" class="page-btn ${i === state.currentPage ? 'active' : ''}" data-page="${i}">
-                ${i}
-              </button>
-            `;
-          }
-          paginationContainer.innerHTML = pagesHtml;
-
-          paginationContainer.querySelectorAll(".page-btn").forEach(btn => {
-            btn.addEventListener("click", () => {
-              state.currentPage = Number(btn.getAttribute("data-page"));
-              render();
-              window.scrollTo({ top: 180, behavior: "smooth" });
-            });
-          });
-        }
-      }
+      grid.innerHTML = products.map(p => UI.renderProductCard(p)).join("");
     };
 
-    render();
+    const resetAllFilters = () => {
+      genderFilters.forEach(r => r.checked = r.value === "all");
+      familyFilters.forEach(r => r.checked = r.value === "all");
+      concentrationFilters.forEach(r => r.checked = r.value === "all");
+      seasonFilters.forEach(r => r.checked = r.value === "all");
+      if (priceSlider) {
+        priceSlider.value = 400;
+        if (priceDisplay) priceDisplay.textContent = "$400";
+      }
+      if (inStockCheckbox) inStockCheckbox.checked = false;
+      if (categorySelect) categorySelect.value = "all";
+      if (searchInput) searchInput.value = "";
+      renderFilteredShop();
+    };
+
+    // Event listeners
+    [...genderFilters, ...familyFilters, ...concentrationFilters, ...seasonFilters].forEach(el => {
+      el.addEventListener("change", renderFilteredShop);
+    });
+    if (categorySelect) categorySelect.addEventListener("change", renderFilteredShop);
+    if (inStockCheckbox) inStockCheckbox.addEventListener("change", renderFilteredShop);
+    if (sortSelect) sortSelect.addEventListener("change", renderFilteredShop);
+    if (resetFiltersBtn) resetFiltersBtn.addEventListener("click", resetAllFilters);
+    if (searchInput) searchInput.addEventListener("input", renderFilteredShop);
+
+    // Initial render
+    renderFilteredShop();
   },
 
   // ----------------------------------------------------
-  // PRODUCT DETAIL PAGE CONTROLLER
+  // 3. PRODUCT DETAILS PAGE (PDP)
   // ----------------------------------------------------
   initProductDetailPage() {
     const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get("id") || "df_001";
+    const productId = urlParams.get("id") || "df_noir";
     const product = Store.getProductById(productId);
 
     if (!product) {
-      const container = document.getElementById("pdp-container");
-      if (container) {
-        container.innerHTML = `
-          <div class="empty-state">
-            <h2 class="empty-state-title">Product Not Found</h2>
-            <p class="empty-state-desc">The product you are looking for does not exist or has been retired.</p>
-            <a href="shop.html" class="btn btn-primary">Return to Catalog</a>
-          </div>
-        `;
-      }
+      window.location.href = "shop.html";
       return;
     }
 
-    // Save to recently viewed
+    // Add to recently viewed
     Store.addRecentlyViewed(product.id);
 
-    // Update document title
-    document.title = `${product.name} — DeepFeel`;
+    // Update document title & metadata
+    document.title = `${product.name} — Maison DeepFeel`;
 
-    // Populate Breadcrumbs
-    const bcCat = document.getElementById("breadcrumb-category");
-    const bcProd = document.getElementById("breadcrumb-product");
-    if (bcCat) {
-      bcCat.textContent = product.category;
-      bcCat.href = `shop.html?category=${product.categorySlug}`;
-    }
-    if (bcProd) {
-      bcProd.textContent = product.name;
+    // Populate Product Basic Information
+    const titleEl = document.getElementById("pdp-product-title");
+    const categoryEl = document.getElementById("pdp-product-category");
+    const concentrationEl = document.getElementById("pdp-product-concentration");
+    const familyEl = document.getElementById("pdp-product-family");
+    const priceEl = document.getElementById("pdp-product-price");
+    const origPriceEl = document.getElementById("pdp-product-orig-price");
+    const descEl = document.getElementById("pdp-product-desc");
+    const ratingEl = document.getElementById("pdp-rating-stars");
+    const reviewCountEl = document.getElementById("pdp-review-count");
+    const skuEl = document.getElementById("pdp-product-sku");
+    const stockStatusEl = document.getElementById("pdp-stock-status");
+
+    if (titleEl) titleEl.textContent = product.name;
+    if (categoryEl) categoryEl.textContent = product.category;
+    if (concentrationEl) concentrationEl.textContent = product.concentration || "Extrait de Parfum";
+    if (familyEl) familyEl.textContent = product.fragranceFamily || "Oriental Woody";
+    if (descEl) descEl.textContent = product.description || product.shortDescription;
+    if (skuEl) skuEl.textContent = `SKU: ${product.sku}`;
+    if (ratingEl) ratingEl.innerHTML = UI.renderStars(product.rating || 5);
+    if (reviewCountEl) reviewCountEl.textContent = `(${product.reviewCount || 0} client reviews)`;
+
+    if (stockStatusEl) {
+      if (product.stock > 10) {
+        stockStatusEl.innerHTML = `<span style="color:var(--color-success); font-weight:600;">● In Stock (Macerated & Ready for Dispatch)</span>`;
+      } else if (product.stock > 0) {
+        stockStatusEl.innerHTML = `<span style="color:var(--color-warning); font-weight:600;">⚠️ Rare Reserve (${product.stock} flacons remaining)</span>`;
+      } else {
+        stockStatusEl.innerHTML = `<span style="color:var(--color-error); font-weight:600;">⛔ Currently Out of Stock</span>`;
+      }
     }
 
-    // Main Gallery & Thumbnails
-    const mainImg = document.getElementById("pdp-main-img");
-    const mainImgContainer = document.getElementById("pdp-gallery-main");
+    // Image Gallery & Lens Zoom
+    const mainImage = document.getElementById("pdp-main-image");
     const thumbsContainer = document.getElementById("pdp-thumbs-container");
-
-    if (mainImg && product.images && product.images.length > 0) {
-      mainImg.src = product.images[0];
-      mainImg.alt = product.name;
+    if (mainImage && product.images && product.images.length) {
+      mainImage.src = product.images[0];
+      mainImage.alt = product.name;
 
       if (thumbsContainer) {
         thumbsContainer.innerHTML = product.images.map((img, i) => `
           <button type="button" class="pdp-thumb-btn ${i === 0 ? 'active' : ''}" data-img-src="${img}">
-            <img src="${img}" alt="${product.name} view ${i+1}" />
+            <img src="${img}" alt="${product.name} view ${i + 1}" />
           </button>
         `).join("");
 
-        thumbsContainer.querySelectorAll(".pdp-thumb-btn").forEach(btn => {
+        const thumbBtns = thumbsContainer.querySelectorAll(".pdp-thumb-btn");
+        thumbBtns.forEach(btn => {
           btn.addEventListener("click", () => {
-            thumbsContainer.querySelectorAll(".pdp-thumb-btn").forEach(b => b.classList.remove("active"));
+            thumbBtns.forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
-            mainImg.src = btn.getAttribute("data-img-src");
+            mainImage.src = btn.dataset.imgSrc;
           });
         });
       }
 
       // Vanilla JS Image Zoom on hover
-      if (mainImgContainer) {
-        mainImgContainer.addEventListener("mousemove", (e) => {
-          const rect = mainImgContainer.getBoundingClientRect();
+      const zoomContainer = document.getElementById("pdp-zoom-container");
+      if (zoomContainer) {
+        zoomContainer.addEventListener("mousemove", (e) => {
+          const rect = zoomContainer.getBoundingClientRect();
           const x = ((e.clientX - rect.left) / rect.width) * 100;
           const y = ((e.clientY - rect.top) / rect.height) * 100;
-          mainImg.style.transformOrigin = `${x}% ${y}%`;
-          mainImg.style.transform = "scale(1.75)";
+          mainImage.style.transformOrigin = `${x}% ${y}%`;
+          mainImage.style.transform = "scale(1.75)";
         });
 
-        mainImgContainer.addEventListener("mouseleave", () => {
-          mainImg.style.transformOrigin = "center center";
-          mainImg.style.transform = "scale(1)";
+        zoomContainer.addEventListener("mouseleave", () => {
+          mainImage.style.transform = "scale(1)";
+          mainImage.style.transformOrigin = "center center";
         });
       }
     }
 
-    // Populate Details
-    const titleEl = document.getElementById("pdp-title");
-    const categoryEl = document.getElementById("pdp-category");
-    const ratingEl = document.getElementById("pdp-rating");
-    const priceEl = document.getElementById("pdp-price");
-    const originalPriceEl = document.getElementById("pdp-original-price");
-    const descEl = document.getElementById("pdp-short-desc");
-    const fullDescEl = document.getElementById("pdp-full-desc");
-    const stockPill = document.getElementById("pdp-stock-status");
-    const skuEl = document.getElementById("pdp-sku");
+    // Size Variant Selection & Dynamic Price Calculation
+    let selectedSize = (product.sizes && product.sizes.length) ? product.sizes[0] : "50ml";
+    let activePrice = (product.sizePricing && product.sizePricing[selectedSize]) ? product.sizePricing[selectedSize] : product.price;
 
-    if (titleEl) titleEl.textContent = product.name;
-    if (categoryEl) categoryEl.textContent = product.category;
-    if (descEl) descEl.textContent = product.shortDescription || product.description;
-    if (fullDescEl) fullDescEl.textContent = product.description;
-    if (skuEl) skuEl.textContent = `SKU: ${product.sku || 'DF-EST-01'}`;
+    const updatePriceDisplay = () => {
+      if (priceEl) priceEl.textContent = `$${activePrice.toFixed(2)}`;
+      if (origPriceEl) {
+        if (product.originalPrice && product.originalPrice > activePrice) {
+          origPriceEl.textContent = `$${product.originalPrice.toFixed(2)}`;
+          origPriceEl.style.display = "inline";
+        } else {
+          origPriceEl.style.display = "none";
+        }
+      }
+    };
+    updatePriceDisplay();
 
-    if (ratingEl) {
-      ratingEl.innerHTML = `
-        ${UI.renderStars(product.rating || 5)}
-        <span class="review-count">(${product.reviewCount || 0} reviews)</span>
+    const sizeContainer = document.getElementById("pdp-size-selector");
+    if (sizeContainer && product.sizes) {
+      sizeContainer.innerHTML = product.sizes.map((s, i) => {
+        const pVal = (product.sizePricing && product.sizePricing[s]) ? product.sizePricing[s] : product.price;
+        return `
+          <button 
+            type="button" 
+            class="size-btn ${i === 0 ? 'active' : ''}" 
+            data-size="${s}"
+            data-price="${pVal}"
+          >
+            ${s} (${product.concentration || 'EDP'}) — $${pVal.toFixed(0)}
+          </button>
+        `;
+      }).join("");
+
+      const sizeBtns = sizeContainer.querySelectorAll(".size-btn");
+      sizeBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          sizeBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          selectedSize = btn.dataset.size;
+          activePrice = parseFloat(btn.dataset.price);
+          updatePriceDisplay();
+        });
+      });
+    }
+
+    // Fragrance Pyramid Visualizer
+    const pyramidContainer = document.getElementById("pdp-fragrance-pyramid-wrap");
+    if (pyramidContainer) {
+      pyramidContainer.innerHTML = UI.renderFragrancePyramid(product.notes);
+    }
+
+    // Performance Specs Grid (Longevity, Sillage, Season, Concentration)
+    const specsContainer = document.getElementById("pdp-scent-specs-wrap");
+    if (specsContainer) {
+      specsContainer.innerHTML = UI.renderScentSpecs(product);
+    }
+
+    // Story Behind The Scent Editorial Section
+    const storyContainer = document.getElementById("pdp-scent-story-wrap");
+    if (storyContainer) {
+      storyContainer.innerHTML = `
+        <div class="scent-story-card">
+          <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.12em; color:var(--accent-primary); display:block; margin-bottom:0.6rem;">Editorial Olfactory Note</span>
+          <h3 class="serif-headline" style="font-size:1.8rem; margin-bottom:1rem;">The Story Behind ${product.name}</h3>
+          <p class="scent-story-quote">"${product.story || product.description}"</p>
+          <div style="font-size:0.9rem; color:var(--text-secondary); line-height:1.7;">
+            Formulated in small numbered batches using natural maceration cycles. Each bottle rests in dark temperature-regulated cellars for a minimum of 90 days to achieve maximum olfactive depth.
+          </div>
+        </div>
       `;
     }
 
-    if (priceEl) priceEl.textContent = Store.formatCurrency(product.price);
-    if (originalPriceEl) {
-      if (product.originalPrice && product.originalPrice > product.price) {
-        originalPriceEl.textContent = Store.formatCurrency(product.originalPrice);
-        originalPriceEl.style.display = "inline";
-      } else {
-        originalPriceEl.style.display = "none";
-      }
+    // Ingredients & Specs
+    const ingredientsEl = document.getElementById("pdp-ingredients-text");
+    if (ingredientsEl) {
+      ingredientsEl.textContent = product.ingredients || "Alcohol Denat., Parfum (Fragrance), Aqua, Essential Oils.";
     }
 
-    if (stockPill) {
-      if (product.stock <= 0) {
-        stockPill.className = "stock-status-pill out-stock";
-        stockPill.textContent = "Out of Stock";
-      } else if (product.stock <= 10) {
-        stockPill.className = "stock-status-pill low-stock";
-        stockPill.textContent = `Low Stock: Only ${product.stock} left`;
-      } else {
-        stockPill.className = "stock-status-pill in-stock";
-        stockPill.textContent = "In Stock & Ready to Ship";
-      }
-    }
-
-    // Populate Variant Options
-    const variantsContainer = document.getElementById("pdp-variants-container");
-    if (variantsContainer && product.variants) {
-      let variantsHtml = "";
-      if (product.variants.colors) {
-        variantsHtml += `
-          <div class="variant-group">
-            <label class="variant-label">Color / Finish:</label>
-            <div class="variant-options">
-              ${product.variants.colors.map((c, i) => `
-                <button type="button" class="variant-chip ${i === 0 ? 'selected' : ''}" data-variant-type="color" data-variant-val="${c}">
-                  ${c}
-                </button>
-              `).join("")}
-            </div>
-          </div>
-        `;
-      }
-      if (product.variants.sizes) {
-        variantsHtml += `
-          <div class="variant-group">
-            <label class="variant-label">Size / Configuration:</label>
-            <div class="variant-options">
-              ${product.variants.sizes.map((s, i) => `
-                <button type="button" class="variant-chip ${i === 0 ? 'selected' : ''}" data-variant-type="size" data-variant-val="${s}">
-                  ${s}
-                </button>
-              `).join("")}
-            </div>
-          </div>
-        `;
-      }
-      variantsContainer.innerHTML = variantsHtml;
-
-      variantsContainer.querySelectorAll(".variant-chip").forEach(chip => {
-        chip.addEventListener("click", () => {
-          const parent = chip.parentElement;
-          parent.querySelectorAll(".variant-chip").forEach(c => c.classList.remove("selected"));
-          chip.classList.add("selected");
-        });
-      });
-    }
-
-    // Quantity selector
+    // Quantity Selector & Add to Bag
     const qtyInput = document.getElementById("pdp-qty-input");
-    const qtyMinus = document.getElementById("pdp-qty-minus");
-    const qtyPlus = document.getElementById("pdp-qty-plus");
+    const minusBtn = document.getElementById("pdp-qty-minus");
+    const plusBtn = document.getElementById("pdp-qty-plus");
+    const addBtn = document.getElementById("pdp-add-to-bag-btn");
+    const buyNowBtn = document.getElementById("pdp-buy-now-btn");
 
-    if (qtyMinus && qtyPlus && qtyInput) {
-      qtyMinus.addEventListener("click", () => {
-        let val = parseInt(qtyInput.value, 10);
+    if (qtyInput && minusBtn && plusBtn) {
+      minusBtn.addEventListener("click", () => {
+        let val = parseInt(qtyInput.value, 10) || 1;
         if (val > 1) qtyInput.value = val - 1;
       });
-      qtyPlus.addEventListener("click", () => {
-        let val = parseInt(qtyInput.value, 10);
+      plusBtn.addEventListener("click", () => {
+        let val = parseInt(qtyInput.value, 10) || 1;
         if (val < product.stock) qtyInput.value = val + 1;
-        else UI.showToast(`Only ${product.stock} units available in stock`, "warning");
       });
     }
 
-    // Add to Cart / Buy Now
-    const addCartBtn = document.getElementById("pdp-add-to-cart");
-    const buyNowBtn = document.getElementById("pdp-buy-now");
-
-    const getSelectedVariants = () => {
-      const vars = {};
-      document.querySelectorAll(".variant-group").forEach(group => {
-        const sel = group.querySelector(".variant-chip.selected");
-        if (sel) {
-          vars[sel.getAttribute("data-variant-type")] = sel.getAttribute("data-variant-val");
-        }
-      });
-      return Object.keys(vars).length > 0 ? vars : null;
-    };
-
-    if (addCartBtn) {
-      if (product.stock <= 0) {
-        addCartBtn.disabled = true;
-        addCartBtn.textContent = "Out of Stock";
-      } else {
-        addCartBtn.addEventListener("click", () => {
-          const qty = parseInt(qtyInput ? qtyInput.value : 1, 10) || 1;
-          Cart.addItem(product.id, qty, getSelectedVariants());
-        });
-      }
-    }
-
-    if (buyNowBtn) {
-      if (product.stock <= 0) {
-        buyNowBtn.disabled = true;
-      } else {
-        buyNowBtn.addEventListener("click", () => {
-          const qty = parseInt(qtyInput ? qtyInput.value : 1, 10) || 1;
-          Cart.addItem(product.id, qty, getSelectedVariants());
-          window.location.href = "checkout.html";
-        });
-      }
-    }
-
-    // Wishlist toggle on PDP
-    const pdpWishlistBtn = document.getElementById("pdp-wishlist-toggle");
-    if (pdpWishlistBtn) {
-      pdpWishlistBtn.classList.toggle("active", Wishlist.hasItem(product.id));
-      pdpWishlistBtn.addEventListener("click", () => {
-        const active = Wishlist.toggle(product.id);
-        pdpWishlistBtn.classList.toggle("active", active);
+    if (addBtn && product.stock > 0) {
+      addBtn.addEventListener("click", () => {
+        const qty = parseInt(qtyInput ? qtyInput.value : 1, 10) || 1;
+        Cart.addItem(product.id, qty, { size: selectedSize, price: activePrice });
       });
     }
 
-    // Specifications Tab
-    const specsTable = document.getElementById("pdp-specs-table");
-    if (specsTable && product.specs) {
-      specsTable.innerHTML = Object.entries(product.specs).map(([key, val]) => `
-        <tr>
-          <th>${key}</th>
-          <td>${val}</td>
-        </tr>
-      `).join("");
+    if (buyNowBtn && product.stock > 0) {
+      buyNowBtn.addEventListener("click", () => {
+        const qty = parseInt(qtyInput ? qtyInput.value : 1, 10) || 1;
+        Cart.addItem(product.id, qty, { size: selectedSize, price: activePrice });
+        window.location.href = "checkout.html";
+      });
     }
 
-    // Tabs Switcher
-    const tabBtns = document.querySelectorAll(".tab-btn");
-    const tabContents = document.querySelectorAll(".tab-content");
-    tabBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const target = btn.getAttribute("data-tab-target");
-        tabBtns.forEach(b => b.classList.remove("active"));
-        tabContents.forEach(c => c.classList.remove("active"));
-        btn.classList.add("active");
-        const panel = document.getElementById(target);
-        if (panel) panel.classList.add("active");
+    // Wishlist PDP button
+    const pdpWishBtn = document.getElementById("pdp-wishlist-toggle");
+    if (pdpWishBtn) {
+      const isWish = Wishlist.hasItem(product.id);
+      pdpWishBtn.classList.toggle("active", isWish);
+      pdpWishBtn.addEventListener("click", () => {
+        Wishlist.toggleItem(product.id);
+        const nowWish = Wishlist.hasItem(product.id);
+        pdpWishBtn.classList.toggle("active", nowWish);
       });
-    });
+    }
 
-    // Reviews Renderer & Form Submission
-    this.renderPDPReviews(product);
+    // Reviews List & Submission Form
+    this.initPDPReviews(product.id);
 
-    // Related Products
-    const relatedContainer = document.getElementById("pdp-related-grid");
-    if (relatedContainer) {
-      const related = Store.getProducts({ category: product.categorySlug })
+    // Related Fragrances
+    const relatedGrid = document.getElementById("pdp-related-products-grid");
+    if (relatedGrid) {
+      const related = Store.getProducts({ category: product.category, status: "active" })
         .filter(p => p.id !== product.id)
         .slice(0, 4);
-      relatedContainer.innerHTML = related.map(p => UI.renderProductCard(p)).join("");
+      relatedGrid.innerHTML = related.map(p => UI.renderProductCard(p)).join("");
     }
   },
 
-  renderPDPReviews(product) {
+  initPDPReviews(productId) {
     const reviewsList = document.getElementById("pdp-reviews-list");
-    const avgScore = document.getElementById("pdp-reviews-avg-score");
-    const totalCount = document.getElementById("pdp-reviews-total-count");
+    const form = document.getElementById("pdp-review-form");
+    if (!reviewsList) return;
 
-    const reviews = Store.getReviews(product.id);
-
-    if (avgScore) avgScore.textContent = product.rating ? product.rating.toFixed(1) : "5.0";
-    if (totalCount) totalCount.textContent = `Based on ${reviews.length} reviews`;
-
-    if (reviewsList) {
-      if (reviews.length === 0) {
-        reviewsList.innerHTML = `
-          <p class="text-muted" style="padding: 1.5rem 0;">No reviews yet for this product. Be the first to share your thoughts!</p>
-        `;
-      } else {
-        reviewsList.innerHTML = reviews.map(r => `
-          <div class="review-item">
-            <div class="review-meta">
-              <span class="review-author">${r.author} ${r.verified ? '<span class="author-badge">✓ Verified Buyer</span>' : ''}</span>
-              <span class="review-date">${r.date}</span>
-            </div>
-            <div class="testimonial-stars" style="margin-bottom: 0.5rem;">
-              ${UI.renderStars(r.rating)}
-            </div>
-            <h4 class="review-title">${r.title}</h4>
-            <p class="review-text">${r.content}</p>
-          </div>
-        `).join("");
+    const renderReviews = () => {
+      const reviews = Store.getReviews(productId);
+      if (!reviews.length) {
+        reviewsList.innerHTML = `<p class="text-muted" style="padding:1rem 0;">Be the first fragrance connoisseur to leave an olfactory review for this flacon.</p>`;
+        return;
       }
-    }
 
-    // Handle Write a Review Form
-    const reviewForm = document.getElementById("write-review-form");
-    if (reviewForm) {
-      reviewForm.addEventListener("submit", (e) => {
+      reviewsList.innerHTML = reviews.map(r => `
+        <div class="review-item" style="border-bottom:1px solid var(--border-light); padding:1.4rem 0;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <div>
+              <strong>${r.author}</strong>
+              ${r.verified ? '<span style="font-size:0.75rem; background:var(--accent-subtle); color:var(--accent-primary); padding:2px 8px; border-radius:10px; margin-left:6px;">Verified Patron</span>' : ''}
+            </div>
+            <span style="font-size:0.8rem; color:var(--text-muted);">${r.date}</span>
+          </div>
+          <div style="margin-bottom:0.5rem;">${UI.renderStars(r.rating)}</div>
+          <h4 style="font-size:0.98rem; margin-bottom:0.3rem;">${r.title || ''}</h4>
+          <p style="font-size:0.9rem; color:var(--text-secondary); line-height:1.6;">${r.content}</p>
+        </div>
+      `).join("");
+    };
+
+    renderReviews();
+
+    if (form) {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
-        const author = reviewForm.querySelector("#review-author").value;
-        const title = reviewForm.querySelector("#review-title").value;
-        const content = reviewForm.querySelector("#review-content").value;
-        const rating = parseInt(reviewForm.querySelector("#review-rating").value, 10) || 5;
+        const author = document.getElementById("review-author").value.trim();
+        const rating = parseInt(document.getElementById("review-rating").value, 10) || 5;
+        const title = document.getElementById("review-title").value.trim();
+        const content = document.getElementById("review-content").value.trim();
+
+        if (!author || !content) {
+          UI.showToast("Please fill in your name and olfactory review", "error");
+          return;
+        }
 
         Store.addReview({
-          productId: product.id,
+          productId,
           author,
-          title,
-          content,
           rating,
-          verified: true
+          title,
+          content
         });
 
-        UI.showToast("Your review has been submitted. Thank you for your feedback!", "success");
-        reviewForm.reset();
-        this.renderPDPReviews(Store.getProductById(product.id));
+        form.reset();
+        UI.showToast("Thank you. Your fragrance review has been published.", "success");
+        renderReviews();
       });
     }
   },
 
   // ----------------------------------------------------
-  // CATEGORIES HUB PAGE
-  // ----------------------------------------------------
-  initCategoriesPage() {
-    const container = document.getElementById("categories-hub-grid");
-    if (container) {
-      const categories = Store.getCategories();
-      container.innerHTML = categories.map(cat => `
-        <div class="category-showcase-card" style="background-color: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 3rem;">
-          <div style="display: grid; grid-template-columns: 1fr 1.2fr; align-items: center;">
-            <img src="${cat.image}" alt="${cat.name}" style="height: 320px; width: 100%; object-fit: cover;" />
-            <div style="padding: 3rem;">
-              <span class="section-subtitle">${cat.productCount} Curated Goods</span>
-              <h2 style="font-size: 1.8rem; margin-bottom: 0.8rem;">${cat.name}</h2>
-              <p style="margin-bottom: 1.8rem; font-size: 1.05rem;">${cat.description}</p>
-              <a href="shop.html?category=${cat.slug}" class="btn btn-primary">Explore Collection &rarr;</a>
-            </div>
-          </div>
-        </div>
-      `).join("");
-    }
-  },
-
-  // ----------------------------------------------------
-  // CART PAGE CONTROLLER
+  // 4. CART PAGE
   // ----------------------------------------------------
   initCartPage() {
     const tableBody = document.getElementById("cart-table-body");
-    const subtotalEl = document.getElementById("cart-subtotal");
-    const shippingEl = document.getElementById("cart-shipping");
-    const discountEl = document.getElementById("cart-discount");
-    const discountRow = document.getElementById("cart-discount-row");
-    const taxEl = document.getElementById("cart-tax");
-    const totalEl = document.getElementById("cart-total");
     const emptyState = document.getElementById("cart-empty-state");
-    const cartWrapper = document.getElementById("cart-content-wrapper");
-    const progressFill = document.getElementById("shipping-progress-fill");
-    const progressText = document.getElementById("shipping-progress-text");
+    const contentWrap = document.getElementById("cart-content-wrap");
+    if (!tableBody) return;
 
-    let appliedCoupon = localStorage.getItem("deepfeel_applied_coupon") || "";
+    let appliedCoupon = localStorage.getItem("deepfeel_active_coupon") || "";
+    let includeGiftPackaging = false;
+
+    const giftBox = document.getElementById("cart-gift-packaging");
+    if (giftBox) {
+      giftBox.addEventListener("change", (e) => {
+        includeGiftPackaging = e.target.checked;
+        renderCart();
+      });
+    }
 
     const renderCart = () => {
       const cart = Cart.getCart();
 
       if (cart.length === 0) {
-        if (cartWrapper) cartWrapper.style.display = "none";
         if (emptyState) emptyState.style.display = "block";
+        if (contentWrap) contentWrap.style.display = "none";
         return;
       }
 
-      if (cartWrapper) cartWrapper.style.display = "grid";
       if (emptyState) emptyState.style.display = "none";
+      if (contentWrap) contentWrap.style.display = "grid";
 
-      const totals = Cart.getTotals(appliedCoupon);
+      tableBody.innerHTML = cart.map(item => `
+        <tr class="cart-row">
+          <td class="cart-item-col">
+            <img src="${item.image}" alt="${item.name}" class="cart-item-thumb" />
+            <div>
+              <h3 class="cart-item-title"><a href="product.html?id=${item.productId}">${item.name}</a></h3>
+              <span class="cart-item-variant">${item.size || '50ml'} • ${item.concentration || 'Extrait de Parfum'}</span>
+              <span class="cart-item-price-mobile">$${item.price.toFixed(2)}</span>
+            </div>
+          </td>
+          <td>$${item.price.toFixed(2)}</td>
+          <td>
+            <div class="quantity-picker">
+              <button type="button" class="qty-btn cart-minus" data-id="${item.productId}" data-vkey="${item.variantKey}">-</button>
+              <input type="number" value="${item.quantity}" min="1" class="qty-input cart-qty-input" data-id="${item.productId}" data-vkey="${item.variantKey}" />
+              <button type="button" class="qty-btn cart-plus" data-id="${item.productId}" data-vkey="${item.variantKey}">+</button>
+            </div>
+          </td>
+          <td><strong>$${(item.price * item.quantity).toFixed(2)}</strong></td>
+          <td>
+            <button type="button" class="cart-remove-btn" data-id="${item.productId}" data-vkey="${item.variantKey}" title="Remove flacon">&times;</button>
+          </td>
+        </tr>
+      `).join("");
 
-      // Render table rows
-      if (tableBody) {
-        tableBody.innerHTML = cart.map(item => `
-          <tr data-item-id="${item.productId}" data-variant-key="${item.variantKey || ''}">
-            <td>
-              <div class="cart-product-cell">
-                <img src="${item.image}" alt="${item.name}" class="cart-product-thumb" />
-                <div>
-                  <h4 class="cart-product-name"><a href="product.html?id=${item.productId}">${item.name}</a></h4>
-                  ${item.variant ? `
-                    <div class="cart-product-variant">
-                      ${Object.entries(item.variant).map(([k, v]) => `${k}: ${v}`).join(" | ")}
-                    </div>
-                  ` : ''}
-                  <button type="button" class="cart-remove-btn" data-action="remove">Remove</button>
-                </div>
-              </div>
-            </td>
-            <td>${Store.formatCurrency(item.price)}</td>
-            <td>
-              <div class="quantity-picker" style="height: 38px;">
-                <button type="button" class="qty-btn" data-action="decrease">-</button>
-                <input type="number" value="${item.quantity}" readonly style="width: 40px;" />
-                <button type="button" class="qty-btn" data-action="increase">+</button>
-              </div>
-            </td>
-            <td><strong>${Store.formatCurrency(item.price * item.quantity)}</strong></td>
-          </tr>
-        `).join("");
+      // Financials
+      const totals = Cart.getTotals(appliedCoupon, "standard", includeGiftPackaging);
+      
+      const subtotalEl = document.getElementById("cart-subtotal");
+      const discountRow = document.getElementById("cart-discount-row");
+      const discountEl = document.getElementById("cart-discount");
+      const shippingEl = document.getElementById("cart-shipping");
+      const giftRow = document.getElementById("cart-gift-row");
+      const giftEl = document.getElementById("cart-gift-fee");
+      const taxEl = document.getElementById("cart-tax");
+      const totalEl = document.getElementById("cart-total");
+      const freeShipProg = document.getElementById("free-shipping-progress");
+      const freeShipMsg = document.getElementById("free-shipping-msg");
 
-        // Attach event listeners to rows
-        tableBody.querySelectorAll("tr").forEach(row => {
-          const pId = row.getAttribute("data-item-id");
-          const vKey = row.getAttribute("data-variant-key");
-          const currentItem = cart.find(i => i.productId === pId && (i.variantKey || '') === vKey);
-          if (!currentItem) return;
+      if (subtotalEl) subtotalEl.textContent = `$${totals.subtotal.toFixed(2)}`;
+      if (shippingEl) shippingEl.textContent = totals.isFreeShipping ? "FREE" : `$${totals.shipping.toFixed(2)}`;
+      if (taxEl) taxEl.textContent = `$${totals.tax.toFixed(2)}`;
+      if (totalEl) totalEl.textContent = `$${totals.total.toFixed(2)}`;
 
-          row.querySelector("[data-action='remove']").addEventListener("click", () => {
-            Cart.removeItem(pId, vKey);
-            renderCart();
-          });
-
-          row.querySelector("[data-action='decrease']").addEventListener("click", () => {
-            Cart.updateQuantity(pId, vKey, currentItem.quantity - 1);
-            renderCart();
-          });
-
-          row.querySelector("[data-action='increase']").addEventListener("click", () => {
-            Cart.updateQuantity(pId, vKey, currentItem.quantity + 1);
-            renderCart();
-          });
-        });
+      if (giftRow && giftEl) {
+        giftRow.style.display = includeGiftPackaging ? "flex" : "none";
+        giftEl.textContent = `$${totals.giftFee.toFixed(2)}`;
       }
-
-      // Update Summary Values
-      if (subtotalEl) subtotalEl.textContent = Store.formatCurrency(totals.subtotal);
-      if (shippingEl) shippingEl.textContent = totals.shipping === 0 ? "Free" : Store.formatCurrency(totals.shipping);
-      if (taxEl) taxEl.textContent = Store.formatCurrency(totals.tax);
-      if (totalEl) totalEl.textContent = Store.formatCurrency(totals.total);
 
       if (discountRow && discountEl) {
         if (totals.discount > 0) {
           discountRow.style.display = "flex";
-          discountEl.textContent = `-${Store.formatCurrency(totals.discount)}`;
+          discountEl.textContent = `-$${totals.discount.toFixed(2)}`;
         } else {
           discountRow.style.display = "none";
         }
       }
 
       // Free shipping progress bar
-      if (progressFill && progressText) {
-        const pct = Math.min(100, Math.round((totals.subtotal / totals.freeShippingThreshold) * 100));
-        progressFill.style.width = `${pct}%`;
+      if (freeShipProg && freeShipMsg) {
         if (totals.remainingForFreeShipping > 0) {
-          progressText.innerHTML = `Add <strong>$${totals.remainingForFreeShipping.toFixed(2)}</strong> more to unlock <strong>Complimentary Worldwide Shipping</strong>`;
+          const pct = Math.min(100, Math.round((totals.subtotal / totals.freeShippingThreshold) * 100));
+          freeShipProg.style.width = `${pct}%`;
+          freeShipMsg.textContent = `Add $${totals.remainingForFreeShipping.toFixed(2)} more of fragrances to unlock complimentary worldwide shipping.`;
         } else {
-          progressText.innerHTML = `🎉 You have unlocked <strong>Free Standard Shipping</strong>!`;
+          freeShipProg.style.width = "100%";
+          freeShipMsg.textContent = `🎉 You have unlocked complimentary worldwide priority courier shipping!`;
         }
       }
     };
 
-    // Coupon form handler
-    const couponForm = document.getElementById("cart-coupon-form");
-    const couponInput = document.getElementById("coupon-code-input");
-    if (couponForm && couponInput) {
-      if (appliedCoupon) couponInput.value = appliedCoupon;
+    renderCart();
 
-      couponForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+    // Table Event delegation (Quantity & Remove)
+    tableBody.addEventListener("click", (e) => {
+      const minus = e.target.closest(".cart-minus");
+      if (minus) {
+        const id = minus.dataset.id;
+        const vkey = minus.dataset.vkey;
+        const item = Cart.getCart().find(i => i.productId === id && i.variantKey === vkey);
+        if (item) Cart.updateQuantity(id, vkey, item.quantity - 1);
+        renderCart();
+        return;
+      }
+
+      const plus = e.target.closest(".cart-plus");
+      if (plus) {
+        const id = plus.dataset.id;
+        const vkey = plus.dataset.vkey;
+        const item = Cart.getCart().find(i => i.productId === id && i.variantKey === vkey);
+        if (item) Cart.updateQuantity(id, vkey, item.quantity + 1);
+        renderCart();
+        return;
+      }
+
+      const removeBtn = e.target.closest(".cart-remove-btn");
+      if (removeBtn) {
+        Cart.removeItem(removeBtn.dataset.id, removeBtn.dataset.vkey);
+        renderCart();
+        return;
+      }
+    });
+
+    // Coupon code apply
+    const couponInput = document.getElementById("cart-coupon-input");
+    const couponBtn = document.getElementById("cart-coupon-btn");
+    const couponMsg = document.getElementById("cart-coupon-msg");
+
+    if (couponBtn && couponInput) {
+      couponBtn.addEventListener("click", () => {
         const code = couponInput.value.trim();
         if (!code) return;
-
-        const validation = Store.validateCoupon(code, Cart.getSubtotal());
-        if (validation.valid) {
+        const test = Store.validateCoupon(code, Cart.getSubtotal());
+        if (test.valid) {
           appliedCoupon = code;
-          localStorage.setItem("deepfeel_applied_coupon", code);
-          UI.showToast(validation.message, "success");
-          renderCart();
+          localStorage.setItem("deepfeel_active_coupon", code);
+          if (couponMsg) {
+            couponMsg.textContent = test.message;
+            couponMsg.style.color = "var(--color-success)";
+          }
+          UI.showToast(test.message, "success");
         } else {
-          UI.showToast(validation.message, "error");
+          if (couponMsg) {
+            couponMsg.textContent = test.message;
+            couponMsg.style.color = "var(--color-error)";
+          }
+          UI.showToast(test.message, "error");
         }
+        renderCart();
       });
     }
-
-    renderCart();
   },
 
   // ----------------------------------------------------
-  // CHECKOUT PAGE CONTROLLER
+  // 5. CHECKOUT PAGE
   // ----------------------------------------------------
   initCheckoutPage() {
     const cart = Cart.getCart();
@@ -860,168 +703,156 @@ const App = {
       return;
     }
 
-    const appliedCoupon = localStorage.getItem("deepfeel_applied_coupon") || "";
+    const itemsSummary = document.getElementById("checkout-items-summary");
+    const form = document.getElementById("checkout-form");
+    let appliedCoupon = localStorage.getItem("deepfeel_active_coupon") || "";
     let selectedShipping = "standard";
-    let selectedPayment = "Credit / Debit Card";
+    let includeGift = false;
 
-    const user = Auth.getCurrentUser();
-
-    // Prefill form if user logged in
-    if (user) {
-      const nameInput = document.getElementById("checkout-name");
-      const emailInput = document.getElementById("checkout-email");
-      const phoneInput = document.getElementById("checkout-phone");
-      const streetInput = document.getElementById("checkout-street");
-      const cityInput = document.getElementById("checkout-city");
-      const stateInput = document.getElementById("checkout-state");
-      const zipInput = document.getElementById("checkout-zip");
-
-      if (nameInput && user.name) nameInput.value = user.name;
-      if (emailInput && user.email) emailInput.value = user.email;
-      if (phoneInput && user.phone) phoneInput.value = user.phone;
-      if (user.address) {
-        if (streetInput && user.address.street) streetInput.value = user.address.street;
-        if (cityInput && user.address.city) cityInput.value = user.address.city;
-        if (stateInput && user.address.state) stateInput.value = user.address.state;
-        if (zipInput && user.address.zip) zipInput.value = user.address.zip;
-      }
+    // Gift Checkbox
+    const giftCheck = document.getElementById("checkout-gift-packaging");
+    if (giftCheck) {
+      giftCheck.addEventListener("change", (e) => {
+        includeGift = e.target.checked;
+        renderSummary();
+      });
     }
 
-    // Render Order Items in Checkout sidebar
-    const itemsContainer = document.getElementById("checkout-items-list");
-    if (itemsContainer) {
-      itemsContainer.innerHTML = cart.map(item => `
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.9rem; font-size: 0.9rem;">
-          <div style="display: flex; align-items: center; gap: 0.8rem;">
-            <img src="${item.image}" alt="${item.name}" style="width: 44px; height: 44px; border-radius: var(--radius-sm); object-fit: cover;" />
-            <div>
-              <strong style="display: block;">${item.name}</strong>
-              <span class="text-muted">Qty: ${item.quantity}</span>
+    // Shipping Radios
+    const shippingRadios = document.querySelectorAll("input[name='shipping-method']");
+    shippingRadios.forEach(r => {
+      r.addEventListener("change", (e) => {
+        selectedShipping = e.target.value;
+        renderSummary();
+      });
+    });
+
+    const renderSummary = () => {
+      if (itemsSummary) {
+        itemsSummary.innerHTML = cart.map(item => `
+          <div class="checkout-summary-item" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.9rem;">
+            <div style="display:flex; align-items:center; gap:0.8rem;">
+              <img src="${item.image}" alt="${item.name}" style="width:48px; height:48px; object-fit:cover; border-radius:4px;" />
+              <div>
+                <strong style="font-size:0.9rem;">${item.name}</strong>
+                <span style="font-size:0.78rem; color:var(--text-muted); display:block;">Qty: ${item.quantity} • ${item.size || '50ml'}</span>
+              </div>
             </div>
+            <strong>$${(item.price * item.quantity).toFixed(2)}</strong>
           </div>
-          <span>${Store.formatCurrency(item.price * item.quantity)}</span>
-        </div>
-      `).join("");
-    }
+        `).join("");
+      }
 
-    const updateTotalsDisplay = () => {
-      const totals = Cart.getTotals(appliedCoupon, selectedShipping);
-      const subtotalEl = document.getElementById("checkout-subtotal");
-      const shippingEl = document.getElementById("checkout-shipping");
-      const discountEl = document.getElementById("checkout-discount");
-      const discountRow = document.getElementById("checkout-discount-row");
-      const taxEl = document.getElementById("checkout-tax");
-      const totalEl = document.getElementById("checkout-total");
+      const totals = Cart.getTotals(appliedCoupon, selectedShipping, includeGift);
+      
+      const subtotalEl = document.getElementById("chk-subtotal");
+      const discountRow = document.getElementById("chk-discount-row");
+      const discountEl = document.getElementById("chk-discount");
+      const shipEl = document.getElementById("chk-shipping");
+      const giftRow = document.getElementById("chk-gift-row");
+      const giftEl = document.getElementById("chk-gift");
+      const taxEl = document.getElementById("chk-tax");
+      const totalEl = document.getElementById("chk-total");
 
-      if (subtotalEl) subtotalEl.textContent = Store.formatCurrency(totals.subtotal);
-      if (shippingEl) shippingEl.textContent = totals.shipping === 0 ? "Free" : Store.formatCurrency(totals.shipping);
-      if (taxEl) taxEl.textContent = Store.formatCurrency(totals.tax);
-      if (totalEl) totalEl.textContent = Store.formatCurrency(totals.total);
+      if (subtotalEl) subtotalEl.textContent = `$${totals.subtotal.toFixed(2)}`;
+      if (shipEl) shipEl.textContent = totals.isFreeShipping ? "FREE" : `$${totals.shipping.toFixed(2)}`;
+      if (taxEl) taxEl.textContent = `$${totals.tax.toFixed(2)}`;
+      if (totalEl) totalEl.textContent = `$${totals.total.toFixed(2)}`;
+
+      if (giftRow && giftEl) {
+        giftRow.style.display = includeGift ? "flex" : "none";
+        giftEl.textContent = `$${totals.giftFee.toFixed(2)}`;
+      }
 
       if (discountRow && discountEl) {
         if (totals.discount > 0) {
           discountRow.style.display = "flex";
-          discountEl.textContent = `-${Store.formatCurrency(totals.discount)}`;
+          discountEl.textContent = `-$${totals.discount.toFixed(2)}`;
         } else {
           discountRow.style.display = "none";
         }
       }
     };
 
-    // Shipping selection change
-    document.querySelectorAll("input[name='shipping-method']").forEach(radio => {
-      radio.addEventListener("change", (e) => {
-        selectedShipping = e.target.value;
-        updateTotalsDisplay();
-      });
-    });
+    renderSummary();
 
-    // Payment selection change
-    const paymentOptions = document.querySelectorAll(".payment-option-card");
-    paymentOptions.forEach(opt => {
-      opt.addEventListener("click", () => {
-        paymentOptions.forEach(o => o.classList.remove("selected"));
-        opt.classList.add("selected");
-        const radio = opt.querySelector("input[type='radio']");
-        if (radio) {
-          radio.checked = true;
-          selectedPayment = radio.value;
-        }
+    // Auto-fill logged in user info
+    const currentUser = Auth.getCurrentUser();
+    if (currentUser) {
+      if (document.getElementById("first-name")) document.getElementById("first-name").value = currentUser.name.split(" ")[0] || "";
+      if (document.getElementById("last-name")) document.getElementById("last-name").value = currentUser.name.split(" ")[1] || "";
+      if (document.getElementById("email")) document.getElementById("email").value = currentUser.email || "";
+      if (document.getElementById("phone") && currentUser.phone) document.getElementById("phone").value = currentUser.phone;
+      if (currentUser.address) {
+        if (document.getElementById("address")) document.getElementById("address").value = currentUser.address.street || "";
+        if (document.getElementById("city")) document.getElementById("city").value = currentUser.address.city || "";
+        if (document.getElementById("state")) document.getElementById("state").value = currentUser.address.state || "";
+        if (document.getElementById("zip")) document.getElementById("zip").value = currentUser.address.zip || "";
+      }
+    }
 
-        // Show/hide card input fields
-        const cardFields = document.getElementById("credit-card-inputs");
-        if (cardFields) {
-          cardFields.style.display = (selectedPayment === "credit_card") ? "block" : "none";
-        }
-      });
-    });
-
-    updateTotalsDisplay();
-
-    // Place Order Form Submission
-    const checkoutForm = document.getElementById("checkout-form");
-    if (checkoutForm) {
-      checkoutForm.addEventListener("submit", (e) => {
+    // Checkout Form Submission
+    if (form) {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const name = document.getElementById("checkout-name").value.trim();
-        const email = document.getElementById("checkout-email").value.trim();
-        const phone = document.getElementById("checkout-phone").value.trim();
-        const street = document.getElementById("checkout-street").value.trim();
-        const city = document.getElementById("checkout-city").value.trim();
-        const state = document.getElementById("checkout-state").value.trim();
-        const zip = document.getElementById("checkout-zip").value.trim();
-        const country = document.getElementById("checkout-country").value;
+        const firstName = document.getElementById("first-name").value.trim();
+        const lastName = document.getElementById("last-name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const address = document.getElementById("address").value.trim();
+        const city = document.getElementById("city").value.trim();
+        const state = document.getElementById("state").value.trim();
+        const zip = document.getElementById("zip").value.trim();
 
-        if (!name || !email || !street || !city || !zip) {
-          UI.showToast("Please fill in all required shipping fields.", "error");
+        if (!firstName || !email || !address || !city || !zip) {
+          UI.showToast("Please fill in all required shipping fields", "error");
           return;
         }
 
-        const totals = Cart.getTotals(appliedCoupon, selectedShipping);
+        const totals = Cart.getTotals(appliedCoupon, selectedShipping, includeGift);
+        const orderItems = cart.map(item => ({
+          productId: item.productId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image,
+          size: item.size || "50ml",
+          variant: `${item.size || '50ml'} Flacon`
+        }));
 
-        const orderData = {
-          userId: user ? user.id : "usr_guest",
+        const newOrder = Store.createOrder({
+          userId: currentUser ? currentUser.id : "guest",
           customer: {
-            name,
+            name: `${firstName} ${lastName}`,
             email,
             phone,
-            address: `${street}, ${city}, ${state} ${zip}, ${country}`
+            address: `${address}, ${city}, ${state} ${zip}, United States`
           },
-          items: cart.map(i => ({
-            productId: i.productId,
-            name: i.name,
-            price: i.price,
-            quantity: i.quantity,
-            image: i.image,
-            variant: i.variant ? Object.values(i.variant).join(" / ") : ""
-          })),
+          items: orderItems,
+          giftPackaging: includeGift,
+          giftPackagingFee: totals.giftFee,
           subtotal: totals.subtotal,
           discount: totals.discount,
           couponCode: appliedCoupon,
           shipping: totals.shipping,
           tax: totals.tax,
           total: totals.total,
-          paymentMethod: selectedPayment === "cod" ? "Cash on Delivery" : (selectedPayment === "wire" ? "Direct Bank Transfer" : "Credit / Debit Card")
-        };
+          paymentMethod: document.querySelector("input[name='payment-method']:checked")?.value || "Credit Card"
+        });
 
-        const newOrder = Store.createOrder(orderData);
-
-        // Clear cart & applied coupon
+        // Clear cart & coupons
         Cart.clearCart();
-        localStorage.removeItem("deepfeel_applied_coupon");
+        localStorage.removeItem("deepfeel_active_coupon");
 
-        UI.showToast("Order placed successfully! Redirecting to confirmation...", "success");
-
-        setTimeout(() => {
-          window.location.href = `order-confirmation.html?id=${newOrder.id}`;
-        }, 600);
+        // Redirect to receipt
+        window.location.href = `order-confirmation.html?id=${newOrder.id}`;
       });
     }
   },
 
   // ----------------------------------------------------
-  // ORDER CONFIRMATION CONTROLLER
+  // 6. ORDER CONFIRMATION
   // ----------------------------------------------------
   initOrderConfirmationPage() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -1033,250 +864,264 @@ const App = {
       return;
     }
 
-    const orderNumberEl = document.getElementById("conf-order-number");
-    const dateEl = document.getElementById("conf-order-date");
-    const totalEl = document.getElementById("conf-order-total");
-    const paymentEl = document.getElementById("conf-order-payment");
-    const addressEl = document.getElementById("conf-order-address");
-    const itemsContainer = document.getElementById("conf-order-items");
+    const refEl = document.getElementById("confirm-order-ref");
+    const dateEl = document.getElementById("confirm-order-date");
+    const emailEl = document.getElementById("confirm-order-email");
+    const addrEl = document.getElementById("confirm-shipping-address");
+    const totalEl = document.getElementById("confirm-order-total");
+    const itemsTable = document.getElementById("confirm-items-table");
+    const timelineWrap = document.getElementById("confirm-timeline");
 
-    if (orderNumberEl) orderNumberEl.textContent = order.id;
-    if (dateEl) dateEl.textContent = Store.formatDate(order.createdAt);
-    if (totalEl) totalEl.textContent = Store.formatCurrency(order.total);
-    if (paymentEl) paymentEl.textContent = order.paymentMethod;
-    if (addressEl) addressEl.textContent = order.customer.address;
+    if (refEl) refEl.textContent = order.id;
+    if (dateEl) dateEl.textContent = new Date(order.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+    if (emailEl) emailEl.textContent = order.customer.email;
+    if (addrEl) addrEl.textContent = order.customer.address;
+    if (totalEl) totalEl.textContent = `$${order.total.toFixed(2)}`;
 
-    if (itemsContainer) {
-      itemsContainer.innerHTML = order.items.map(item => `
-        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 0; border-bottom: 1px solid var(--border-light);">
-          <div style="display: flex; align-items: center; gap: 1rem;">
-            <img src="${item.image}" alt="${item.name}" style="width: 50px; height: 50px; border-radius: var(--radius-sm); object-fit: cover;" />
+    if (itemsTable && order.items) {
+      itemsTable.innerHTML = order.items.map(item => `
+        <tr>
+          <td style="display:flex; align-items:center; gap:0.8rem; padding:0.8rem 0;">
+            <img src="${item.image}" alt="${item.name}" style="width:44px; height:44px; object-fit:cover; border-radius:4px;" />
             <div>
               <strong>${item.name}</strong>
-              <span class="text-muted" style="display: block; font-size: 0.85rem;">Qty: ${item.quantity} ${item.variant ? `(${item.variant})` : ''}</span>
+              <span style="font-size:0.8rem; color:var(--text-muted); display:block;">${item.size || '50ml'} • Qty: ${item.quantity}</span>
             </div>
-          </div>
-          <span style="font-weight: 600;">${Store.formatCurrency(item.price * item.quantity)}</span>
-        </div>
+          </td>
+          <td>$${item.price.toFixed(2)}</td>
+          <td>$${(item.price * item.quantity).toFixed(2)}</td>
+        </tr>
       `).join("");
     }
 
-    // Print Receipt button
-    const printBtn = document.getElementById("print-receipt-btn");
-    if (printBtn) {
-      printBtn.addEventListener("click", () => window.print());
+    if (timelineWrap && order.timeline) {
+      timelineWrap.innerHTML = order.timeline.map((step, idx) => `
+        <div class="timeline-step ${step.completed ? 'completed' : ''}">
+          <div class="timeline-dot"></div>
+          <div class="timeline-info">
+            <strong>${step.status}</strong>
+            <span class="text-muted" style="font-size:0.8rem; display:block;">${step.date}</span>
+          </div>
+        </div>
+      `).join("");
     }
   },
 
   // ----------------------------------------------------
-  // WISHLIST PAGE CONTROLLER
+  // 7. WISHLIST PAGE
   // ----------------------------------------------------
   initWishlistPage() {
-    const grid = document.getElementById("wishlist-products-grid");
+    const grid = document.getElementById("wishlist-grid");
     const emptyState = document.getElementById("wishlist-empty-state");
-    const countDisplay = document.getElementById("wishlist-count-title");
+    if (!grid) return;
 
-    const render = () => {
-      const items = Wishlist.getItems();
-
-      if (countDisplay) {
-        countDisplay.textContent = `Saved Goods (${items.length})`;
-      }
-
+    const renderWishlist = () => {
+      const items = Wishlist.getDetailedItems();
       if (items.length === 0) {
-        if (grid) grid.style.display = "none";
+        grid.style.display = "none";
         if (emptyState) emptyState.style.display = "block";
         return;
       }
 
-      if (grid) grid.style.display = "grid";
       if (emptyState) emptyState.style.display = "none";
-
-      const products = items.map(id => Store.getProductById(id)).filter(Boolean);
-      grid.innerHTML = products.map(p => UI.renderProductCard(p)).join("");
+      grid.style.display = "grid";
+      grid.innerHTML = items.map(p => UI.renderProductCard(p)).join("");
     };
 
-    window.addEventListener("wishlist:updated", render);
-    render();
+    renderWishlist();
+
+    window.addEventListener("wishlist:updated", renderWishlist);
   },
 
   // ----------------------------------------------------
-  // CUSTOMER ACCOUNT & ORDERS CONTROLLERS
+  // 8. CATEGORIES HUB PAGE
+  // ----------------------------------------------------
+  initCategoriesPage() {
+    const grid = document.getElementById("categories-hub-grid");
+    if (!grid) return;
+
+    const cats = Store.getCategories();
+    grid.innerHTML = cats.map(cat => {
+      const count = Store.getProducts({ category: cat.slug, status: "active" }).length;
+      return `
+        <article class="category-card">
+          <a href="shop.html?category=${cat.slug}" class="category-card-link">
+            <img src="${cat.image}" alt="${cat.name}" class="category-card-image" loading="lazy" />
+            <div class="category-card-overlay">
+              <span class="category-card-subtitle">${count} Distinct Creations</span>
+              <h3 class="category-card-title font-serif">${cat.name}</h3>
+              <p class="category-card-desc">${cat.description}</p>
+              <span class="category-card-cta">Explore Collection &rarr;</span>
+            </div>
+          </a>
+        </article>
+      `;
+    }).join("");
+  },
+
+  // ----------------------------------------------------
+  // 9. CUSTOMER ACCOUNT & ORDERS
   // ----------------------------------------------------
   initAccountPage() {
-    if (!Auth.requireAuth("login.html")) return;
+    Auth.requireAuth();
     const user = Auth.getCurrentUser();
+    if (!user) return;
 
     const nameEl = document.getElementById("account-user-name");
     const emailEl = document.getElementById("account-user-email");
-    const joinedEl = document.getElementById("account-joined-date");
-
     if (nameEl) nameEl.textContent = user.name;
     if (emailEl) emailEl.textContent = user.email;
-    if (joinedEl) joinedEl.textContent = Store.formatDate(user.createdAt);
 
-    // Profile form
-    const profileForm = document.getElementById("account-profile-form");
-    if (profileForm) {
-      const nameInput = document.getElementById("profile-name");
-      const phoneInput = document.getElementById("profile-phone");
-      const streetInput = document.getElementById("profile-street");
-      const cityInput = document.getElementById("profile-city");
-      const stateInput = document.getElementById("profile-state");
-      const zipInput = document.getElementById("profile-zip");
-
-      if (nameInput) nameInput.value = user.name || "";
-      if (phoneInput) phoneInput.value = user.phone || "";
+    const form = document.getElementById("account-profile-form");
+    if (form) {
+      if (document.getElementById("profile-name")) document.getElementById("profile-name").value = user.name || "";
+      if (document.getElementById("profile-phone")) document.getElementById("profile-phone").value = user.phone || "";
       if (user.address) {
-        if (streetInput) streetInput.value = user.address.street || "";
-        if (cityInput) cityInput.value = user.address.city || "";
-        if (stateInput) stateInput.value = user.address.state || "";
-        if (zipInput) zipInput.value = user.address.zip || "";
+        if (document.getElementById("profile-street")) document.getElementById("profile-street").value = user.address.street || "";
+        if (document.getElementById("profile-city")) document.getElementById("profile-city").value = user.address.city || "";
+        if (document.getElementById("profile-state")) document.getElementById("profile-state").value = user.address.state || "";
+        if (document.getElementById("profile-zip")) document.getElementById("profile-zip").value = user.address.zip || "";
       }
 
-      profileForm.addEventListener("submit", (e) => {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
-        user.name = nameInput.value.trim();
-        user.phone = phoneInput.value.trim();
-        user.address = {
-          street: streetInput.value.trim(),
-          city: cityInput.value.trim(),
-          state: stateInput.value.trim(),
-          zip: zipInput.value.trim()
+        const updated = {
+          ...user,
+          name: document.getElementById("profile-name").value.trim(),
+          phone: document.getElementById("profile-phone").value.trim(),
+          address: {
+            street: document.getElementById("profile-street").value.trim(),
+            city: document.getElementById("profile-city").value.trim(),
+            state: document.getElementById("profile-state").value.trim(),
+            zip: document.getElementById("profile-zip").value.trim(),
+            country: "United States"
+          }
         };
-
-        Store.saveUser(user);
-        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
-        UI.showToast("Account profile successfully updated.", "success");
+        Store.saveUser(updated);
+        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(updated));
+        UI.showToast("Patron profile & address updated successfully", "success");
       });
     }
 
-    // Logout button
     const logoutBtn = document.getElementById("account-logout-btn");
     if (logoutBtn) {
-      logoutBtn.addEventListener("click", () => Auth.logout("index.html"));
+      logoutBtn.addEventListener("click", () => Auth.logout());
     }
   },
 
-  initCustomerOrdersPage() {
-    if (!Auth.requireAuth("login.html")) return;
+  initOrdersPage() {
+    Auth.requireAuth();
     const user = Auth.getCurrentUser();
-    const tableBody = document.getElementById("customer-orders-table-body");
-    const emptyState = document.getElementById("customer-orders-empty");
+    const ordersTableBody = document.getElementById("customer-orders-table-body");
+    const emptyOrders = document.getElementById("customer-orders-empty");
+    if (!ordersTableBody || !user) return;
 
-    const orders = Store.getOrders().filter(o => o.userId === user.id || (o.customer && o.customer.email === user.email));
+    const orders = Store.getOrdersByUser(user.id);
 
     if (orders.length === 0) {
-      if (tableBody) tableBody.parentElement.style.display = "none";
-      if (emptyState) emptyState.style.display = "block";
+      ordersTableBody.parentElement.style.display = "none";
+      if (emptyOrders) emptyOrders.style.display = "block";
       return;
     }
 
-    if (tableBody) {
-      tableBody.innerHTML = orders.map(order => `
-        <tr>
-          <td><strong>${order.id}</strong></td>
-          <td>${Store.formatDate(order.createdAt)}</td>
-          <td>${order.items.length} item${order.items.length === 1 ? '' : 's'}</td>
-          <td><strong>${Store.formatCurrency(order.total)}</strong></td>
-          <td><span class="status-pill status-${order.status.toLowerCase()}">${order.status}</span></td>
-          <td>
-            <a href="order-confirmation.html?id=${order.id}" class="btn btn-outline btn-sm">View Receipt</a>
-          </td>
-        </tr>
-      `).join("");
+    if (emptyOrders) emptyOrders.style.display = "none";
+    ordersTableBody.parentElement.style.display = "table";
+
+    ordersTableBody.innerHTML = orders.map(ord => `
+      <tr>
+        <td><strong>${ord.id}</strong></td>
+        <td>${new Date(ord.createdAt).toLocaleDateString()}</td>
+        <td>${ord.items ? ord.items.length : 1} flacon${ord.items && ord.items.length > 1 ? 's' : ''}</td>
+        <td><strong>$${ord.total.toFixed(2)}</strong></td>
+        <td><span class="status-pill status-${ord.status.toLowerCase()}">${ord.status}</span></td>
+        <td>
+          <a href="order-confirmation.html?id=${ord.id}" class="btn btn-outline btn-sm">Receipt &rarr;</a>
+        </td>
+      </tr>
+    `).join("");
+  },
+
+  // ----------------------------------------------------
+  // 10. AUTH PAGES (LOGIN / REGISTER)
+  // ----------------------------------------------------
+  initAuthPages() {
+    const loginForm = document.getElementById("login-form");
+    const registerForm = document.getElementById("register-form");
+
+    if (loginForm) {
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const result = Auth.login(email, password);
+        if (result.success) {
+          window.location.href = result.user.role === "admin" ? "admin/index.html" : "account.html";
+        }
+      });
+
+      // Quick Demo Fillers
+      const demoCust = document.getElementById("fill-demo-customer-btn");
+      const demoAdmin = document.getElementById("fill-demo-admin-btn");
+      if (demoCust) {
+        demoCust.addEventListener("click", () => {
+          document.getElementById("email").value = "elena.vance@example.com";
+          document.getElementById("password").value = "password123";
+        });
+      }
+      if (demoAdmin) {
+        demoAdmin.addEventListener("click", () => {
+          document.getElementById("email").value = "admin@deepfeel.com";
+          document.getElementById("password").value = "admin123";
+        });
+      }
+    }
+
+    if (registerForm) {
+      registerForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const phone = document.getElementById("phone") ? document.getElementById("phone").value.trim() : "";
+
+        const result = Auth.register({ name, email, password, phone });
+        if (result.success) {
+          window.location.href = "account.html";
+        }
+      });
     }
   },
 
   // ----------------------------------------------------
-  // FAQ & CONTACT
+  // 11. FAQ & CONTACT PAGES
   // ----------------------------------------------------
-  initFAQPage() {
-    const accordions = document.querySelectorAll(".faq-accordion-item");
-    accordions.forEach(item => {
-      const header = item.querySelector(".faq-header");
-      header.addEventListener("click", () => {
-        const isOpen = item.classList.contains("open");
-        accordions.forEach(i => i.classList.remove("open"));
-        if (!isOpen) item.classList.add("open");
+  initFaqPage() {
+    const headers = document.querySelectorAll(".faq-header");
+    headers.forEach(h => {
+      h.addEventListener("click", () => {
+        const item = h.parentElement;
+        item.classList.toggle("open");
       });
     });
   },
 
   initContactPage() {
-    const contactForm = document.getElementById("contact-form");
-    if (contactForm) {
-      contactForm.addEventListener("submit", (e) => {
+    const form = document.getElementById("contact-form");
+    if (form) {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
-        UI.showToast("Your message has been sent to our studio. We will respond within 24 hours.", "success");
-        contactForm.reset();
+        UI.showToast("Thank you. Our fragrance concierge will respond within 24 hours.", "success");
+        form.reset();
       });
     }
   },
 
-  // ----------------------------------------------------
-  // AUTH (LOGIN & REGISTER)
-  // ----------------------------------------------------
-  initLoginPage() {
-    const form = document.getElementById("login-form");
-    const demoCustomerBtn = document.getElementById("fill-demo-customer-btn");
-    const demoAdminBtn = document.getElementById("fill-demo-admin-btn");
-
-    if (demoCustomerBtn) {
-      demoCustomerBtn.addEventListener("click", () => Auth.fillDemoCredentials("customer"));
-    }
-    if (demoAdminBtn) {
-      demoAdminBtn.addEventListener("click", () => Auth.fillDemoCredentials("admin"));
-    }
-
-    if (form) {
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const email = document.getElementById("email").value;
-        const password = document.getElementById("password").value;
-
-        const res = Auth.login(email, password);
-        if (res.success) {
-          UI.showToast(`Welcome back, ${res.user.name}!`, "success");
-          setTimeout(() => {
-            if (res.user.role === "admin") {
-              window.location.href = "admin/index.html";
-            } else {
-              window.location.href = "account.html";
-            }
-          }, 450);
-        } else {
-          UI.showToast(res.message, "error");
-        }
-      });
-    }
-  },
-
-  initRegisterPage() {
-    const form = document.getElementById("register-form");
-    if (form) {
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const name = document.getElementById("name").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
-        const phone = document.getElementById("phone") ? document.getElementById("phone").value.trim() : "";
-
-        if (!name || !email || !password) {
-          UI.showToast("Please fill in all required fields.", "error");
-          return;
-        }
-
-        const res = Auth.register({ name, email, password, phone });
-        if (res.success) {
-          UI.showToast("Account created successfully! Welcome to DeepFeel.", "success");
-          setTimeout(() => {
-            window.location.href = "account.html";
-          }, 450);
-        } else {
-          UI.showToast(res.message, "error");
-        }
-      });
-    }
+  initAboutPage() {
+    // Brand narrative is statically authored in about.html
   }
 };
+
+// Bootstrap application on DOM ready
+document.addEventListener("DOMContentLoaded", () => {
+  App.init();
+});
