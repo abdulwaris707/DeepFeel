@@ -4,7 +4,7 @@
  */
 
 const STORAGE_KEYS = {
-  VERSION: "deepfeel_pakistan_v4",
+  VERSION: "deepfeel_pakistan_v5",
   PRODUCTS: "deepfeel_products",
   CATEGORIES: "deepfeel_categories",
   COUPONS: "deepfeel_coupons",
@@ -23,11 +23,12 @@ const Store = {
   // Initialize storage if missing or if upgrading to Pakistan edition
   init() {
     const currentVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
-    if (!currentVersion || currentVersion !== "4.0_pakistan" || !localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
+    if (!currentVersion || currentVersion !== "5.0_pakistan" || !localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
       this.resetDemoData();
-      localStorage.setItem(STORAGE_KEYS.VERSION, "4.0_pakistan");
+      localStorage.setItem(STORAGE_KEYS.VERSION, "5.0_pakistan");
     }
   },
+
 
   // Reset to original Pakistani luxury perfume dataset
   resetDemoData() {

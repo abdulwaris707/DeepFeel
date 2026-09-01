@@ -163,8 +163,9 @@ const App = {
     }
 
     if (priceSlider && priceDisplay) {
+      priceDisplay.textContent = `Rs. ${Number(priceSlider.value).toLocaleString()}`;
       priceSlider.addEventListener("input", (e) => {
-        priceDisplay.textContent = `$${e.target.value}`;
+        priceDisplay.textContent = `Rs. ${Number(e.target.value).toLocaleString()}`;
         renderFilteredShop();
       });
     }
@@ -182,7 +183,8 @@ const App = {
       let selectedSeason = "all";
       seasonFilters.forEach(r => { if (r.checked) selectedSeason = r.value; });
 
-      const maxPrice = priceSlider ? Number(priceSlider.value) : 500;
+      const maxPrice = priceSlider ? Number(priceSlider.value) : 50000;
+
       const inStockOnly = inStockCheckbox ? inStockCheckbox.checked : false;
       const sortBy = sortSelect ? sortSelect.value : "featured";
       const cat = categorySelect ? categorySelect.value : initialCategory;
