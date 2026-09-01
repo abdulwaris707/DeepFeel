@@ -1,57 +1,58 @@
 /* ==========================================================================
    DEEPFEEL — Executive Admin Management Suite Stylesheet
-   CSS + Layout + Responsiveness + Typography + Component System
+   Theme Aligned with Storefront (Warm Ivory, Antique Gold, Obsidian Charcoal, Cormorant Garamond Logo)
    ========================================================================== */
 
 /* ----------------------------------------------------
-   1. Typography & CSS Variables
+   1. Typography & Master Website Theme CSS Variables
    ---------------------------------------------------- */
 :root {
-  --admin-font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --admin-font: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --admin-logo-font: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   --admin-sidebar-width: 250px;
   --admin-header-height: 64px;
   
-  /* Color Palette - Clean Neutral Executive */
-  --admin-bg: #F8FAFC;
-  --admin-surface: #FFFFFF;
-  --admin-surface-subtle: #F1F5F9;
-  --admin-border: #E2E8F0;
-  --admin-border-dark: #CBD5E1;
+  /* Color Palette — Directly Aligned with DeepFeel Storefront Master Palette */
+  --admin-bg: #FAF8F5;            /* Warm Ivory / Off-White */
+  --admin-surface: #FFFFFF;       /* Pure White Surface */
+  --admin-surface-subtle: #F3EFEA;/* Soft Sand Beige */
+  --admin-border: #E5DFD5;        /* Warm Neutral Hairline Border */
+  --admin-border-dark: #D8C4B0;   /* Muted Champagne Gold Hairline */
   
-  --admin-sidebar-bg: #0F172A;
-  --admin-sidebar-text: #94A3B8;
-  --admin-sidebar-hover-bg: #1E293B;
-  --admin-sidebar-active-bg: #1E293B;
+  --admin-sidebar-bg: #121214;     /* Deep Obsidian / Dark Charcoal */
+  --admin-sidebar-text: #9A9AA4;   /* Slate Gray sidebar text */
+  --admin-sidebar-hover-bg: #1E1E22;
+  --admin-sidebar-active-bg: #1E1E22;
   --admin-sidebar-active-text: #FFFFFF;
   
-  --admin-text-primary: #0F172A;
-  --admin-text-secondary: #475569;
-  --admin-text-muted: #64748B;
+  --admin-text-primary: #121214;   /* Deep Charcoal Near Black */
+  --admin-text-secondary: #4A4A52; /* Refined Slate Gray */
+  --admin-text-muted: #7E7E88;     /* Muted Neutral */
   
-  --admin-primary: #0F172A;
-  --admin-primary-hover: #1E293B;
-  --admin-accent: #2563EB;
-  --admin-accent-hover: #1D4ED8;
-  --admin-accent-light: #EFF6FF;
+  --admin-primary: #121214;        /* Primary Action Dark Obsidian */
+  --admin-primary-hover: #26262C;
+  --admin-accent: #9E7D58;         /* Antique Champagne Gold Accent from Storefront */
+  --admin-accent-hover: #886845;   /* Deepened Antique Gold */
+  --admin-accent-light: #F6EDE3;   /* Tinted Gold Wash */
   
   /* Status Colors */
-  --admin-success: #166534;
-  --admin-success-bg: #DCFCE7;
-  --admin-warning: #B45309;
-  --admin-warning-bg: #FEF3C7;
-  --admin-danger: #DC2626;
-  --admin-danger-bg: #FEE2E2;
-  --admin-info: #1D4ED8;
-  --admin-info-bg: #DBEAFE;
+  --admin-success: #2A6A38;
+  --admin-success-bg: #EEF7F1;
+  --admin-warning: #9E631B;
+  --admin-warning-bg: #FDF4E7;
+  --admin-danger: #9E2B2B;
+  --admin-danger-bg: #FDEEEE;
+  --admin-info: #096DD9;
+  --admin-info-bg: #E6F4FF;
   
   /* Shadows & Radius */
   --admin-radius-sm: 4px;
   --admin-radius-md: 6px;
   --admin-radius-lg: 8px;
   --admin-radius-pill: 9999px;
-  --admin-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --admin-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --admin-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --admin-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+  --admin-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --admin-shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.08);
 }
 
 /* ----------------------------------------------------
@@ -97,6 +98,34 @@ body.admin-body a {
   color: inherit;
 }
 
+/* Brand Logo Override — Preserves Website Serif Editorial Font */
+.brand-logo,
+.brand-logo *,
+.admin-brand .brand-logo,
+.admin-brand .brand-logo * {
+  font-family: var(--admin-logo-font), 'Cormorant Garamond', 'Playfair Display', Georgia, serif !important;
+}
+
+.brand-logo {
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  color: var(--admin-text-primary);
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.brand-logo span {
+  font-weight: 300 !important;
+  color: var(--admin-accent) !important;
+}
+
+.admin-brand .brand-logo {
+  color: #FFFFFF !important;
+}
+
 /* Section titles */
 .section-subtitle {
   font-size: 0.75rem;
@@ -132,8 +161,8 @@ body.admin-body a {
 .admin-sidebar-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(2px);
+  background-color: rgba(14, 14, 16, 0.6);
+  backdrop-filter: blur(4px);
   z-index: 999;
   opacity: 0;
   visibility: hidden;
@@ -157,7 +186,7 @@ body.admin-body a {
   flex-direction: column;
   flex-shrink: 0;
   z-index: 1000;
-  border-right: 1px solid #1E293B;
+  border-right: 1px solid #232328;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -167,30 +196,18 @@ body.admin-body a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #1E293B;
-}
-
-.admin-brand .brand-logo {
-  color: #FFFFFF;
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-}
-
-.admin-brand .brand-logo span {
-  color: var(--admin-accent);
+  border-bottom: 1px solid #232328;
 }
 
 .admin-badge-role {
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.68rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background-color: #1E293B;
-  color: #94A3B8;
+  letter-spacing: 0.12em;
+  background-color: #26262C;
+  color: var(--admin-accent);
   padding: 2px 8px;
   border-radius: var(--admin-radius-pill);
-  border: 1px solid #334155;
 }
 
 .admin-sidebar-close {
@@ -205,7 +222,7 @@ body.admin-body a {
 }
 .admin-sidebar-close:hover {
   color: #FFFFFF;
-  background: #1E293B;
+  background: #1E1E22;
 }
 
 .admin-nav {
@@ -218,11 +235,11 @@ body.admin-body a {
 }
 
 .admin-nav-section-title {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #64748B;
+  letter-spacing: 0.14em;
+  color: #5C5C68;
   padding: 0.75rem 0.75rem 0.35rem;
 }
 
@@ -232,7 +249,7 @@ body.admin-body a {
   gap: 0.75rem;
   padding: 0.65rem 0.75rem;
   color: var(--admin-sidebar-text);
-  font-size: 0.875rem;
+  font-size: 0.86rem;
   font-weight: 500;
   border-radius: var(--admin-radius-md);
   transition: background-color 0.15s ease, color 0.15s ease;
@@ -242,9 +259,9 @@ body.admin-body a {
 .admin-nav-item svg {
   width: 18px;
   height: 18px;
-  stroke-width: 2;
+  stroke-width: 1.8;
   flex-shrink: 0;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 
 .admin-nav-item:hover {
@@ -282,12 +299,12 @@ body.admin-body a {
 .admin-sidebar-footer {
   margin-top: auto;
   padding: 0.85rem 0.85rem;
-  border-top: 1px solid #1E293B;
+  border-top: 1px solid #232328;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  background-color: rgba(15, 23, 42, 0.6);
+  background-color: rgba(18, 18, 20, 0.6);
 }
 
 .admin-profile-nav-link {
@@ -339,14 +356,14 @@ body.admin-body a {
 }
 
 .admin-profile-nav-role {
-  font-size: 0.7rem;
-  color: #64748B;
+  font-size: 0.72rem;
+  color: var(--admin-sidebar-text);
 }
 
 .admin-logout-btn {
   background: transparent;
   border: none;
-  color: #F87171;
+  color: #EF4444;
   cursor: pointer;
   padding: 8px;
   border-radius: var(--admin-radius-md);
@@ -439,18 +456,18 @@ body.admin-body a {
   align-items: center;
   gap: 0.4rem;
   font-size: 0.825rem;
-  font-weight: 500;
-  color: var(--admin-text-secondary);
+  font-weight: 600;
+  color: var(--admin-accent);
   padding: 0.4rem 0.75rem;
-  border: 1px solid var(--admin-border);
+  border: 1px solid var(--admin-border-dark);
   border-radius: var(--admin-radius-md);
   transition: all 0.15s ease;
-  background: var(--admin-surface);
+  background: var(--admin-accent-light);
 }
 .store-preview-link:hover {
-  color: var(--admin-accent);
+  color: var(--admin-accent-hover);
   border-color: var(--admin-accent);
-  background: var(--admin-accent-light);
+  background: #F3E5D8;
 }
 
 .admin-topbar-user {
@@ -509,7 +526,7 @@ body.admin-body a {
   font-size: 0.725rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--admin-text-muted);
 }
 
@@ -611,7 +628,7 @@ body.admin-body a {
   font-size: 0.725rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   color: var(--admin-text-muted);
   background-color: var(--admin-surface-subtle);
   border-bottom: 1px solid var(--admin-border);
@@ -630,7 +647,7 @@ body.admin-body a {
 }
 
 .admin-table tbody tr:hover td {
-  background-color: #F8FAFC;
+  background-color: #FAF8F5;
 }
 
 .table-product-cell {
@@ -723,9 +740,9 @@ body.admin-body a {
 }
 
 .stock-adjust-btn:hover {
-  background: var(--admin-primary);
+  background: var(--admin-accent);
   color: #FFFFFF;
-  border-color: var(--admin-primary);
+  border-color: var(--admin-accent);
 }
 
 /* ----------------------------------------------------
@@ -755,7 +772,7 @@ body.admin-body a {
 }
 .admin-search-box:focus-within {
   border-color: var(--admin-accent);
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  box-shadow: 0 0 0 3px rgba(158,125,88,0.15);
 }
 
 .admin-search-box svg {
@@ -791,7 +808,7 @@ body.admin-body a {
   outline: none;
   cursor: pointer;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237E7E88' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.6rem center;
   transition: border-color 0.15s ease;
@@ -800,7 +817,7 @@ body.admin-body a {
 .admin-select:focus,
 .form-select:focus {
   border-color: var(--admin-accent);
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  box-shadow: 0 0 0 3px rgba(158,125,88,0.15);
 }
 
 .form-group {
@@ -835,7 +852,7 @@ body.admin-body a {
 .form-input:focus,
 .form-textarea:focus {
   border-color: var(--admin-accent);
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  box-shadow: 0 0 0 3px rgba(158,125,88,0.15);
 }
 
 .form-grid-2 {
@@ -953,7 +970,7 @@ body.admin-body a {
 }
 .btn-outline:hover {
   background-color: var(--admin-surface-subtle);
-  border-color: var(--admin-text-secondary);
+  border-color: var(--admin-accent);
 }
 
 .btn-ghost {
@@ -972,7 +989,7 @@ body.admin-body a {
   border-color: var(--admin-danger);
 }
 .btn-danger:hover {
-  background-color: #B91C1C;
+  background-color: #7F1D1D;
 }
 
 .btn-sm {
