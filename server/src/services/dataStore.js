@@ -191,6 +191,86 @@ class DataStore {
     return memory.users.map(({ passwordHash, ...user }) => user);
   }
 
+  static async updateUserEmail(userId, newEmail) {
+    const memory = db.getMemoryDb();
+    const user = memory.users.find(u => u.id === userId);
+    if (user) {
+      user.email = newEmail.toLowerCase().trim();
+      user.updatedAt = new Date().toISOString();
+      return user;
+    }
+    return null;
+  }
+
+  static async updateUserPassword(userId, newPasswordHash) {
+    const memory = db.getMemoryDb();
+    const user = memory.users.find(u => u.id === userId);
+    if (user) {
+      user.passwordHash = newPasswordHash;
+      user.updatedAt = new Date().toISOString();
+      return user;
+    }
+    return null;
+  }
+
+  static async getDashboardStats() {
+    const memory = db.getMemoryDb();
+    const orders = memory.orders || [];
+    const products = memory.products || [];
+    const users = memory.users || [];
+    const categories = memory.categories || [];
+
+    const validOrders = orders.filter(o => o.status && o.status.toLowerCase() !== 'cancelled');
+    const totalRevenue = validOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+    const completedOrders = validOrders.length;
+    const customerCount = users.filter(u => !u.role || u.role.toUpperCase() === 'CUSTOMER').length;
+    const lowStockProducts = products.filter(p => (p.stock || 0) <= (p.lowStockThreshold || 5));
+
+    const categoryDistribution = categories.map(cat => {
+      const count = products.filter(p => p.category === cat.slug || p.category === cat.id || p.category === cat.name).length;
+      return { category: cat.name, count };
+    });
+
+    return {
+      totalRevenue,
+      totalOrders: orders.length,
+      completedOrders,
+      customerCount,
+      activeProducts: products.length,
+      lowStockCount: lowStockProducts.length,
+      categoryDistribution,
+      recentOrders: orders.slice(0, 5),
+      recentLowStock: lowStockProducts.slice(0, 5)
+    };
+  }
+
+  static async saveCategory(categoryData) {
+    const memory = db.getMemoryDb();
+    let category = memory.categories.find(c => c.id === categoryData.id || c.slug === categoryData.slug);
+    if (category) {
+      Object.assign(category, categoryData);
+    } else {
+      category = {
+        id: categoryData.id || "cat_" + Date.now().toString(36),
+        name: security.sanitizeString(categoryData.name),
+        slug: categoryData.slug || categoryData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        description: categoryData.description || "",
+        image: categoryData.image || "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80"
+      };
+      memory.categories.push(category);
+    }
+    return category;
+  }
+
+  static async deleteCategory(id) {
+    const memory = db.getMemoryDb();
+    const idx = memory.categories.findIndex(c => c.id === id || c.slug === id);
+    if (idx !== -1) {
+      return memory.categories.splice(idx, 1)[0];
+    }
+    return null;
+  }
+
   // PRODUCTS
   static async getProducts(filters = {}) {
     const memory = db.getMemoryDb();

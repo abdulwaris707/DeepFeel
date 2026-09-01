@@ -14,6 +14,17 @@ const Auth = {
     }
   },
 
+  async fetchProfile() {
+    if (window.API && typeof window.API.getProfile === 'function') {
+      const res = await window.API.getProfile();
+      if (res && res.success && res.user) {
+        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(res.user));
+        return res.user;
+      }
+    }
+    return this.getCurrentUser();
+  },
+
   isLoggedIn() {
     return this.getCurrentUser() !== null;
   },

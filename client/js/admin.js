@@ -131,72 +131,90 @@ const AdminApp = {
   // ----------------------------------------------------
   // EXECUTIVE DASHBOARD
   // ----------------------------------------------------
-  initDashboard() {
-    const orders = Store.getOrders();
-    const products = Store.getProducts();
-    const categories = Store.getCategories();
+  // ----------------------------------------------------
+  // EXECUTIVE DASHBOARD (REAL DATABASE DRIVEN)
+  // ----------------------------------------------------
+  async initDashboard() {
+    let stats = null;
+    if (window.API && window.API.adminGetDashboardStats) {
+      const res = await window.API.adminGetDashboardStats();
+      if (res && res.success && res.stats) {
+        stats = res.stats;
+      }
+    }
 
-    // 1. KPI Metrics Calculation
-    const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
-    const totalOrders = orders.length;
-    const activeProducts = products.length;
-    const lowStockCount = products.filter(p => p.stock <= p.lowStockThreshold).length;
+    if (!stats) {
+      const orders = Store.getOrders();
+      const products = Store.getProducts();
+      const validOrders = orders.filter(o => o.status && o.status.toLowerCase() !== 'cancelled');
+      stats = {
+        totalRevenue: validOrders.reduce((sum, o) => sum + (o.total || 0), 0),
+        totalOrders: orders.length,
+        completedOrders: validOrders.length,
+        customerCount: Store.getUsers().length,
+        activeProducts: products.length,
+        lowStockCount: products.filter(p => p.stock <= p.lowStockThreshold).length,
+        categoryDistribution: Store.getCategories().map(c => ({ category: c.name, count: products.filter(p => p.category === c.name || p.category === c.slug).length })),
+        recentOrders: orders.slice(0, 5),
+        recentLowStock: products.filter(p => p.stock <= p.lowStockThreshold).slice(0, 5)
+      };
+    }
 
     const revEl = document.getElementById("metric-revenue");
     const ordersEl = document.getElementById("metric-orders");
     const prodsEl = document.getElementById("metric-products");
     const lowStockEl = document.getElementById("metric-low-stock");
 
-    if (revEl) revEl.textContent = Store.formatCurrency(totalRevenue);
-    if (ordersEl) ordersEl.textContent = totalOrders;
-    if (prodsEl) prodsEl.textContent = activeProducts;
-    if (lowStockEl) lowStockEl.textContent = lowStockCount;
+    if (revEl) revEl.textContent = Store.formatCurrency(stats.totalRevenue);
+    if (ordersEl) ordersEl.textContent = stats.totalOrders;
+    if (prodsEl) prodsEl.textContent = stats.activeProducts;
+    if (lowStockEl) lowStockEl.textContent = stats.lowStockCount;
 
-    // 2. Render Revenue Canvas Chart
-    this.renderRevenueChart();
+    // Render Real Revenue Canvas Chart
+    this.renderRevenueChart(stats.recentOrders || []);
 
-    // 3. Render Olfactory Family Distribution Chart
-    this.renderCategoryChart();
+    // Render Olfactory Family Distribution Chart
+    this.renderCategoryChart(stats.categoryDistribution || []);
 
-    // 4. Render Recent Orders Feed
+    // Render Recent Orders Feed
     const recentOrdersBody = document.getElementById("dashboard-recent-orders-body");
     if (recentOrdersBody) {
-      const recent = orders.slice(0, 5);
+      const recent = stats.recentOrders || [];
       if (recent.length === 0) {
-        recentOrdersBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted" style="padding:1.5rem;">No orders placed yet.</td></tr>`;
+        recentOrdersBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted" style="padding:1.5rem;">No recent orders found.</td></tr>`;
       } else {
         recentOrdersBody.innerHTML = recent.map(o => `
           <tr>
             <td><strong><a href="order-details.html?id=${o.id}">${o.id}</a></strong></td>
-            <td>${o.customer.name}</td>
+            <td>${o.customer ? o.customer.name : 'Customer'}</td>
             <td>${new Date(o.createdAt).toLocaleDateString()}</td>
-            <td><strong>$${o.total.toFixed(2)}</strong></td>
-            <td><span class="status-pill status-${o.status.toLowerCase()}">${o.status}</span></td>
+            <td><strong>${Store.formatCurrency(o.total)}</strong></td>
+            <td><span class="status-pill status-${(o.status || 'pending').toLowerCase()}">${o.status}</span></td>
             <td><a href="order-details.html?id=${o.id}" class="btn btn-outline btn-sm">Process &rarr;</a></td>
           </tr>
         `).join("");
       }
     }
 
-    // 5. Render Low Stock Action Card
+    // Render Low Stock Action Card
     const lowStockBody = document.getElementById("dashboard-low-stock-body");
     if (lowStockBody) {
-      const lowStockItems = products.filter(p => p.stock <= p.lowStockThreshold).slice(0, 5);
+      const lowStockItems = stats.recentLowStock || [];
       if (lowStockItems.length === 0) {
-        lowStockBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted" style="padding:1.5rem;">All fragrance flacons sufficiently stocked.</td></tr>`;
+        lowStockBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted" style="padding:1.5rem;">All items sufficiently stocked.</td></tr>`;
       } else {
         lowStockBody.innerHTML = lowStockItems.map(p => `
           <tr>
             <td>
               <div class="table-product-cell">
-                <img src="${p.images[0]}" alt="${p.name}" class="table-product-thumb" />
+                <img src="${p.images ? p.images[0] : ''}" alt="${p.name}" class="table-product-thumb" />
                 <div>
                   <div class="table-product-name">${p.name}</div>
                   <div class="table-product-sku">${p.sku}</div>
                 </div>
               </div>
             </td>
-            <td><span style="color:var(--color-error); font-weight:700;">${p.stock}</span></td>
+            <td><span style="color:var(--admin-danger); font-weight:700;">${p.stock}</span></td>
             <td>${p.lowStockThreshold}</td>
             <td>
               <button type="button" class="btn btn-outline btn-sm" onclick="AdminApp.quickRestock('${p.id}', 10)">
@@ -209,7 +227,7 @@ const AdminApp = {
     }
   },
 
-  renderRevenueChart() {
+  renderRevenueChart(orders = []) {
     const canvas = document.getElementById("revenue-chart-canvas");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -225,52 +243,61 @@ const AdminApp = {
 
     ctx.clearRect(0, 0, w, h);
 
-    const points = [
-      { label: "Mon", val: 1420 },
-      { label: "Tue", val: 2180 },
-      { label: "Wed", val: 1890 },
-      { label: "Thu", val: 2840 },
-      { label: "Fri", val: 3450 },
-      { label: "Sat", val: 4120 },
-      { label: "Sun", val: 3890 }
-    ];
+    if (!orders || orders.length === 0) {
+      ctx.fillStyle = "#7E7E88";
+      ctx.font = "500 13px 'Plus Jakarta Sans', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("No sales data available yet.", w / 2, h / 2);
+      return;
+    }
 
-    const padding = { top: 30, right: 25, bottom: 35, left: 55 };
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const dayTotals = { "Mon": 0, "Tue": 0, "Wed": 0, "Thu": 0, "Fri": 0, "Sat": 0, "Sun": 0 };
+
+    orders.forEach(o => {
+      if (o.status && o.status.toLowerCase() !== 'cancelled') {
+        const d = new Date(o.createdAt);
+        const dayName = days[d.getDay() === 0 ? 6 : d.getDay() - 1];
+        if (dayTotals[dayName] !== undefined) {
+          dayTotals[dayName] += (o.total || 0);
+        }
+      }
+    });
+
+    const points = days.map(day => ({ label: day, val: dayTotals[day] }));
+    const maxVal = Math.max(...points.map(p => p.val), 1000);
+
+    const padding = { top: 30, right: 25, bottom: 35, left: 75 };
     const chartW = w - padding.left - padding.right;
     const chartH = h - padding.top - padding.bottom;
 
-    const maxVal = 5000;
-    const minVal = 0;
-
-    // Grid lines
-    ctx.strokeStyle = "#E7E2DA";
+    ctx.strokeStyle = "#E8E2D8";
     ctx.lineWidth = 1;
-    ctx.fillStyle = "#8E8E93";
-    ctx.font = "11px Inter, sans-serif";
+    ctx.fillStyle = "#7E7E88";
+    ctx.font = "11px 'Plus Jakarta Sans', sans-serif";
     ctx.textAlign = "right";
 
     const gridSteps = 4;
     for (let i = 0; i <= gridSteps; i++) {
-      const yVal = minVal + ((maxVal - minVal) / gridSteps) * i;
+      const yVal = (maxVal / gridSteps) * i;
       const y = padding.top + chartH - (i / gridSteps) * chartH;
       ctx.beginPath();
       ctx.moveTo(padding.left, y);
       ctx.lineTo(w - padding.right, y);
       ctx.stroke();
-      ctx.fillText(`$${(yVal / 1000).toFixed(1)}k`, padding.left - 8, y + 4);
+      ctx.fillText(`Rs. ${Math.round(yVal).toLocaleString("en-PK")}`, padding.left - 8, y + 4);
     }
 
-    // Coordinates
     const coords = points.map((pt, i) => {
       const x = padding.left + (i / (points.length - 1)) * chartW;
-      const y = padding.top + chartH - ((pt.val - minVal) / (maxVal - minVal)) * chartH;
+      const y = padding.top + chartH - (pt.val / maxVal) * chartH;
       return { x, y, label: pt.label, val: pt.val };
     });
 
-    // Area fill gradient
     const gradient = ctx.createLinearGradient(0, padding.top, 0, padding.top + chartH);
-    gradient.addColorStop(0, "rgba(163, 128, 91, 0.35)");
-    gradient.addColorStop(1, "rgba(163, 128, 91, 0.0)");
+    gradient.addColorStop(0, "rgba(158, 125, 88, 0.25)");
+    gradient.addColorStop(1, "rgba(158, 125, 88, 0.0)");
 
     ctx.beginPath();
     ctx.moveTo(coords[0].x, padding.top + chartH);
@@ -280,9 +307,8 @@ const AdminApp = {
     ctx.fillStyle = gradient;
     ctx.fill();
 
-    // Trend Line
     ctx.beginPath();
-    ctx.strokeStyle = "#A3805B";
+    ctx.strokeStyle = "#9E7D58";
     ctx.lineWidth = 2.5;
     coords.forEach((c, idx) => {
       if (idx === 0) ctx.moveTo(c.x, c.y);
@@ -290,24 +316,23 @@ const AdminApp = {
     });
     ctx.stroke();
 
-    // Data points & X labels
     coords.forEach(c => {
       ctx.beginPath();
       ctx.arc(c.x, c.y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = "#A3805B";
+      ctx.fillStyle = "#9E7D58";
       ctx.fill();
       ctx.strokeStyle = "#FFFFFF";
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      ctx.fillStyle = "#52525B";
+      ctx.fillStyle = "#4A4A52";
       ctx.textAlign = "center";
-      ctx.font = "11px Inter, sans-serif";
+      ctx.font = "11px 'Plus Jakarta Sans', sans-serif";
       ctx.fillText(c.label, c.x, h - 10);
     });
   },
 
-  renderCategoryChart() {
+  renderCategoryChart(distribution = []) {
     const canvas = document.getElementById("category-chart-canvas");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -323,52 +348,61 @@ const AdminApp = {
 
     ctx.clearRect(0, 0, w, h);
 
-    const products = Store.getProducts();
-    const familyCounts = {};
-    products.forEach(p => {
-      const fam = p.fragranceFamily || "Oriental";
-      familyCounts[fam] = (familyCounts[fam] || 0) + 1;
-    });
+    if (!distribution || distribution.length === 0) {
+      ctx.fillStyle = "#7E7E88";
+      ctx.font = "500 13px 'Plus Jakarta Sans', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("No category data available.", w / 2, h / 2);
+      return;
+    }
 
-    const entries = Object.entries(familyCounts).map(([name, count]) => ({ name, count }));
-    const maxCount = Math.max(...entries.map(e => e.count), 1);
+    const maxCount = Math.max(...distribution.map(e => e.count), 1);
 
     const padding = { top: 25, right: 35, bottom: 25, left: 110 };
     const chartW = w - padding.left - padding.right;
     const barHeight = 22;
     const gap = 12;
 
-    entries.slice(0, 5).forEach((item, i) => {
+    distribution.slice(0, 5).forEach((item, i) => {
       const y = padding.top + i * (barHeight + gap);
       const barW = (item.count / maxCount) * chartW;
 
-      // Label
-      ctx.fillStyle = "#18181B";
-      ctx.font = "500 11px Inter, sans-serif";
+      ctx.fillStyle = "#121214";
+      ctx.font = "500 11px 'Plus Jakarta Sans', sans-serif";
       ctx.textAlign = "right";
-      ctx.fillText(item.name.slice(0, 15), padding.left - 12, y + 15);
+      ctx.fillText((item.category || '').slice(0, 15), padding.left - 12, y + 15);
 
-      // Track
-      ctx.fillStyle = "#EBE5DB";
+      ctx.fillStyle = "#F5F2ED";
       ctx.beginPath();
       ctx.roundRect(padding.left, y, chartW, barHeight, 4);
       ctx.fill();
 
-      // Active Bar
-      ctx.fillStyle = i === 0 ? "#A3805B" : "#BBA082";
-      ctx.beginPath();
-      ctx.roundRect(padding.left, y, Math.max(12, barW), barHeight, 4);
-      ctx.fill();
+      if (barW > 0) {
+        ctx.fillStyle = "#9E7D58";
+        ctx.beginPath();
+        ctx.roundRect(padding.left, y, Math.max(barW, 6), barHeight, 4);
+        ctx.fill();
+      }
 
-      // Value
-      ctx.fillStyle = "#FFFFFF";
-      ctx.font = "600 10px Inter, sans-serif";
+      ctx.fillStyle = "#7E7E88";
+      ctx.font = "600 11px 'Plus Jakarta Sans', sans-serif";
       ctx.textAlign = "left";
-      ctx.fillText(`${item.count} SKUs`, padding.left + 8, y + 15);
+      ctx.fillText(`${item.count}`, padding.left + barW + 8, y + 15);
     });
   },
 
-  quickRestock(productId, amount = 10) {
+  async quickRestock(productId, amount = 10) {
+    if (window.API && window.API.adminUpdateStock) {
+      const product = Store.getProductById(productId);
+      const currentStock = product ? product.stock : 0;
+      const res = await window.API.adminUpdateStock(productId, currentStock + amount);
+      if (res.success) {
+        UI.showToast(`Stock updated!`, "success");
+        await this.initDashboard();
+        return;
+      }
+    }
     const product = Store.getProductById(productId);
     if (product) {
       Store.updateStock(productId, product.stock + amount);
@@ -684,9 +718,9 @@ const AdminApp = {
   },
 
   // ----------------------------------------------------
-  // ORDERS PAGE
+  // ORDERS PAGE (REAL API DRIVEN)
   // ----------------------------------------------------
-  initOrdersPage() {
+  async initOrdersPage() {
     const tableBody = document.getElementById("admin-orders-table-body");
     const searchInput = document.getElementById("admin-orders-search");
     const statusSelect = document.getElementById("admin-orders-status-filter");
@@ -694,8 +728,14 @@ const AdminApp = {
     let filterStatus = "all";
     let searchQ = "";
 
-    const render = () => {
-      let orders = Store.getOrders();
+    const render = async () => {
+      let orders = [];
+      if (window.API && window.API.getOrders) {
+        const res = await window.API.getOrders();
+        orders = (res && res.orders) || (Array.isArray(res) ? res : []);
+      } else {
+        orders = Store.getOrders();
+      }
 
       if (filterStatus !== "all") {
         orders = orders.filter(o => o.status.toLowerCase() === filterStatus.toLowerCase());
@@ -717,12 +757,12 @@ const AdminApp = {
         <tr>
           <td><strong>${o.id}</strong></td>
           <td>
-            <div style="font-weight:600;">${o.customer.name}</div>
-            <div class="text-muted" style="font-size:0.78rem;">${o.customer.email}</div>
+            <div style="font-weight:600;">${o.customer ? o.customer.name : 'N/A'}</div>
+            <div class="text-muted" style="font-size:0.78rem;">${o.customer ? o.customer.email : ''}</div>
           </td>
           <td>${new Date(o.createdAt).toLocaleDateString()}</td>
-          <td>${o.items ? o.items.length : 1} flacon${o.items && o.items.length > 1 ? 's' : ''}</td>
-          <td><strong>$${o.total.toFixed(2)}</strong></td>
+          <td>${o.items ? o.items.length : 1} item${o.items && o.items.length > 1 ? 's' : ''}</td>
+          <td><strong>${Store.formatCurrency(o.total)}</strong></td>
           <td>
             <select class="admin-select" onchange="AdminApp.updateOrderStatus('${o.id}', this.value)" style="font-size:0.82rem; padding:4px 8px;">
               <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
@@ -742,10 +782,20 @@ const AdminApp = {
     if (searchInput) searchInput.addEventListener("input", (e) => { searchQ = e.target.value; render(); });
     if (statusSelect) statusSelect.addEventListener("change", (e) => { filterStatus = e.target.value; render(); });
 
-    render();
+    await render();
   },
 
-  updateOrderStatus(orderId, newStatus) {
+  async updateOrderStatus(orderId, newStatus) {
+    if (window.API && window.API.adminUpdateOrderStatus) {
+      const res = await window.API.adminUpdateOrderStatus(orderId, newStatus);
+      if (res && res.success) {
+        UI.showToast(`Order ${orderId} status changed to "${newStatus}"`, "success");
+        if (window.location.pathname.includes("orders.html")) {
+          await this.initOrdersPage();
+        }
+        return;
+      }
+    }
     Store.updateOrderStatus(orderId, newStatus);
     UI.showToast(`Order ${orderId} status changed to "${newStatus}"`, "success");
   },
@@ -753,10 +803,19 @@ const AdminApp = {
   // ----------------------------------------------------
   // ORDER DETAILS
   // ----------------------------------------------------
-  initOrderDetailsPage() {
+  async initOrderDetailsPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get("id");
-    const order = orderId ? Store.getOrderById(orderId) : Store.getOrders()[0];
+    let order = null;
+
+    if (orderId && window.API && window.API.getOrderById) {
+      const res = await window.API.getOrderById(orderId);
+      if (res && res.order) order = res.order;
+    }
+
+    if (!order) {
+      order = orderId ? Store.getOrderById(orderId) : Store.getOrders()[0];
+    }
 
     if (!order) {
       window.location.href = "orders.html";
@@ -765,10 +824,10 @@ const AdminApp = {
 
     if (document.getElementById("detail-order-id")) document.getElementById("detail-order-id").textContent = order.id;
     if (document.getElementById("detail-order-date")) document.getElementById("detail-order-date").textContent = new Date(order.createdAt).toLocaleString();
-    if (document.getElementById("detail-cust-name")) document.getElementById("detail-cust-name").textContent = order.customer.name;
-    if (document.getElementById("detail-cust-email")) document.getElementById("detail-cust-email").textContent = order.customer.email;
-    if (document.getElementById("detail-cust-phone")) document.getElementById("detail-cust-phone").textContent = order.customer.phone || "N/A";
-    if (document.getElementById("detail-shipping-address")) document.getElementById("detail-shipping-address").textContent = order.customer.address;
+    if (document.getElementById("detail-cust-name")) document.getElementById("detail-cust-name").textContent = order.customer ? order.customer.name : 'N/A';
+    if (document.getElementById("detail-cust-email")) document.getElementById("detail-cust-email").textContent = order.customer ? order.customer.email : 'N/A';
+    if (document.getElementById("detail-cust-phone")) document.getElementById("detail-cust-phone").textContent = order.customer ? (order.customer.phone || "N/A") : "N/A";
+    if (document.getElementById("detail-shipping-address")) document.getElementById("detail-shipping-address").textContent = order.customer ? (order.customer.address || "N/A") : "N/A";
     if (document.getElementById("detail-payment-method")) document.getElementById("detail-payment-method").textContent = order.paymentMethod || "Cash on Delivery (COD)";
     if (document.getElementById("detail-payment-status")) document.getElementById("detail-payment-status").textContent = order.paymentStatus || "Verified";
     if (document.getElementById("detail-subtotal")) document.getElementById("detail-subtotal").textContent = Store.formatCurrency(order.subtotal);
@@ -777,12 +836,11 @@ const AdminApp = {
     if (document.getElementById("detail-tax")) document.getElementById("detail-tax").textContent = Store.formatCurrency(order.tax || 0);
     if (document.getElementById("detail-total")) document.getElementById("detail-total").textContent = Store.formatCurrency(order.total);
 
-
     const statusSel = document.getElementById("detail-status-select");
     if (statusSel) {
       statusSel.value = order.status;
-      statusSel.addEventListener("change", (e) => {
-        AdminApp.updateOrderStatus(order.id, e.target.value);
+      statusSel.addEventListener("change", async (e) => {
+        await AdminApp.updateOrderStatus(order.id, e.target.value);
       });
     }
 
@@ -795,13 +853,13 @@ const AdminApp = {
               <img src="${item.image}" alt="${item.name}" class="table-product-thumb" />
               <div>
                 <div class="table-product-name">${item.name}</div>
-                <div class="table-product-sku">${item.size || '50ml'} • ${item.variant || 'Flacon'}</div>
+                <div class="table-product-sku">${item.size || '50ml'}</div>
               </div>
             </div>
           </td>
-          <td>$${item.price.toFixed(2)}</td>
+          <td>${Store.formatCurrency(item.price)}</td>
           <td>${item.quantity}</td>
-          <td><strong>$${(item.price * item.quantity).toFixed(2)}</strong></td>
+          <td><strong>${Store.formatCurrency(item.price * item.quantity)}</strong></td>
         </tr>
       `).join("");
     }
@@ -810,7 +868,7 @@ const AdminApp = {
     if (timelineList && order.timeline) {
       timelineList.innerHTML = order.timeline.map(t => `
         <li style="margin-bottom:0.8rem; list-style:none; display:flex; gap:0.6rem; align-items:flex-start;">
-          <span style="color:var(--color-success); font-weight:700;">✓</span>
+          <span style="color:var(--admin-success); font-weight:700;">✓</span>
           <div>
             <strong>${t.status}</strong>
             <span class="text-muted" style="font-size:0.75rem; display:block;">${t.date}</span>
@@ -821,80 +879,119 @@ const AdminApp = {
   },
 
   // ----------------------------------------------------
-  // CUSTOMERS DIRECTORY
+  // CUSTOMERS DIRECTORY (REAL API DRIVEN)
   // ----------------------------------------------------
-  initCustomersPage() {
+  async initCustomersPage() {
     const tableBody = document.getElementById("admin-customers-table-body");
     if (!tableBody) return;
 
-    const users = Store.getUsers();
+    let users = [];
+    if (window.API && window.API.adminGetCustomers) {
+      const res = await window.API.adminGetCustomers();
+      users = (res && res.customers) || [];
+    } else {
+      users = Store.getUsers();
+    }
+
+    if (users.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-muted" style="padding:2rem;">No registered customers found.</td></tr>`;
+      return;
+    }
+
     tableBody.innerHTML = users.map(u => `
       <tr>
         <td><strong>${u.name}</strong></td>
         <td>${u.email}</td>
         <td>${u.phone || 'N/A'}</td>
         <td>${u.ordersCount || 0}</td>
-        <td><strong>$${(u.totalSpent || 0).toFixed(2)}</strong></td>
-        <td><span class="status-pill status-${u.role === 'admin' ? 'shipped' : 'delivered'}">${u.role}</span></td>
+        <td><strong>${Store.formatCurrency(u.totalSpent || 0)}</strong></td>
+        <td><span class="status-pill status-${(u.role || '').toLowerCase() === 'super_admin' || (u.role || '').toLowerCase() === 'admin' ? 'shipped' : 'delivered'}">${u.role || 'CUSTOMER'}</span></td>
       </tr>
     `).join("");
   },
 
   // ----------------------------------------------------
-  // CATEGORIES MANAGEMENT
+  // CATEGORIES MANAGEMENT (REAL API DRIVEN)
   // ----------------------------------------------------
-  initCategoriesPage() {
+  async initCategoriesPage() {
     const tableBody = document.getElementById("admin-categories-table-body");
     const form = document.getElementById("add-category-form");
 
-    const render = () => {
-      const cats = Store.getCategories();
+    const render = async () => {
+      let cats = [];
+      if (window.API && window.API.adminGetCategories) {
+        const res = await window.API.adminGetCategories();
+        cats = (res && res.categories) || [];
+      } else {
+        cats = Store.getCategories();
+      }
+
       if (!tableBody) return;
 
+      if (cats.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-muted" style="padding:2rem;">No categories configured.</td></tr>`;
+        return;
+      }
+
+      const products = Store.getProducts();
+
       tableBody.innerHTML = cats.map(c => {
-        const count = Store.getProducts({ category: c.slug }).length;
+        const count = products.filter(p => p.category === c.slug || p.category === c.name || p.category === c.id).length;
         return `
           <tr>
             <td>
               <div style="display:flex; align-items:center; gap:0.8rem;">
-                <img src="${c.image}" alt="${c.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />
+                <img src="${c.image || ''}" alt="${c.name}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;" />
                 <strong>${c.name}</strong>
               </div>
             </td>
             <td><code>${c.slug}</code></td>
-            <td>${c.description.slice(0, 45)}...</td>
+            <td>${(c.description || '').slice(0, 45)}...</td>
             <td><strong>${count} SKUs</strong></td>
             <td>
-              <button type="button" class="btn btn-outline btn-sm" style="color:var(--color-error);" onclick="AdminApp.deleteCategoryPrompt('${c.id}')">Delete</button>
+              <button type="button" class="btn btn-outline btn-sm" style="color:var(--admin-danger);" onclick="AdminApp.deleteCategoryPrompt('${c.id}')">Delete</button>
             </td>
           </tr>
         `;
       }).join("");
     };
 
-    render();
+    await render();
 
     if (form) {
-      form.addEventListener("submit", (e) => {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
         const name = document.getElementById("cat-name").value.trim();
         const slug = document.getElementById("cat-slug").value.trim() || name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
         const desc = document.getElementById("cat-desc").value.trim();
         const img = document.getElementById("cat-image").value.trim() || "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=80";
 
+        if (window.API && window.API.adminSaveCategory) {
+          const res = await window.API.adminSaveCategory({ name, slug, description: desc, image: img });
+          if (res && res.success) {
+            UI.showToast(`Category "${name}" saved!`, "success");
+            form.reset();
+            await render();
+            return;
+          }
+        }
         Store.saveCategory({ name, slug, description: desc, image: img });
-        UI.showToast(`Category "${name}" created!`, "success");
+        UI.showToast(`Category "${name}" saved!`, "success");
         form.reset();
-        render();
+        await render();
       });
     }
   },
 
-  deleteCategoryPrompt(id) {
-    if (confirm("Delete this fragrance category?")) {
-      Store.deleteCategory(id);
+  async deleteCategoryPrompt(id) {
+    if (confirm("Delete this category?")) {
+      if (window.API && window.API.adminDeleteCategory) {
+        await window.API.adminDeleteCategory(id);
+      } else {
+        Store.deleteCategory(id);
+      }
       UI.showToast("Category removed", "info");
-      this.initCategoriesPage();
+      await this.initCategoriesPage();
     }
   },
 
@@ -913,12 +1010,12 @@ const AdminApp = {
         <tr>
           <td><strong><code>${c.code}</code></strong></td>
           <td>${c.discountType === 'percentage' ? `${c.discountValue}%` : Store.formatCurrency(c.discountValue)}</td>
-          <td>$${c.minOrder || 0}</td>
+          <td>${Store.formatCurrency(c.minOrder || 0)}</td>
           <td>${c.usedCount || 0} / ${c.usageLimit || '∞'}</td>
           <td>${c.expiryDate}</td>
           <td><span class="status-pill status-${c.active ? 'delivered' : 'cancelled'}">${c.active ? 'Active' : 'Disabled'}</span></td>
           <td>
-            <button type="button" class="btn btn-outline btn-sm" style="color:var(--color-error);" onclick="AdminApp.deleteCouponPrompt('${c.id}')">Delete</button>
+            <button type="button" class="btn btn-outline btn-sm" style="color:var(--admin-danger);" onclick="AdminApp.deleteCouponPrompt('${c.id}')">Delete</button>
           </td>
         </tr>
       `).join("");
@@ -944,7 +1041,7 @@ const AdminApp = {
           usageLimit: limit,
           expiryDate: expiry,
           active: true,
-          description: `${type === 'percentage' ? val + '%' : '$' + val} luxury fragrance discount`
+          description: `${type === 'percentage' ? val + '%' : Store.formatCurrency(val)} discount`
         });
 
         UI.showToast(`Coupon "${code}" saved!`, "success");
@@ -963,7 +1060,7 @@ const AdminApp = {
   },
 
   // ----------------------------------------------------
-  // SETTINGS & FACTORY RESET
+  // SETTINGS & CREDENTIAL MANAGEMENT
   // ----------------------------------------------------
   initSettingsPage() {
     const form = document.getElementById("admin-settings-form");
@@ -971,9 +1068,9 @@ const AdminApp = {
 
     if (resetBtn) {
       resetBtn.addEventListener("click", () => {
-        if (confirm("Reset all perfume stock, orders, and demo accounts back to original factory state?")) {
+        if (confirm("Reset all local demo store cache state back to default?")) {
           Store.resetDemoData();
-          UI.showToast("Maison DeepFeel dataset has been reset to factory state!", "success");
+          UI.showToast("Demo data cache cleared!", "success");
         }
       });
     }
@@ -988,7 +1085,7 @@ const AdminApp = {
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         const storeName = document.getElementById("set-store-name").value.trim();
-        const adminEmail = adminEmailInput ? adminEmailInput.value.trim() : "2003abdulwaris@gmail.com";
+        const adminEmail = adminEmailInput ? adminEmailInput.value.trim() : "";
         const taxRate = parseFloat(document.getElementById("set-tax-rate").value);
         const freeShip = parseFloat(document.getElementById("set-free-ship").value);
         const flatShip = parseFloat(document.getElementById("set-flat-ship").value);
@@ -1003,10 +1100,9 @@ const AdminApp = {
           announcementText: announcement
         });
 
-        UI.showToast("Maison DeepFeel settings & dispatcher email saved!", "success");
+        UI.showToast("Maison DeepFeel settings saved!", "success");
       });
     }
-
 
     // Change Email Form Listener
     const changeEmailForm = document.getElementById("admin-change-email-form");
@@ -1014,30 +1110,32 @@ const AdminApp = {
       changeEmailForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const currentPassword = document.getElementById("sec-current-pass-email").value;
-        const newEmail = document.getElementById("sec-new-email").value;
-        const confirmEmail = document.getElementById("sec-confirm-email").value;
+        const newEmail = document.getElementById("sec-new-email").value.trim();
+        const confirmEmail = document.getElementById("sec-confirm-email").value.trim();
 
-        if (newEmail.trim().toLowerCase() !== confirmEmail.trim().toLowerCase()) {
+        if (newEmail.toLowerCase() !== confirmEmail.toLowerCase()) {
           UI.showToast("New email addresses do not match.", "error");
           return;
         }
 
         if (window.API && window.API.changeEmail) {
           const res = await window.API.changeEmail(currentPassword, newEmail, confirmEmail);
-          if (res.success) {
+          if (res && res.success) {
             UI.showToast("Admin email updated successfully!", "success");
             changeEmailForm.reset();
+            const updatedUser = res.user || (await Auth.fetchProfile());
+            if (updatedUser) {
+              localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(updatedUser));
+              const emailDisplayEl = document.getElementById("prof-email-display");
+              const topbarEmailEl = document.getElementById("topbar-admin-email");
+              if (emailDisplayEl) emailDisplayEl.innerText = updatedUser.email;
+              if (topbarEmailEl) topbarEmailEl.innerText = updatedUser.email;
+            }
+            return;
           } else {
-            UI.showToast(res.error || "Current password is incorrect.", "error");
+            UI.showToast(res ? (res.error || "Failed to update email.") : "Connection error.", "error");
+            return;
           }
-        } else {
-          const user = Auth.getCurrentUser();
-          if (user) {
-            user.email = newEmail.trim().toLowerCase();
-            localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
-          }
-          UI.showToast("Admin email updated successfully!", "success");
-          changeEmailForm.reset();
         }
       });
     }
@@ -1063,15 +1161,14 @@ const AdminApp = {
 
         if (window.API && window.API.changePassword) {
           const res = await window.API.changePassword(currentPassword, newPassword, confirmPassword);
-          if (res.success) {
-            UI.showToast("Admin password updated successfully!", "success");
+          if (res && res.success) {
+            UI.showToast(res.message || "Admin password updated successfully!", "success");
             changePassForm.reset();
+            return;
           } else {
-            UI.showToast(res.error || "Current password is incorrect.", "error");
+            UI.showToast(res ? (res.error || "Failed to update password.") : "Connection error.", "error");
+            return;
           }
-        } else {
-          UI.showToast("Admin password updated successfully!", "success");
-          changePassForm.reset();
         }
       });
     }
@@ -1080,9 +1177,9 @@ const AdminApp = {
   // ----------------------------------------------------
   // ADMIN PROFILE & CREDENTIAL TOGGLE
   // ----------------------------------------------------
-  initProfilePage() {
-    const user = Auth.getCurrentUser() || { email: "admin@deepfeel.pk", name: "Administrator", role: "admin" };
-    
+  async initProfilePage() {
+    const user = (await Auth.fetchProfile()) || { email: "admin@deepfeel.pk", name: "Administrator", role: "SUPER_ADMIN" };
+
     const displayNameEl = document.getElementById("prof-display-name");
     const emailDisplayEl = document.getElementById("prof-email-display");
     const roleDisplayEl = document.getElementById("prof-role-display");
@@ -1090,7 +1187,7 @@ const AdminApp = {
 
     if (displayNameEl) displayNameEl.innerText = user.name || "Administrator";
     if (emailDisplayEl) emailDisplayEl.innerText = user.email || "admin@deepfeel.pk";
-    if (roleDisplayEl) roleDisplayEl.innerText = (user.role || "Admin").toUpperCase();
+    if (roleDisplayEl) roleDisplayEl.innerText = (user.role || "SUPER_ADMIN").toUpperCase();
     if (topbarEmailEl) topbarEmailEl.innerText = user.email || "admin@deepfeel.pk";
 
     const btnToggleForm = document.getElementById("btn-toggle-credentials-form");
@@ -1112,7 +1209,6 @@ const AdminApp = {
       });
     }
 
-    // Attach email and password change handlers on profile page
     this.initSettingsPage();
   }
 };

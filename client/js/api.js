@@ -86,6 +86,22 @@ const API = {
   },
 
   // ADMIN OPERATIONS
+  async adminGetDashboardStats() {
+    return this.request('/admin/dashboard-stats');
+  },
+
+  async adminGetCategories() {
+    return this.request('/admin/categories');
+  },
+
+  async adminSaveCategory(categoryData) {
+    return this.request('/admin/categories', { method: 'POST', body: categoryData });
+  },
+
+  async adminDeleteCategory(id) {
+    return this.request(`/admin/categories/${id}`, { method: 'DELETE' });
+  },
+
   async adminSaveProduct(productData) {
     return this.request('/admin/products', { method: 'POST', body: productData });
   },

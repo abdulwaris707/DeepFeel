@@ -127,11 +127,172 @@ const updateOrderStatus = async (req, res, next) => {
   }
 };
 
+// DASHBOARD STATS
+const getDashboardStats = async (req, res, next) => {
+  try {
+    const stats = await DataStore.getDashboardStats();
+    res.json({ success: true, stats });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // CUSTOMERS DIRECTORY
 const getCustomers = async (req, res, next) => {
   try {
     const users = await DataStore.getUsers();
     res.json({ success: true, count: users.length, customers: users });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// CATEGORIES
+const getCategories = async (req, res, next) => {
+  try {
+    const categories = await DataStore.getCategories();
+    res.json({ success: true, categories });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const saveCategory = async (req, res, next) => {
+  try {
+    const { name } = req.body;
+    if (!name) {
+      return res.status(400).json({ success: false, error: 'Category name is required.' });
+    }
+    const category = await DataStore.saveCategory(req.body);
+    res.json({ success: true, message: `Category "${category.name}" saved.`, category });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const deleteCategory = async (req, res, next) => {
+  try {
+    const categoryId = req.params.id;
+    const removed = await DataStore.deleteCategory(categoryId);
+    if (!removed) {
+      return res.status(404).json({ success: false, error: 'Category not found.' });
+    }
+    res.json({ success: true, message: `Category "${removed.name}" removed.` });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// CREDENTIAL MANAGEMENT
+const changeAdminEmail = async (req, res, next) => {
+  try {
+    const { currentPassword, newEmail, confirmEmail } = req.body;
+    const adminId = req.user.id;
+
+    if (!currentPassword || !newEmail || !confirmEmail) {
+      return res.status(400).json({ success: false, error: 'Current password, new email, and confirmation email are required.' });
+    }
+
+    if (newEmail.toLowerCase().trim() !== confirmEmail.toLowerCase().trim()) {
+      return res.status(400).json({ success: false, error: 'New email address and confirmation do not match.' });
+    }
+
+    const admin = await DataStore.findUserById(adminId);
+    if (!admin) {
+      return res.status(404).json({ success: false, error: 'Admin account not found.' });
+    }
+
+    const isMatch = await security.comparePassword(currentPassword, admin.passwordHash);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, error: 'Current password verified incorrect.' });
+    }
+
+    const existingUser = await DataStore.findUserByEmail(newEmail);
+    if (existingUser && existingUser.id !== adminId) {
+      return res.status(409).json({ success: false, error: 'This email address is already in use by another account.' });
+    }
+
+    const updatedUser = await DataStore.updateUserEmail(adminId, newEmail);
+    const token = security.generateToken(updatedUser);
+
+    res.cookie('deepfeel_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
+    await DataStore.recordAuditLog(
+      adminId,
+      updatedUser.email,
+      'CHANGE_ADMIN_EMAIL',
+      'user',
+      adminId,
+      { oldEmail: admin.email, newEmail: updatedUser.email },
+      req.ip
+    );
+
+    res.json({
+      success: true,
+      message: 'Admin email address updated successfully.',
+      token,
+      user: {
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const changeAdminPassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const adminId = req.user.id;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return res.status(400).json({ success: false, error: 'Current password, new password, and confirmation are required.' });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ success: false, error: 'New password and confirmation password do not match.' });
+    }
+
+    const passCheck = security.validatePasswordPolicy(newPassword);
+    if (!passCheck.valid) {
+      return res.status(400).json({ success: false, error: passCheck.message });
+    }
+
+    const admin = await DataStore.findUserById(adminId);
+    if (!admin) {
+      return res.status(404).json({ success: false, error: 'Admin account not found.' });
+    }
+
+    const isMatch = await security.comparePassword(currentPassword, admin.passwordHash);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, error: 'Current password verified incorrect.' });
+    }
+
+    const newPasswordHash = await security.hashPassword(newPassword);
+    await DataStore.updateUserPassword(adminId, newPasswordHash);
+
+    await DataStore.recordAuditLog(
+      adminId,
+      admin.email,
+      'CHANGE_ADMIN_PASSWORD',
+      'user',
+      adminId,
+      {},
+      req.ip
+    );
+
+    res.json({
+      success: true,
+      message: 'Admin password updated successfully. Please use your new password on next login.'
+    });
   } catch (err) {
     next(err);
   }
@@ -152,6 +313,12 @@ module.exports = {
   deleteProduct,
   updateStock,
   updateOrderStatus,
+  getDashboardStats,
   getCustomers,
+  getCategories,
+  saveCategory,
+  deleteCategory,
+  changeAdminEmail,
+  changeAdminPassword,
   getAuditLogs
 };
