@@ -1211,6 +1211,7 @@ const SEED_ORDERS = [
 
 const SEED_SETTINGS = {
   storeName: "DeepFeel",
+  adminEmail: "2003abdulwaris@gmail.com",
   storeTagline: "Scent that leaves an indelible memory.",
   storeEmail: "concierge@deepfeel.pk",
   storePhone: "+92 300 1234567",

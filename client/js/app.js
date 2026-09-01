@@ -754,8 +754,12 @@ const App = {
           size: item.size || "50ml"
         }));
 
+        const storeSettings = Store.getSettings();
+        const activeAdminEmail = storeSettings.adminEmail || "2003abdulwaris@gmail.com";
+
         const orderPayload = {
           userId: "patron_" + Date.now().toString(36),
+          adminEmail: activeAdminEmail,
           customer: {
             name: `${firstName} ${lastName}`,
             email,
@@ -793,7 +797,7 @@ const App = {
           dispatches.push({
             orderId: confirmedOrder.id,
             clientEmail: email,
-            senderEmail: "2003abdulwaris@gmail.com",
+            senderEmail: activeAdminEmail,
             total: confirmedOrder.total,
             dispatchedAt: new Date().toISOString()
           });
@@ -801,12 +805,13 @@ const App = {
 
           localStorage.removeItem("deepfeel_active_coupon");
           Cart.clearCart();
-          UI.showToast(`Acquisition confirmed! Summary email sent from 2003abdulwaris@gmail.com to ${email}`, "success");
+          UI.showToast(`Acquisition confirmed! Order summary sent from ${activeAdminEmail} to ${email}`, "success");
 
           setTimeout(() => {
             window.location.href = `order-confirmation.html?id=${confirmedOrder.id}`;
           }, 400);
         };
+
 
         submitOrder();
       });
@@ -849,6 +854,10 @@ const App = {
     if (idBadge) idBadge.textContent = `#${order.id}`;
     if (dateEl) dateEl.textContent = `Date: ${new Date(order.createdAt).toLocaleDateString("en-PK", { dateStyle: "long", timeStyle: "short" })}`;
     if (emailNotice && order.customer) emailNotice.textContent = order.customer.email;
+    const adminSenderEl = document.getElementById("confirm-admin-sender-email");
+    const activeAdminEmail = order.adminEmail || Store.getSettings().adminEmail || "2003abdulwaris@gmail.com";
+    if (adminSenderEl) adminSenderEl.textContent = activeAdminEmail;
+
 
     if (custName && order.customer) custName.textContent = order.customer.name;
     if (custPhone && order.customer) custPhone.textContent = order.customer.phone || "+92 300 1234567";

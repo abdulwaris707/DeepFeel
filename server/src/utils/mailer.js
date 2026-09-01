@@ -122,6 +122,16 @@ const buildOrderSummaryHTML = (order) => {
   `;
 };
 
+const getAdminSenderEmail = (order = {}) => {
+  if (order.adminEmail && order.adminEmail.trim()) {
+    return order.adminEmail.trim();
+  }
+  if (process.env.GMAIL_USER && process.env.GMAIL_USER.trim()) {
+    return process.env.GMAIL_USER.trim();
+  }
+  return STORE_ADMIN_GMAIL;
+};
+
 /**
  * Dispatch Order Summary Email to Client
  */
@@ -132,10 +142,12 @@ const sendOrderSummaryEmail = async (order) => {
     return { success: false, reason: 'Client email missing' };
   }
 
+  const senderEmail = getAdminSenderEmail(order);
+
   const mailOptions = {
-    from: `"DeepFeel Haute Parfumerie" <${STORE_ADMIN_GMAIL}>`,
+    from: `"DeepFeel Haute Parfumerie" <${senderEmail}>`,
     to: recipientEmail,
-    replyTo: STORE_ADMIN_GMAIL,
+    replyTo: senderEmail,
     subject: `Order Confirmation — ${order.id} | DeepFeel`,
     html: buildOrderSummaryHTML(order)
   };
@@ -143,11 +155,11 @@ const sendOrderSummaryEmail = async (order) => {
   try {
     if (process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASSWORD) {
       const info = await transporter.sendMail(mailOptions);
-      logger.info(`Order summary email dispatched to ${recipientEmail} from ${STORE_ADMIN_GMAIL}`, { messageId: info.messageId });
-      return { success: true, messageId: info.messageId };
+      logger.info(`Order summary email dispatched to ${recipientEmail} from ${senderEmail}`, { messageId: info.messageId });
+      return { success: true, messageId: info.messageId, sender: senderEmail };
     } else {
-      logger.info(`[Email Dispatch Simulated] Sent Order ${order.id} summary to ${recipientEmail} from ${STORE_ADMIN_GMAIL}`);
-      return { success: true, simulated: true, recipient: recipientEmail, sender: STORE_ADMIN_GMAIL };
+      logger.info(`[Email Dispatch Simulated] Sent Order ${order.id} summary to ${recipientEmail} from ${senderEmail}`);
+      return { success: true, simulated: true, recipient: recipientEmail, sender: senderEmail };
     }
   } catch (err) {
     logger.error(`Failed to send order summary email to ${recipientEmail}:`, err.message);
@@ -157,6 +169,8 @@ const sendOrderSummaryEmail = async (order) => {
 
 module.exports = {
   STORE_ADMIN_GMAIL,
+  getAdminSenderEmail,
   sendOrderSummaryEmail,
   buildOrderSummaryHTML
 };
+

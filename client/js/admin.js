@@ -979,9 +979,16 @@ const AdminApp = {
     }
 
     if (form) {
+      const settings = Store.getSettings();
+      const adminEmailInput = document.getElementById("set-admin-email");
+      if (adminEmailInput && settings.adminEmail) {
+        adminEmailInput.value = settings.adminEmail;
+      }
+
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         const storeName = document.getElementById("set-store-name").value.trim();
+        const adminEmail = adminEmailInput ? adminEmailInput.value.trim() : "2003abdulwaris@gmail.com";
         const taxRate = parseFloat(document.getElementById("set-tax-rate").value);
         const freeShip = parseFloat(document.getElementById("set-free-ship").value);
         const flatShip = parseFloat(document.getElementById("set-flat-ship").value);
@@ -989,15 +996,17 @@ const AdminApp = {
 
         Store.saveSettings({
           storeName,
+          adminEmail,
           taxRate,
           freeShippingThreshold: freeShip,
           flatShippingRate: flatShip,
           announcementText: announcement
         });
 
-        UI.showToast("Maison DeepFeel settings saved!", "success");
+        UI.showToast("Maison DeepFeel settings & dispatcher email saved!", "success");
       });
     }
+
 
     // Change Email Form Listener
     const changeEmailForm = document.getElementById("admin-change-email-form");
