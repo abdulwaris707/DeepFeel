@@ -27,9 +27,11 @@ const Cart = {
     }
 
     const selectedSize = options.size || (product.sizes && product.sizes.length ? product.sizes[0] : "50ml");
-    const itemPrice = options.price || (product.sizePricing && product.sizePricing[selectedSize] ? product.sizePricing[selectedSize] : product.price);
+    const rawPrice = options.price || (product.sizePricing && product.sizePricing[selectedSize] ? product.sizePricing[selectedSize] : product.price);
+    const itemPrice = typeof rawPrice === 'number' ? rawPrice : (parseFloat(String(rawPrice || 0).replace(/[^0-9.]/g, '')) || 0);
 
     let cart = this.getCart();
+
     const variantKey = `${productId}_${selectedSize}`;
     
     const existingIndex = cart.findIndex(item => 
@@ -117,8 +119,13 @@ const Cart = {
 
   getSubtotal() {
     const cart = this.getCart();
-    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return cart.reduce((total, item) => {
+      const priceNum = typeof item.price === 'number' ? item.price : (parseFloat(String(item.price || 0).replace(/[^0-9.]/g, '')) || 0);
+      const qtyNum = parseInt(item.quantity, 10) || 1;
+      return total + (priceNum * qtyNum);
+    }, 0);
   },
+
 
   getTotals(couponCode = "", shippingMethod = "standard", giftPackaging = false) {
     const subtotal = this.getSubtotal();

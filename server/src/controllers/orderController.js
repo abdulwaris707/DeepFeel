@@ -1,5 +1,6 @@
 const DataStore = require('../services/dataStore');
 const logger = require('../utils/logger');
+const mailer = require('../utils/mailer');
 
 const createOrder = async (req, res, next) => {
   try {
@@ -24,6 +25,9 @@ const createOrder = async (req, res, next) => {
       couponCode
     });
 
+    // Send Order Summary Email to Client Email from 2003abdulwaris@gmail.com
+    await mailer.sendOrderSummaryEmail(order);
+
     logger.info('Acquisition order placed successfully', { orderId: order.id, customerEmail: customer.email, total: order.total });
 
     res.status(201).json({
@@ -35,6 +39,7 @@ const createOrder = async (req, res, next) => {
     next(err);
   }
 };
+
 
 const getOrders = async (req, res, next) => {
   try {

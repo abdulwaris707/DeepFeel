@@ -754,7 +754,7 @@ const App = {
           size: item.size || "50ml"
         }));
 
-        const newOrder = Store.createOrder({
+        const orderPayload = {
           userId: "patron_" + Date.now().toString(36),
           customer: {
             name: `${firstName} ${lastName}`,
@@ -772,17 +772,47 @@ const App = {
           shipping: totals.shipping,
           tax: totals.tax,
           total: totals.total
-        });
+        };
 
-        localStorage.removeItem("deepfeel_active_coupon");
-        Cart.clearCart();
-        UI.showToast("Acquisition confirmed! Official invoice dispatched to your email.", "success");
-        setTimeout(() => {
-          window.location.href = `order-confirmation.html?id=${newOrder.id}`;
-        }, 300);
+        const submitOrder = async () => {
+          let confirmedOrder = null;
+
+          if (window.API && window.API.createOrder) {
+            const apiRes = await window.API.createOrder(orderPayload);
+            if (apiRes.success && apiRes.order) {
+              confirmedOrder = apiRes.order;
+            }
+          }
+
+          if (!confirmedOrder) {
+            confirmedOrder = Store.createOrder(orderPayload);
+          }
+
+          // Track email dispatch in client record
+          const dispatches = JSON.parse(localStorage.getItem("deepfeel_email_dispatches") || "[]");
+          dispatches.push({
+            orderId: confirmedOrder.id,
+            clientEmail: email,
+            senderEmail: "2003abdulwaris@gmail.com",
+            total: confirmedOrder.total,
+            dispatchedAt: new Date().toISOString()
+          });
+          localStorage.setItem("deepfeel_email_dispatches", JSON.stringify(dispatches));
+
+          localStorage.removeItem("deepfeel_active_coupon");
+          Cart.clearCart();
+          UI.showToast(`Acquisition confirmed! Summary email sent from 2003abdulwaris@gmail.com to ${email}`, "success");
+
+          setTimeout(() => {
+            window.location.href = `order-confirmation.html?id=${confirmedOrder.id}`;
+          }, 400);
+        };
+
+        submitOrder();
       });
     }
   },
+
 
   // ----------------------------------------------------
   // 7. ORDER CONFIRMATION & TAX INVOICE

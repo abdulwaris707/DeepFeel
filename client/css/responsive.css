@@ -392,17 +392,43 @@
     min-height: 40px;
   }
 
-  .toast-container {
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-  }
-
   .toast {
     min-width: auto;
     max-width: 100%;
   }
+
+  /* Checkout & Cart Order Screens Responsiveness */
+  .checkout-layout,
+  .cart-layout {
+    display: grid;
+    grid-template-columns: 1fr !important;
+    gap: 2rem;
+  }
+
+  .cart-table-wrap,
+  .orders-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cart-table,
+  .orders-table {
+    min-width: 540px;
+  }
+
+  .checkout-summary-card,
+  .order-receipt-card {
+    padding: 1.25rem !important;
+    width: 100%;
+  }
+
+  .receipt-meta-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
 }
+
 
 /* --------------------------------------------------------------------------
    5. Standard & Small Mobiles (<= 480px & <= 390px & <= 360px)
