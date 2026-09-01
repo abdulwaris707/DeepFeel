@@ -3,7 +3,15 @@
  * Provides unified, secure API communication with the Node.js/Express backend server.
  */
 
-const API_BASE_URL = window.location.origin.includes('http') ? '/api' : 'http://localhost:5000/api';
+const getApiBaseUrl = () => {
+  const origin = window.location.origin;
+  if (origin.includes(':5000')) {
+    return '/api';
+  }
+  return 'http://localhost:5000/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const API = {
   async request(endpoint, options = {}) {
@@ -12,7 +20,7 @@ const API = {
         'Content-Type': 'application/json',
         ...options.headers
       },
-      credentials: 'same-origin', // Send cookies securely
+      credentials: 'same-origin',
       ...options
     };
 
@@ -22,10 +30,19 @@ const API = {
 
     try {
       const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-      const data = await response.json().catch(() => ({}));
       
+      let data = {};
+      const contentType = response.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        data = await response.json().catch(() => ({}));
+      }
+
       if (!response.ok) {
-        throw new Error(data.error || `HTTP Error ${response.status}`);
+        return { 
+          success: false, 
+          status: response.status,
+          error: data.error || (response.status === 405 ? 'Endpoint requires active backend server.' : `HTTP Error ${response.status}`)
+        };
       }
 
       return data;
