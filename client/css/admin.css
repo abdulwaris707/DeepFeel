@@ -1,39 +1,41 @@
 /* ==========================================================================
-   DEEPFEEL — Executive Admin Management Suite Stylesheet
-   Theme Aligned with Storefront (Warm Ivory, Antique Gold, Obsidian Charcoal, Cormorant Garamond Logo)
+   DEEPFEEL — Modern Executive Admin Suite Stylesheet
+   Luxury Editorial Theme + Responsive Grid + Sleek SVG System
    ========================================================================== */
 
 /* ----------------------------------------------------
-   1. Typography & Master Website Theme CSS Variables
+   1. Master Theme Tokens & Typography
    ---------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --admin-font: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --admin-font: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --admin-logo-font: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   --admin-sidebar-width: 250px;
   --admin-header-height: 64px;
   
-  /* Color Palette — Directly Aligned with DeepFeel Storefront Master Palette */
-  --admin-bg: #FAF8F5;            /* Warm Ivory / Off-White */
+  /* DeepFeel Website Aligned Palette */
+  --admin-bg: #FAF8F5;            /* Warm Ivory */
   --admin-surface: #FFFFFF;       /* Pure White Surface */
-  --admin-surface-subtle: #F3EFEA;/* Soft Sand Beige */
-  --admin-border: #E5DFD5;        /* Warm Neutral Hairline Border */
-  --admin-border-dark: #D8C4B0;   /* Muted Champagne Gold Hairline */
+  --admin-surface-subtle: #F5F2ED;/* Soft Warm Sand */
+  --admin-border: #E8E2D8;        /* Hairline Warm Border */
+  --admin-border-dark: #D4C9B8;   /* Muted Gold Hairline */
   
-  --admin-sidebar-bg: #121214;     /* Deep Obsidian / Dark Charcoal */
-  --admin-sidebar-text: #9A9AA4;   /* Slate Gray sidebar text */
-  --admin-sidebar-hover-bg: #1E1E22;
-  --admin-sidebar-active-bg: #1E1E22;
+  --admin-sidebar-bg: #121214;     /* Obsidian Black */
+  --admin-sidebar-text: #9A9AA4;   /* Muted Slate Text */
+  --admin-sidebar-hover-bg: #1A1A1E;
+  --admin-sidebar-active-bg: #1A1A1E;
   --admin-sidebar-active-text: #FFFFFF;
   
-  --admin-text-primary: #121214;   /* Deep Charcoal Near Black */
-  --admin-text-secondary: #4A4A52; /* Refined Slate Gray */
-  --admin-text-muted: #7E7E88;     /* Muted Neutral */
+  --admin-text-primary: #121214;   /* Obsidian Black */
+  --admin-text-secondary: #4A4A52; /* Slate Gray */
+  --admin-text-muted: #7E7E88;     /* Neutral Muted */
   
-  --admin-primary: #121214;        /* Primary Action Dark Obsidian */
+  --admin-primary: #121214;        /* Primary Button Color */
   --admin-primary-hover: #26262C;
-  --admin-accent: #9E7D58;         /* Antique Champagne Gold Accent from Storefront */
-  --admin-accent-hover: #886845;   /* Deepened Antique Gold */
-  --admin-accent-light: #F6EDE3;   /* Tinted Gold Wash */
+  --admin-accent: #9E7D58;         /* Antique Champagne Gold */
+  --admin-accent-hover: #886845;   /* Deep Gold */
+  --admin-accent-light: #F6EDE3;   /* Light Gold Wash */
   
   /* Status Colors */
   --admin-success: #2A6A38;
@@ -48,16 +50,22 @@
   /* Shadows & Radius */
   --admin-radius-sm: 4px;
   --admin-radius-md: 6px;
-  --admin-radius-lg: 8px;
+  --admin-radius-lg: 10px;
   --admin-radius-pill: 9999px;
-  --admin-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+  --admin-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
   --admin-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
-  --admin-shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.08);
+  --admin-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
 }
 
 /* ----------------------------------------------------
-   2. Global Typography & Reset Overrides
+   2. Global Reset & Body Protection against Overflow
    ---------------------------------------------------- */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
 body.admin-body {
   font-family: var(--admin-font) !important;
   background-color: var(--admin-bg);
@@ -65,12 +73,14 @@ body.admin-body {
   min-height: 100vh;
   display: flex;
   flex-direction: row;
-  overflow-x: hidden;
   margin: 0;
   padding: 0 !important;
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
 body.admin-body *,
@@ -90,7 +100,7 @@ body.admin-body h6 {
   color: var(--admin-text-primary);
   margin: 0;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 body.admin-body a {
@@ -98,16 +108,16 @@ body.admin-body a {
   color: inherit;
 }
 
-/* Brand Logo Override — Preserves Website Serif Editorial Font */
+/* Logo Styling - Authentic Cormorant Garamond Serif */
 .brand-logo,
 .brand-logo *,
 .admin-brand .brand-logo,
 .admin-brand .brand-logo * {
-  font-family: var(--admin-logo-font), 'Cormorant Garamond', 'Playfair Display', Georgia, serif !important;
+  font-family: var(--admin-logo-font), 'Cormorant Garamond', Georgia, serif !important;
 }
 
 .brand-logo {
-  font-size: 1.3rem !important;
+  font-size: 1.25rem !important;
   font-weight: 600 !important;
   letter-spacing: 0.22em !important;
   text-transform: uppercase !important;
@@ -126,37 +136,30 @@ body.admin-body a {
   color: #FFFFFF !important;
 }
 
-/* Section titles */
-.section-subtitle {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--admin-text-muted);
-  display: block;
-}
-
-/* Helper Grid Utilities */
+/* Responsive Grid Utilities */
 .admin-grid-2-1 {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 1.5rem;
+  gap: 1.25rem;
+  width: 100%;
 }
 
 .admin-grid-2-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 1.25rem;
+  width: 100%;
 }
 
 .admin-grid-3-col {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: 1.25rem;
+  width: 100%;
 }
 
 /* ----------------------------------------------------
-   3. Sidebar & Mobile Drawer Navigation
+   3. Sidebar Navigation Drawer
    ---------------------------------------------------- */
 .admin-sidebar-backdrop {
   position: fixed;
@@ -186,7 +189,7 @@ body.admin-body a {
   flex-direction: column;
   flex-shrink: 0;
   z-index: 1000;
-  border-right: 1px solid #232328;
+  border-right: 1px solid #1E1E22;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -196,15 +199,15 @@ body.admin-body a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #232328;
+  border-bottom: 1px solid #1E1E22;
 }
 
 .admin-badge-role {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  background-color: #26262C;
+  background-color: #222226;
   color: var(--admin-accent);
   padding: 2px 8px;
   border-radius: var(--admin-radius-pill);
@@ -222,7 +225,7 @@ body.admin-body a {
 }
 .admin-sidebar-close:hover {
   color: #FFFFFF;
-  background: #1E1E22;
+  background: #1A1A1E;
 }
 
 .admin-nav {
@@ -235,7 +238,7 @@ body.admin-body a {
 }
 
 .admin-nav-section-title {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -252,7 +255,7 @@ body.admin-body a {
   font-size: 0.86rem;
   font-weight: 500;
   border-radius: var(--admin-radius-md);
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: all 0.15s ease;
   min-height: 42px;
 }
 
@@ -299,7 +302,7 @@ body.admin-body a {
 .admin-sidebar-footer {
   margin-top: auto;
   padding: 0.85rem 0.85rem;
-  border-top: 1px solid #232328;
+  border-top: 1px solid #1E1E22;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -385,14 +388,17 @@ body.admin-body a {
 }
 
 /* ----------------------------------------------------
-   4. Admin Main Content & Topbar Header
+   4. Admin Main View Area & Header Topbar
    ---------------------------------------------------- */
 .admin-main {
   flex: 1;
   min-width: 0;
+  max-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   background-color: var(--admin-bg);
+  overflow-x: hidden;
 }
 
 .admin-topbar {
@@ -418,24 +424,26 @@ body.admin-body a {
 
 .admin-mobile-toggle {
   display: none;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: 1px solid var(--admin-border);
+  border: none;
   border-radius: var(--admin-radius-md);
   color: var(--admin-text-primary);
-  font-size: 1.2rem;
   cursor: pointer;
   flex-shrink: 0;
+  transition: background-color 0.15s ease;
+  padding: 0;
 }
 .admin-mobile-toggle:hover {
   background-color: var(--admin-surface-subtle);
+  color: var(--admin-accent);
 }
 
 .admin-page-title {
-  font-size: 1.25rem !important;
+  font-size: 1.2rem !important;
   font-weight: 700 !important;
   color: var(--admin-text-primary);
   margin: 0;
@@ -483,26 +491,33 @@ body.admin-body a {
   flex: 1;
   max-width: 1400px;
   width: 100%;
+  box-sizing: border-box;
   margin: 0 auto;
+  overflow-x: hidden;
 }
 
 /* ----------------------------------------------------
-   5. Cards & Metrics
+   5. Sleek Component Cards & Metrics
    ---------------------------------------------------- */
 .admin-card {
   background-color: var(--admin-surface);
   border: 1px solid var(--admin-border);
   border-radius: var(--admin-radius-lg);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
   box-shadow: var(--admin-shadow-sm);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
 }
 
 .metric-card {
@@ -513,6 +528,7 @@ body.admin-body a {
   display: flex;
   flex-direction: column;
   box-shadow: var(--admin-shadow-sm);
+  width: 100%;
 }
 
 .metric-header {
@@ -531,16 +547,20 @@ body.admin-body a {
 }
 
 .metric-icon-wrap {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--admin-radius-md);
   background-color: var(--admin-surface-subtle);
   color: var(--admin-accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
   flex-shrink: 0;
+}
+
+.metric-icon-wrap svg {
+  width: 20px;
+  height: 20px;
 }
 
 .metric-value {
@@ -567,7 +587,8 @@ body.admin-body a {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: 1.25rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
 }
 
 .chart-card {
@@ -576,6 +597,8 @@ body.admin-body a {
   border-radius: var(--admin-radius-lg);
   padding: 1.25rem;
   box-shadow: var(--admin-shadow-sm);
+  width: 100%;
+  overflow: hidden;
 }
 
 .chart-header {
@@ -593,7 +616,7 @@ body.admin-body a {
 .chart-canvas-container {
   position: relative;
   width: 100%;
-  height: 260px;
+  height: 250px;
   overflow: hidden;
 }
 
@@ -603,15 +626,18 @@ body.admin-body a {
 }
 
 /* ----------------------------------------------------
-   6. Data Tables & Responsive Wrappers
+   6. Data Tables & Strict Responsive Scrolling
    ---------------------------------------------------- */
 .admin-table-wrap {
   width: 100%;
-  overflow-x: auto;
+  max-width: 100%;
+  overflow-x: auto !important;
   -webkit-overflow-scrolling: touch;
   margin-bottom: 0.5rem;
   border: 1px solid var(--admin-border);
   border-radius: var(--admin-radius-md);
+  display: block;
+  box-sizing: border-box;
 }
 
 .admin-table {
@@ -619,7 +645,7 @@ body.admin-body a {
   border-collapse: collapse;
   text-align: left;
   font-size: 0.85rem;
-  min-width: 600px;
+  min-width: 540px;
   background-color: var(--admin-surface);
 }
 
@@ -871,6 +897,7 @@ body.admin-body a {
   display: grid;
   grid-template-columns: 1.8fr 1fr;
   gap: 1.5rem;
+  width: 100%;
 }
 
 .image-preview-box {
@@ -899,13 +926,15 @@ body.admin-body a {
   transform: translateY(-50%);
   background: transparent;
   border: none;
-  font-size: 1rem;
   cursor: pointer;
   opacity: 0.6;
   padding: 4px;
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--admin-text-secondary);
 }
-.toggle-pass-btn:hover { opacity: 1; }
+.toggle-pass-btn:hover { opacity: 1; color: var(--admin-accent); }
 
 .filter-checkbox-label {
   display: inline-flex;
@@ -1029,14 +1058,13 @@ body.admin-body a {
 }
 
 /* ----------------------------------------------------
-   10. Media Queries & Responsive Polish
+   10. Strict Responsive Breakpoints (Zero Horizontal Overflow)
    ---------------------------------------------------- */
-@media (max-width: 1024px) {
-  .metrics-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+@media (max-width: 1100px) {
+  .admin-grid-2-1,
+  .admin-grid-2-col,
   .charts-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 }
 
@@ -1063,8 +1091,10 @@ body.admin-body a {
     display: inline-flex;
   }
 
-  .admin-grid-2-1,
-  .admin-grid-2-col,
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .admin-form-grid {
     grid-template-columns: 1fr;
   }
@@ -1076,7 +1106,7 @@ body.admin-body a {
   }
 
   .admin-topbar {
-    padding: 0 1rem;
+    padding: 0 1.0rem;
   }
 
   .admin-page-title {
@@ -1094,10 +1124,7 @@ body.admin-body a {
     align-items: stretch;
   }
 
-  .admin-search-box {
-    width: 100%;
-  }
-
+  .admin-search-box,
   .admin-filter-group {
     width: 100%;
   }
