@@ -151,6 +151,94 @@ body.admin-body {
   background-color: var(--color-error);
 }
 
+/* Sidebar Bottom Profile Footer */
+.admin-sidebar-footer {
+  margin-top: auto;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid #232328;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background-color: rgba(18, 18, 20, 0.5);
+}
+
+.admin-profile-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--admin-sidebar-text);
+  flex: 1;
+  min-width: 0;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius-xs);
+  transition: all var(--transition-fast);
+}
+
+.admin-profile-nav-link:hover,
+.admin-profile-nav-link.active {
+  background-color: var(--admin-sidebar-active-bg);
+  color: #FFFFFF;
+}
+
+.admin-avatar-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: var(--admin-accent);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.admin-profile-nav-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-profile-nav-name {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-profile-nav-role {
+  font-size: 0.72rem;
+  color: var(--admin-sidebar-text);
+}
+
+.admin-logout-btn {
+  background: transparent;
+  border: none;
+  color: #EF4444;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--transition-fast);
+}
+
+.admin-logout-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.admin-logout-btn:hover {
+  background-color: rgba(239, 68, 68, 0.15);
+}
+
+
 .admin-sidebar-footer {
   padding: 1.25rem 1.5rem;
   border-top: 1px solid #232328;

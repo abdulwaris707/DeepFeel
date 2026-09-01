@@ -45,8 +45,11 @@ const AdminApp = {
       this.initCouponsPage();
     } else if (path.includes("admin/settings.html")) {
       this.initSettingsPage();
+    } else if (path.includes("admin/profile.html")) {
+      this.initProfilePage();
     }
   },
+
 
   initLayout() {
     const toggle = document.querySelector(".admin-mobile-toggle");
@@ -1056,6 +1059,46 @@ const AdminApp = {
         }
       });
     }
+  },
+
+  // ----------------------------------------------------
+  // ADMIN PROFILE & CREDENTIAL TOGGLE
+  // ----------------------------------------------------
+  initProfilePage() {
+    const user = Auth.getCurrentUser() || { email: "admin@deepfeel.pk", name: "Administrator", role: "admin" };
+    
+    const displayNameEl = document.getElementById("prof-display-name");
+    const emailDisplayEl = document.getElementById("prof-email-display");
+    const roleDisplayEl = document.getElementById("prof-role-display");
+    const topbarEmailEl = document.getElementById("topbar-admin-email");
+
+    if (displayNameEl) displayNameEl.innerText = user.name || "Administrator";
+    if (emailDisplayEl) emailDisplayEl.innerText = user.email || "admin@deepfeel.pk";
+    if (roleDisplayEl) roleDisplayEl.innerText = (user.role || "Admin").toUpperCase();
+    if (topbarEmailEl) topbarEmailEl.innerText = user.email || "admin@deepfeel.pk";
+
+    const btnToggleForm = document.getElementById("btn-toggle-credentials-form");
+    const btnCancelForm = document.getElementById("btn-cancel-credentials-form");
+    const credentialsCard = document.getElementById("profile-credentials-card");
+
+    if (btnToggleForm && credentialsCard) {
+      btnToggleForm.addEventListener("click", () => {
+        credentialsCard.style.display = credentialsCard.style.display === "none" ? "block" : "none";
+        if (credentialsCard.style.display === "block") {
+          credentialsCard.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    }
+
+    if (btnCancelForm && credentialsCard) {
+      btnCancelForm.addEventListener("click", () => {
+        credentialsCard.style.display = "none";
+      });
+    }
+
+    // Attach email and password change handlers on profile page
+    this.initSettingsPage();
   }
 };
+
 

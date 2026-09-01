@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Profile — DeepFeel Admin</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body class="admin-body">
+
+  <div class="admin-sidebar-backdrop" id="admin-sidebar-backdrop"></div>
+
+  <!-- Left Sidebar -->
+  <aside class="admin-sidebar" id="admin-sidebar" aria-label="Admin Navigation">
+    <div class="admin-brand">
+      <a href="index.html" class="brand-logo">DEEP<span>FEEL</span></a>
+      <span class="admin-badge-role">Admin</span>
+    </div>
+
+    <nav class="admin-nav">
+      <div class="admin-nav-section-title">Overview</div>
+      <a href="index.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        Dashboard
+      </a>
+
+      <div class="admin-nav-section-title">Catalog & Stock</div>
+      <a href="products.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        Products
+      </a>
+      <a href="inventory.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        Inventory
+      </a>
+      <a href="categories.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2z"></path></svg>
+        Categories
+      </a>
+
+      <div class="admin-nav-section-title">Sales & Fulfillment</div>
+      <a href="orders.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+        Orders
+      </a>
+      <a href="customers.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        Customers
+      </a>
+      <a href="coupons.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        Coupons
+      </a>
+
+      <div class="admin-nav-section-title">Store Operations</div>
+      <a href="settings.html" class="admin-nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        Store Settings
+      </a>
+    </nav>
+
+    <!-- Sidebar Bottom Profile Section -->
+    <div class="admin-sidebar-footer">
+      <a href="profile.html" class="admin-profile-nav-link active">
+        <div class="admin-avatar-circle">A</div>
+        <div class="admin-profile-nav-info">
+          <div class="admin-profile-nav-name" id="sidebar-admin-name">Administrator</div>
+          <div class="admin-profile-nav-role">Super Admin</div>
+        </div>
+      </a>
+      <button type="button" class="admin-logout-btn" id="admin-logout-btn" title="Sign Out">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main View Area -->
+  <div class="admin-main">
+    
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-toggle" id="admin-mobile-toggle">☰</button>
+        <h1 class="admin-page-title">Admin Account Profile</h1>
+      </div>
+      <div class="admin-topbar-right">
+        <a href="profile.html" class="admin-topbar-user">
+          <span style="font-size: 0.88rem; font-weight: 600;" id="topbar-admin-email">admin@deepfeel.pk</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      
+      <div style="max-width: 800px; margin: 0 auto;">
+        
+        <!-- Safe Profile Card -->
+        <div class="admin-card" id="profile-summary-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--admin-border); padding-bottom: 1.25rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <div style="width: 54px; height: 54px; border-radius: 50%; background: var(--admin-primary); color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 700;">
+                A
+              </div>
+              <div>
+                <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.2rem;" id="prof-display-name">Administrator</h2>
+                <div style="font-size: 0.85rem; color: var(--admin-text-muted);" id="prof-email-display">admin@deepfeel.pk</div>
+              </div>
+            </div>
+            <span class="status-pill status-delivered" style="padding: 0.25rem 0.75rem; font-size: 0.78rem;">Active</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div>
+              <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--admin-text-muted); font-weight: 600; margin-bottom: 0.3rem;">Account Role</div>
+              <div style="font-size: 0.95rem; font-weight: 600;" id="prof-role-display">Administrator (Super Admin)</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--admin-text-muted); font-weight: 600; margin-bottom: 0.3rem;">Account Status</div>
+              <div style="font-size: 0.95rem; font-weight: 600; color: #166534;">Verified & Active</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--admin-text-muted); font-weight: 600; margin-bottom: 0.3rem;">Member Since</div>
+              <div style="font-size: 0.95rem; font-weight: 600;">January 2025</div>
+            </div>
+          </div>
+
+          <div style="border-top: 1px solid var(--admin-border); padding-top: 1.25rem; display: flex; justify-content: flex-end;">
+            <button type="button" class="btn btn-primary" id="btn-toggle-credentials-form">
+              🔒 Change Credentials
+            </button>
+          </div>
+        </div>
+
+        <!-- Credential Change Form Container (Initially Hidden) -->
+        <div class="admin-card" id="profile-credentials-card" style="display: none; margin-top: 1.5rem; border: 1px solid var(--admin-border);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 1rem;">
+            <h2 style="font-size: 1.15rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              Security Settings & Credentials
+            </h2>
+            <button type="button" class="btn btn-outline btn-sm" id="btn-cancel-credentials-form">
+              Cancel
+            </button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            
+            <!-- Change Email Form -->
+            <form id="admin-change-email-form" style="background: var(--admin-bg, #F8FAFC); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--admin-border);">
+              <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem;">Change Admin Email</h3>
+              
+              <div class="form-group">
+                <label class="form-label" for="sec-current-pass-email">Current Password *</label>
+                <div style="position: relative;">
+                  <input type="password" id="sec-current-pass-email" class="form-input" required placeholder="Enter current password" autocomplete="current-password" />
+                  <button type="button" class="toggle-pass-btn" onclick="const el=document.getElementById('sec-current-pass-email'); el.type=el.type==='password'?'text':'password';">👁️</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="sec-new-email">New Email Address *</label>
+                <input type="email" id="sec-new-email" class="form-input" required placeholder="newadmin@deepfeel.pk" autocomplete="email" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="sec-confirm-email">Confirm New Email *</label>
+                <input type="email" id="sec-confirm-email" class="form-input" required placeholder="Confirm new email address" autocomplete="email" />
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-md btn-full" style="margin-top: 0.5rem;">Update Email Address</button>
+            </form>
+
+            <!-- Change Password Form -->
+            <form id="admin-change-password-form" style="background: var(--admin-bg, #F8FAFC); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--admin-border);">
+              <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem;">Change Admin Password</h3>
+
+              <div class="form-group">
+                <label class="form-label" for="sec-current-pass">Current Password *</label>
+                <div style="position: relative;">
+                  <input type="password" id="sec-current-pass" class="form-input" required placeholder="Enter current password" autocomplete="current-password" />
+                  <button type="button" class="toggle-pass-btn" onclick="const el=document.getElementById('sec-current-pass'); el.type=el.type==='password'?'text':'password';">👁️</button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="sec-new-pass">New Password *</label>
+                <div style="position: relative;">
+                  <input type="password" id="sec-new-pass" class="form-input" required placeholder="Min 8 characters" autocomplete="new-password" oninput="const val=this.value; const el=document.getElementById('pass-strength-text'); if(val.length<6){el.innerText='Weak'; el.style.color='#dc2626';}else if(val.length<10){el.innerText='Fair'; el.style.color='#d97706';}else{el.innerText='Strong'; el.style.color='#16a34a';}" />
+                  <button type="button" class="toggle-pass-btn" onclick="const el=document.getElementById('sec-new-pass'); el.type=el.type==='password'?'text':'password';">👁️</button>
+                </div>
+                <div style="font-size: 0.78rem; margin-top: 0.35rem; color: var(--admin-text-muted); font-weight: 600;">
+                  Strength: <span id="pass-strength-text" style="color: #dc2626;">Weak</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="sec-confirm-pass">Confirm New Password *</label>
+                <div style="position: relative;">
+                  <input type="password" id="sec-confirm-pass" class="form-input" required placeholder="Confirm new password" autocomplete="new-password" />
+                  <button type="button" class="toggle-pass-btn" onclick="const el=document.getElementById('sec-confirm-pass'); el.type=el.type==='password'?'text':'password';">👁️</button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-md btn-full" style="margin-top: 0.5rem;">Update Password</button>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/store.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>
