@@ -62,16 +62,23 @@ const AdminApp = {
       document.body.appendChild(backdrop);
     }
 
+    const closeSidebar = () => {
+      if (sidebar) sidebar.classList.remove("open");
+      if (backdrop) backdrop.classList.remove("active");
+    };
+
     if (toggle && sidebar) {
       toggle.addEventListener("click", () => {
         const isOpen = sidebar.classList.toggle("open");
         backdrop.classList.toggle("active", isOpen);
       });
 
-      backdrop.addEventListener("click", () => {
-        sidebar.classList.remove("open");
-        backdrop.classList.remove("active");
-      });
+      backdrop.addEventListener("click", closeSidebar);
+
+      const closeBtn = sidebar.querySelector(".admin-sidebar-close");
+      if (closeBtn) {
+        closeBtn.addEventListener("click", closeSidebar);
+      }
     }
 
     const logoutBtn = document.getElementById("admin-logout-btn");
