@@ -173,19 +173,23 @@
     padding-bottom: var(--space-xl);
   }
 
-  /* Full-Screen Hero on Mobile */
+  /* Full-Screen Hero on Mobile (Covers 100% of Screen Height) */
   .hero-section {
-    min-height: calc(100vh - var(--header-height));
-    min-height: calc(100dvh - var(--header-height));
-    padding: 3rem 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin-top: calc(-1 * var(--header-height, 80px));
+    padding-top: calc(var(--header-height, 80px) + 2.5rem);
+    padding-bottom: 2.5rem;
     background-image: 
-      linear-gradient(to bottom, rgba(14, 14, 16, 0.82) 0%, rgba(14, 14, 16, 0.92) 100%),
+      linear-gradient(to bottom, rgba(14, 14, 16, 0.45) 0%, rgba(14, 14, 16, 0.75) 60%, rgba(14, 14, 16, 0.95) 100%),
       url('https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1200&q=85');
     background-position: center;
     background-size: cover;
+    background-repeat: no-repeat;
     display: flex;
     align-items: center;
   }
+
 
 
   .hero-cta-group {
