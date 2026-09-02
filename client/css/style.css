@@ -1890,6 +1890,97 @@ ul, ol {
 }
 
 /* ==========================================================================
+   Checkout & Order Confirmation Component Styling
+   ========================================================================== */
+
+.checkout-step-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xs);
+  padding: clamp(1.2rem, 3.5vw, 2.2rem);
+  margin-bottom: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.payment-method-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.2rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  background: var(--bg-primary);
+  transition: all var(--transition-fast);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.payment-method-card:hover,
+.payment-method-card.active {
+  border-color: var(--border-medium);
+  background: var(--bg-surface);
+}
+
+.payment-method-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.payment-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.payment-instruction-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  padding: 1.2rem;
+  border-radius: var(--radius-xs);
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+  width: calc(100% - 2rem);
+  box-sizing: border-box;
+}
+
+.checkout-summary-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xs);
+  padding: clamp(1.2rem, 3.5vw, 2.2rem);
+  position: sticky;
+  top: 110px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.checkout-submit-btn {
+  min-height: 56px;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  padding: 0.85rem 1.2rem;
+  line-height: 1.3;
+  word-break: break-word;
+  white-space: normal;
+}
+
+.confirmation-actions-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* ==========================================================================
    Motion Reduction
    ========================================================================== */
 
