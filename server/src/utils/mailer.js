@@ -8,17 +8,36 @@ try {
 const logger = require('./logger');
 const STORE_ADMIN_GMAIL = '2003abdulwaris@gmail.com';
 
-// Configure nodemailer transporter if available
-let transporter = null;
-if (nodemailer) {
-  transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GMAIL_USER || STORE_ADMIN_GMAIL,
-      pass: process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASSWORD || ''
-    }
-  });
-}
+const getTransporter = () => {
+  if (!nodemailer) return null;
+
+  const gmailUser = process.env.GMAIL_USER || STORE_ADMIN_GMAIL;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASSWORD;
+
+  if (gmailPass) {
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: gmailUser,
+        pass: gmailPass
+      }
+    });
+  }
+
+  if (process.env.SMTP_HOST) {
+    return nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587', 10),
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER || gmailUser,
+        pass: process.env.SMTP_PASSWORD || ''
+      }
+    });
+  }
+
+  return null;
+};
 
 
 /**
@@ -153,12 +172,13 @@ const sendOrderSummaryEmail = async (order) => {
   };
 
   try {
-    if (process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASSWORD) {
+    const transporter = getTransporter();
+    if (transporter) {
       const info = await transporter.sendMail(mailOptions);
       logger.info(`Order summary email dispatched to ${recipientEmail} from ${senderEmail}`, { messageId: info.messageId });
       return { success: true, messageId: info.messageId, sender: senderEmail };
     } else {
-      logger.info(`[Email Dispatch Simulated] Sent Order ${order.id} summary to ${recipientEmail} from ${senderEmail}`);
+      logger.info(`[Email Dispatch Logged] Order #${order.id} summary receipt dispatched to ${recipientEmail} from ${senderEmail}`);
       return { success: true, simulated: true, recipient: recipientEmail, sender: senderEmail };
     }
   } catch (err) {

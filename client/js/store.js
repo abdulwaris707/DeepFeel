@@ -40,7 +40,7 @@ const Store = {
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(SEED_SETTINGS));
     localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(SEED_REVIEWS));
     localStorage.setItem(STORAGE_KEYS.EMAIL_DISPATCHES, JSON.stringify([]));
-    localStorage.setItem(STORAGE_KEYS.VERSION, "4.0_pakistan");
+    localStorage.setItem(STORAGE_KEYS.VERSION, "5.0_pakistan");
     
     // Set default demo Pakistani customer as logged in if no user
     if (!localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) {
