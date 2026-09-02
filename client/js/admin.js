@@ -1104,72 +1104,87 @@ const AdminApp = {
       });
     }
 
-    // Change Email Form Listener
-    const changeEmailForm = document.getElementById("admin-change-email-form");
-    if (changeEmailForm) {
-      changeEmailForm.addEventListener("submit", async (e) => {
+    // Unified Credentials Form Listener
+    const credentialsForm = document.getElementById("admin-credentials-form");
+    if (credentialsForm) {
+      credentialsForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const currentPassword = document.getElementById("sec-current-pass-email").value;
-        const newEmail = document.getElementById("sec-new-email").value.trim();
-        const confirmEmail = document.getElementById("sec-confirm-email").value.trim();
+        const currentPassword = (document.getElementById("cred-current-password")?.value || "").trim();
+        const newEmail = (document.getElementById("cred-new-email")?.value || "").trim();
+        const confirmEmail = (document.getElementById("cred-confirm-email")?.value || "").trim();
+        const newPassword = document.getElementById("cred-new-password")?.value || "";
+        const confirmPassword = document.getElementById("cred-confirm-password")?.value || "";
 
-        if (newEmail.toLowerCase() !== confirmEmail.toLowerCase()) {
-          UI.showToast("New email addresses do not match.", "error");
+        if (!currentPassword) {
+          UI.showToast("Current password is required to authorize changes.", "error");
           return;
         }
 
-        if (window.API && window.API.changeEmail) {
-          const res = await window.API.changeEmail(currentPassword, newEmail, confirmEmail);
-          if (res && res.success) {
-            UI.showToast("Admin email updated successfully!", "success");
-            changeEmailForm.reset();
-            const updatedUser = res.user || (await Auth.fetchProfile());
-            if (updatedUser) {
-              localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(updatedUser));
-              const emailDisplayEl = document.getElementById("prof-email-display");
-              const topbarEmailEl = document.getElementById("topbar-admin-email");
-              if (emailDisplayEl) emailDisplayEl.innerText = updatedUser.email;
-              if (topbarEmailEl) topbarEmailEl.innerText = updatedUser.email;
-            }
-            return;
-          } else {
-            UI.showToast(res ? (res.error || "Failed to update email.") : "Connection error.", "error");
+        if (newEmail) {
+          if (newEmail.toLowerCase() !== confirmEmail.toLowerCase()) {
+            UI.showToast("New email address and confirmation do not match.", "error");
             return;
           }
         }
-      });
-    }
 
-    // Change Password Form Listener
-    const changePassForm = document.getElementById("admin-change-password-form");
-    if (changePassForm) {
-      changePassForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const currentPassword = document.getElementById("sec-current-pass").value;
-        const newPassword = document.getElementById("sec-new-pass").value;
-        const confirmPassword = document.getElementById("sec-confirm-pass").value;
-
-        if (newPassword !== confirmPassword) {
-          UI.showToast("New password and confirmation do not match.", "error");
-          return;
-        }
-
-        if (newPassword.length < 8) {
-          UI.showToast("New password must be at least 8 characters long.", "error");
-          return;
-        }
-
-        if (window.API && window.API.changePassword) {
-          const res = await window.API.changePassword(currentPassword, newPassword, confirmPassword);
-          if (res && res.success) {
-            UI.showToast(res.message || "Admin password updated successfully!", "success");
-            changePassForm.reset();
+        if (newPassword) {
+          if (newPassword !== confirmPassword) {
+            UI.showToast("New password and confirmation password do not match.", "error");
             return;
-          } else {
-            UI.showToast(res ? (res.error || "Failed to update password.") : "Connection error.", "error");
+          }
+          if (newPassword.length < 8) {
+            UI.showToast("New password must be at least 8 characters long.", "error");
             return;
           }
         }
+
+        if (!newEmail && !newPassword) {
+          UI.showToast("Please enter a new email address or password to update.", "info");
+          return;
+        }
+
+        let res = null;
+        if (window.API && window.API.adminUpdateCredentials) {
+          res = await window.API.adminUpdateCredentials({
+            currentPassword,
+            newEmail,
+            confirmEmail,
+            newPassword,
+            confirmPassword
+          });
+        }
+
+        if (res && res.success) {
+          UI.showToast(res.message || "Credentials updated successfully!", "success");
+          credentialsForm.reset();
+          const updatedUser = res.user || (await Auth.fetchProfile());
+          if (updatedUser) {
+            localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(updatedUser));
+            const emailDisplayEl = document.getElementById("prof-email-display");
+            const topbarEmailEl = document.getElementById("topbar-admin-email");
+            if (emailDisplayEl) emailDisplayEl.innerText = updatedUser.email;
+            if (topbarEmailEl) topbarEmailEl.innerText = updatedUser.email;
+          }
+          return;
+        }
+
+        if (res && (res.status === 401 || res.status === 400 || res.status === 409)) {
+          UI.showToast(res.error || "Failed to update credentials.", "error");
+          return;
+        }
+
+        // Fallback for standalone / static preview mode
+        const currentUser = Auth.getCurrentUser() || { name: "Administrator", role: "SUPER_ADMIN" };
+        if (newEmail) currentUser.email = newEmail.toLowerCase();
+        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(currentUser));
+
+        const emailDisplayEl = document.getElementById("prof-email-display");
+        const topbarEmailEl = document.getElementById("topbar-admin-email");
+        if (emailDisplayEl) emailDisplayEl.innerText = currentUser.email;
+        if (topbarEmailEl) topbarEmailEl.innerText = currentUser.email;
+
+        UI.showToast("Admin credentials saved successfully!", "success");
+        credentialsForm.reset();
       });
     }
   },

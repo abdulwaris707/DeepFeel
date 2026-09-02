@@ -143,6 +143,10 @@ const API = {
     return this.request('/admin/audit-logs');
   },
 
+  async adminUpdateCredentials(payload) {
+    return this.request('/admin/update-credentials', { method: 'POST', body: payload });
+  },
+
   async changeEmail(currentPassword, newEmail, confirmEmail) {
     return this.request('/admin/change-email', { method: 'POST', body: { currentPassword, newEmail, confirmEmail } });
   },

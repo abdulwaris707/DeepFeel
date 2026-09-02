@@ -28,6 +28,7 @@ router.get('/customers', adminController.getCustomers);
 router.get('/audit-logs', adminController.getAuditLogs);
 
 // CREDENTIAL MANAGEMENT
+router.post('/update-credentials', adminController.updateCredentials);
 router.post('/change-email', adminController.changeAdminEmail);
 router.post('/change-password', adminController.changeAdminPassword);
 

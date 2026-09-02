@@ -184,17 +184,13 @@ const deleteCategory = async (req, res, next) => {
 };
 
 // CREDENTIAL MANAGEMENT
-const changeAdminEmail = async (req, res, next) => {
+const updateCredentials = async (req, res, next) => {
   try {
-    const { currentPassword, newEmail, confirmEmail } = req.body;
+    const { currentPassword, newEmail, confirmEmail, newPassword, confirmPassword } = req.body;
     const adminId = req.user.id;
 
-    if (!currentPassword || !newEmail || !confirmEmail) {
-      return res.status(400).json({ success: false, error: 'Current password, new email, and confirmation email are required.' });
-    }
-
-    if (newEmail.toLowerCase().trim() !== confirmEmail.toLowerCase().trim()) {
-      return res.status(400).json({ success: false, error: 'New email address and confirmation do not match.' });
+    if (!currentPassword) {
+      return res.status(400).json({ success: false, error: 'Current password is required to authorize credential changes.' });
     }
 
     const admin = await DataStore.findUserById(adminId);
@@ -204,17 +200,50 @@ const changeAdminEmail = async (req, res, next) => {
 
     const isMatch = await security.comparePassword(currentPassword, admin.passwordHash);
     if (!isMatch) {
-      return res.status(401).json({ success: false, error: 'Current password verified incorrect.' });
+      return res.status(401).json({ success: false, error: 'Current password is incorrect.' });
     }
 
-    const existingUser = await DataStore.findUserByEmail(newEmail);
-    if (existingUser && existingUser.id !== adminId) {
-      return res.status(409).json({ success: false, error: 'This email address is already in use by another account.' });
+    let emailChanged = false;
+    let passwordChanged = false;
+    let updatedUser = admin;
+
+    if (newEmail && newEmail.trim().toLowerCase() !== admin.email.toLowerCase()) {
+      const trimmedEmail = newEmail.trim().toLowerCase();
+      const trimmedConfirm = (confirmEmail || '').trim().toLowerCase();
+
+      if (trimmedEmail !== trimmedConfirm) {
+        return res.status(400).json({ success: false, error: 'New email address and confirmation do not match.' });
+      }
+
+      const existingUser = await DataStore.findUserByEmail(trimmedEmail);
+      if (existingUser && existingUser.id !== adminId) {
+        return res.status(409).json({ success: false, error: 'This email address is already in use by another account.' });
+      }
+
+      updatedUser = await DataStore.updateUserEmail(adminId, trimmedEmail);
+      emailChanged = true;
     }
 
-    const updatedUser = await DataStore.updateUserEmail(adminId, newEmail);
+    if (newPassword) {
+      if (newPassword !== confirmPassword) {
+        return res.status(400).json({ success: false, error: 'New password and confirmation password do not match.' });
+      }
+
+      const passCheck = security.validatePasswordPolicy(newPassword);
+      if (!passCheck.valid) {
+        return res.status(400).json({ success: false, error: passCheck.message });
+      }
+
+      const newPasswordHash = await security.hashPassword(newPassword);
+      updatedUser = await DataStore.updateUserPassword(adminId, newPasswordHash);
+      passwordChanged = true;
+    }
+
+    if (!emailChanged && !passwordChanged) {
+      return res.status(400).json({ success: false, error: 'Please enter a new email address or password to update.' });
+    }
+
     const token = security.generateToken(updatedUser);
-
     res.cookie('deepfeel_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -225,16 +254,25 @@ const changeAdminEmail = async (req, res, next) => {
     await DataStore.recordAuditLog(
       adminId,
       updatedUser.email,
-      'CHANGE_ADMIN_EMAIL',
+      'UPDATE_ADMIN_CREDENTIALS',
       'user',
       adminId,
-      { oldEmail: admin.email, newEmail: updatedUser.email },
+      { emailChanged, passwordChanged },
       req.ip
     );
 
+    let message = 'Admin credentials updated successfully!';
+    if (emailChanged && passwordChanged) {
+      message = 'Both email and password updated successfully!';
+    } else if (emailChanged) {
+      message = 'Admin email address updated successfully!';
+    } else if (passwordChanged) {
+      message = 'Admin password updated successfully!';
+    }
+
     res.json({
       success: true,
-      message: 'Admin email address updated successfully.',
+      message,
       token,
       user: {
         id: updatedUser.id,
@@ -248,51 +286,21 @@ const changeAdminEmail = async (req, res, next) => {
   }
 };
 
+const changeAdminEmail = async (req, res, next) => {
+  try {
+    const { currentPassword, newEmail, confirmEmail } = req.body;
+    req.body.newPassword = '';
+    return updateCredentials(req, res, next);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const changeAdminPassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword, confirmPassword } = req.body;
-    const adminId = req.user.id;
-
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      return res.status(400).json({ success: false, error: 'Current password, new password, and confirmation are required.' });
-    }
-
-    if (newPassword !== confirmPassword) {
-      return res.status(400).json({ success: false, error: 'New password and confirmation password do not match.' });
-    }
-
-    const passCheck = security.validatePasswordPolicy(newPassword);
-    if (!passCheck.valid) {
-      return res.status(400).json({ success: false, error: passCheck.message });
-    }
-
-    const admin = await DataStore.findUserById(adminId);
-    if (!admin) {
-      return res.status(404).json({ success: false, error: 'Admin account not found.' });
-    }
-
-    const isMatch = await security.comparePassword(currentPassword, admin.passwordHash);
-    if (!isMatch) {
-      return res.status(401).json({ success: false, error: 'Current password verified incorrect.' });
-    }
-
-    const newPasswordHash = await security.hashPassword(newPassword);
-    await DataStore.updateUserPassword(adminId, newPasswordHash);
-
-    await DataStore.recordAuditLog(
-      adminId,
-      admin.email,
-      'CHANGE_ADMIN_PASSWORD',
-      'user',
-      adminId,
-      {},
-      req.ip
-    );
-
-    res.json({
-      success: true,
-      message: 'Admin password updated successfully. Please use your new password on next login.'
-    });
+    req.body.newEmail = '';
+    return updateCredentials(req, res, next);
   } catch (err) {
     next(err);
   }
@@ -318,6 +326,7 @@ module.exports = {
   getCategories,
   saveCategory,
   deleteCategory,
+  updateCredentials,
   changeAdminEmail,
   changeAdminPassword,
   getAuditLogs
