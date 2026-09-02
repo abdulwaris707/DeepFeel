@@ -388,9 +388,22 @@ const Store = {
     return orders.filter(o => o.userId === userId);
   },
 
+  saveOrder(order) {
+    if (!order) return;
+    const orders = this.getOrders();
+    const existingIndex = orders.findIndex(o => o.id === order.id);
+    if (existingIndex >= 0) {
+      orders[existingIndex] = order;
+    } else {
+      orders.unshift(order);
+    }
+    localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+    localStorage.setItem("deepfeel_last_order", JSON.stringify(order));
+  },
+
   createOrder(orderData) {
     const orders = this.getOrders();
-    const newId = "DF-PK-" + Math.floor(10000 + Math.random() * 90000);
+    const newId = orderData.id || ("DF-PK-" + Math.floor(10000 + Math.random() * 90000));
     
     // Determine payment status
     let defaultPayStatus = "Verified & Paid";
@@ -412,8 +425,7 @@ const Store = {
       ...orderData
     };
 
-    orders.unshift(newOrder);
-    localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
+    this.saveOrder(newOrder);
 
     // Deduct stock
     if (newOrder.items && newOrder.items.length > 0) {

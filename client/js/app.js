@@ -782,19 +782,25 @@ const App = {
           let confirmedOrder = null;
 
           if (window.API && window.API.createOrder) {
-            const apiRes = await window.API.createOrder(orderPayload);
-            if (apiRes.success && apiRes.order) {
-              confirmedOrder = apiRes.order;
+            try {
+              const apiRes = await window.API.createOrder(orderPayload);
+              if (apiRes && apiRes.success && apiRes.order) {
+                confirmedOrder = apiRes.order;
+              }
+            } catch (err) {
+              console.warn("API createOrder fallback to local store:", err);
             }
           }
 
           if (!confirmedOrder) {
             confirmedOrder = Store.createOrder(orderPayload);
+          } else {
+            Store.saveOrder(confirmedOrder);
           }
 
           // Track email dispatch in client record
           const dispatches = JSON.parse(localStorage.getItem("deepfeel_email_dispatches") || "[]");
-          dispatches.push({
+          dispatches.unshift({
             orderId: confirmedOrder.id,
             clientEmail: email,
             senderEmail: activeAdminEmail,
@@ -812,7 +818,6 @@ const App = {
           }, 400);
         };
 
-
         submitOrder();
       });
     }
@@ -822,10 +827,42 @@ const App = {
   // ----------------------------------------------------
   // 7. ORDER CONFIRMATION & TAX INVOICE
   // ----------------------------------------------------
-  initOrderConfirmationPage() {
+  async initOrderConfirmationPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get("id");
-    const order = orderId ? Store.getOrderById(orderId) : Store.getOrders()[0];
+
+    let order = null;
+
+    if (orderId) {
+      order = Store.getOrderById(orderId);
+    }
+
+    if (!order) {
+      const lastOrderStr = localStorage.getItem("deepfeel_last_order");
+      if (lastOrderStr) {
+        try {
+          order = JSON.parse(lastOrderStr);
+        } catch (e) {}
+      }
+    }
+
+    if (!order && orderId && window.API && window.API.getOrders) {
+      try {
+        const apiRes = await window.API.getOrders();
+        if (apiRes && apiRes.success && apiRes.orders) {
+          order = apiRes.orders.find(o => o.id === orderId);
+        }
+      } catch (err) {
+        console.warn("Could not fetch order from API:", err);
+      }
+    }
+
+    if (!order) {
+      const allOrders = Store.getOrders();
+      if (allOrders && allOrders.length > 0) {
+        order = allOrders[0];
+      }
+    }
 
     if (!order) {
       window.location.href = "index.html";
